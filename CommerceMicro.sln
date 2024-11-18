@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.IdentityServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.IdentityService.Api", "services\identity\src\CommerceMicro.IdentityService.Api\CommerceMicro.IdentityService.Api.csproj", "{925B991E-6067-438A-BFA3-3CAA452FEFC2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "product", "product", "{D0841D57-4FB3-4BDC-AE90-B756A03163EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,5 +93,6 @@ Global
 		{924D584F-EDF8-4D05-AFAA-2C9051C12347} = {B20B47E2-9280-40DA-8369-5584F7921BF2}
 		{C4D88D38-43B5-4E1F-8E83-4846DD7888A8} = {DD07BDD4-70B4-4396-8152-B1B446C67E0C}
 		{925B991E-6067-438A-BFA3-3CAA452FEFC2} = {DD07BDD4-70B4-4396-8152-B1B446C67E0C}
+		{D0841D57-4FB3-4BDC-AE90-B756A03163EE} = {F80FFD61-68CC-4E40-8A27-897B4BB2EE3A}
 	EndGlobalSection
 EndGlobal

@@ -7,6 +7,13 @@
       "request": "launch",
       "projectPath": "${workspaceFolder}/services/identity/src/CommerceMicro.IdentityService.Api/CommerceMicro.IdentityService.Api.csproj",
       "launchConfigurationId": "TargetFramework=;http"
+    },
+    {
+      "name": "CommerceMicro.ProductService.Api",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/services/product/src/CommerceMicro.ProductService.Api/CommerceMicro.ProductService.Api.csproj",
+      "launchConfigurationId": "TargetFramework=;http"
     }
   ]
 }

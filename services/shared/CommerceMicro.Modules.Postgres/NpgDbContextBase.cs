@@ -1,39 +1,30 @@
 using System.Data;
-using System.Reflection;
-using CommerceMicro.IdentityService.Application.Roles.Models;
-using CommerceMicro.IdentityService.Application.Users.Models;
 using CommerceMicro.Modules.Core.Domain;
-using CommerceMicro.Modules.Core.EFCore;
 using CommerceMicro.Modules.Core.Persistences;
 using CommerceMicro.Modules.Core.Sessions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
-namespace CommerceMicro.IdentityService.Application.Data;
+namespace CommerceMicro.Modules.Postgres;
 
-public class AppDbContext : IdentityDbContext<User, Role, long,
-	UserClaim, UserRole, UserLogin, RoleClaim, UserToken>, IDbContext
+public abstract class NpgDbContextBase : DbContext, IDbContext
 {
-	private readonly ILogger<AppDbContext>? _logger;
-	private IDbContextTransaction? _currentTransaction;
 	private readonly IAppSession? _appSession;
+	private readonly ILogger<NpgDbContextBase>? _logger;
+	private IDbContextTransaction? _currentTransaction;
 
-	public AppDbContext(DbContextOptions<AppDbContext> options, ILogger<AppDbContext>? logger = null, IAppSession? appSession = null) : base(options)
+	protected NpgDbContextBase(
+		DbContextOptions options,
+		ILogger<NpgDbContextBase>? logger = null,
+		IAppSession? appSession = null) : base(options)
 	{
 		_logger = logger;
 		_appSession = appSession;
 	}
 
-	public DbSet<UserRolePermission> UserRolePermissions => Set<UserRolePermission>();
-
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-		base.OnModelCreating(builder);
-		builder.SetSoftDeletedFilter();
-		builder.ToSnakeCaseTableNames();
 	}
 
 	public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)

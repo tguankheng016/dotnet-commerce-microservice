@@ -1,15 +1,10 @@
 using System.Reflection;
 using System.Threading.RateLimiting;
-using CommerceMicro.IdentityService.Application.Data;
-using CommerceMicro.IdentityService.Application.Data.Seed;
-using CommerceMicro.IdentityService.Application.Roles.Models;
-using CommerceMicro.IdentityService.Application.Users.Models;
 using CommerceMicro.Modules.Logging;
 using CommerceMicro.Modules.Caching;
 using CommerceMicro.Modules.Core.Dependencies;
 using CommerceMicro.Modules.Core.EFCore;
 using CommerceMicro.Modules.Core.Exceptions;
-using CommerceMicro.Modules.Core.Persistences;
 using CommerceMicro.Modules.Core.Sessions;
 using CommerceMicro.Modules.Permissions;
 using CommerceMicro.Modules.Postgres;
@@ -19,11 +14,11 @@ using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using CommerceMicro.ProductService.Application.Data;
 
-namespace CommerceMicro.IdentityService.Application.Startup;
+namespace CommerceMicro.ProductService.Application.Startup;
 
 public static class InfrastructureExtensions
 {
@@ -36,7 +31,6 @@ public static class InfrastructureExtensions
 		builder.Services.AddDefaultDependencyInjection(assembly);
 
 		builder.Services.AddScoped<IAppSession, AppSession>();
-		builder.Services.AddScoped<IDataSeeder, DataSeeder>();
 
 		builder.Services.AddRateLimiter(options =>
 		{
@@ -55,7 +49,6 @@ public static class InfrastructureExtensions
 		// Setup Minimal API
 		builder.Services.AddMinimalEndpoints(assembly);
 		builder.Services.AddEndpointsApiExplorer();
-		builder.Services.AddControllers();
 
 		builder.Services.AddNpgDbContext<AppDbContext>();
 
@@ -72,19 +65,12 @@ public static class InfrastructureExtensions
 
 		builder.Services.AddProblemDetails();
 
-		builder.Services.AddIdentity<User, Role>(config =>
-			{
-				config.User.RequireUniqueEmail = true;
-				config.Password.RequiredLength = 6;
-				config.Password.RequireDigit = false;
-				config.Password.RequireNonAlphanumeric = false;
-				config.Password.RequireUppercase = false;
-			}
-		).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
-
-		builder.Services.AddCustomIdentityJwtTokenHandler();
+		builder.Services.AddCustomJwtTokenHandler();
 		builder.Services.AddCustomJwtAuthentication();
-		builder.Services.AddCustomIdentityPermissionAuthorization();
+
+		builder.Services.AddPermissionAuthorization();
+
+		builder.Services.AddHttpContextAccessor();
 
 		builder.Services.Configure<ForwardedHeadersOptions>(options =>
 		{

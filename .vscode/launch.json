@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CommerceMicro.IdentityService.Api",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/services/identity/src/CommerceMicro.IdentityService.Api/CommerceMicro.IdentityService.Api.csproj",
+      "launchConfigurationId": "TargetFramework=;http"
+    }
+  ]
+}

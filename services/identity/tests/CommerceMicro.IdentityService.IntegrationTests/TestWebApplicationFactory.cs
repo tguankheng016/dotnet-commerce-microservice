@@ -1,5 +1,7 @@
 using CommerceMicro.IdentityService.Api;
+using CommerceMicro.IdentityService.Application.Startup;
 using CommerceMicro.Modules.Postgres;
+using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -59,6 +61,16 @@ public class TestWebApplicationFactory : WebApplicationFactory<IApplicationRoot>
 
 				services.AddSingleton(newPostgresOptions);
 			}
+
+			services.AddMassTransitTestHarness(configure =>
+			{
+				configure.AddConsumers(typeof(InfrastructureExtensions).Assembly);
+				configure.SetTestTimeouts(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
+				configure.UsingInMemory((context, cfg) =>
+				{
+					cfg.ConfigureEndpoints(context);
+				});
+			});
 		});
 	}
 }

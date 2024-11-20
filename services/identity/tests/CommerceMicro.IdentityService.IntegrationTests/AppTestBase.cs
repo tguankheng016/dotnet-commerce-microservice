@@ -1,6 +1,7 @@
 using CommerceMicro.IdentityService.Application.Data;
 using CommerceMicro.Modules.Caching;
 using EasyCaching.Core;
+using MassTransit.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
@@ -12,6 +13,7 @@ public class AppTestBase : IClassFixture<TestContainers>
 	protected readonly AppDbContext DbContext;
 	protected readonly IEasyCachingProvider CacheProvider;
 	protected readonly HttpClient Client;
+	protected readonly ITestHarness TestHarness;
 	protected virtual string EndpointPrefix { get; } = "api";
 	protected virtual string EndpointVersion { get; } = "v1";
 	protected virtual string EndpointName { get; } = "";
@@ -33,5 +35,6 @@ public class AppTestBase : IClassFixture<TestContainers>
 		var _scope = ApiFactory.Services.CreateScope();
 		DbContext = _scope.ServiceProvider.GetRequiredService<AppDbContext>();
 		CacheProvider = _scope.ServiceProvider.GetRequiredService<ICacheManager>().GetCachingProvider();
+		TestHarness = _scope.ServiceProvider.GetRequiredService<ITestHarness>();
 	}
 }

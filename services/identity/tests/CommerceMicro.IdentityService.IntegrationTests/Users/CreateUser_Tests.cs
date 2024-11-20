@@ -4,6 +4,8 @@ using CommerceMicro.IdentityService.Application.Users.Dtos;
 using CommerceMicro.IdentityService.Application.Users.Features.CreatingUser.V1;
 using CommerceMicro.IdentityService.Application.Users.Models;
 using CommerceMicro.IdentityService.IntegrationTests.Utilities;
+using CommerceMicro.Modules.Contracts;
+using MassTransit.Testing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
@@ -48,6 +50,8 @@ public class CreateUser_Tests : CreateUserTestBase
 			.RuleFor(x => x.ConfirmPassword, (f, u) => u.Password);
 		var request = testUser.Generate();
 
+		await TestHarness.Start();
+
 		// TODO: Soft Delete Violate Unique Index Of Username
 		// Create a deleted user with the same username and email
 		// await DbContext.Users.AddAsync(new User()
@@ -80,6 +84,17 @@ public class CreateUser_Tests : CreateUserTestBase
 
 		var newTotalCount = await DbContext.Users.CountAsync();
 		newTotalCount.Should().Be(totalCount + 1);
+
+		var publishedMessage = await TestHarness.Published.SelectAsync<UserCreatedEvent>().FirstOrDefault();
+		publishedMessage.Should().NotBeNull();
+
+		var userCreatedEvent = publishedMessage.Context.Message;
+		userCreatedEvent.Id.Should().Be(createResult.User.Id);
+		userCreatedEvent.UserName.Should().Be(createResult.User.UserName);
+		userCreatedEvent.FirstName.Should().Be(createResult.User.FirstName);
+		userCreatedEvent.LastName.Should().Be(createResult.User.LastName);
+
+		await TestHarness.Stop();
 	}
 
 	[Theory]

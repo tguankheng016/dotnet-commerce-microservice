@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.IdentityServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.IdentityService.IntegrationTests", "tests\CommerceMicro.IdentityService.IntegrationTests\CommerceMicro.IdentityService.IntegrationTests.csproj", "{3E6774BA-ACC8-4487-8ACF-75A5A9979475}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.MassTransit", "..\shared\CommerceMicro.Modules.MassTransit\CommerceMicro.Modules.MassTransit.csproj", "{ED4EC423-6CA6-4A81-B3B4-827B6F250885}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Contracts", "..\shared\CommerceMicro.Modules.Contracts\CommerceMicro.Modules.Contracts.csproj", "{46F0506B-5061-42DA-8DB0-01B2AF7829D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,14 @@ Global
 		{3E6774BA-ACC8-4487-8ACF-75A5A9979475}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E6774BA-ACC8-4487-8ACF-75A5A9979475}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E6774BA-ACC8-4487-8ACF-75A5A9979475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED4EC423-6CA6-4A81-B3B4-827B6F250885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED4EC423-6CA6-4A81-B3B4-827B6F250885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED4EC423-6CA6-4A81-B3B4-827B6F250885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED4EC423-6CA6-4A81-B3B4-827B6F250885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46F0506B-5061-42DA-8DB0-01B2AF7829D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F0506B-5061-42DA-8DB0-01B2AF7829D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F0506B-5061-42DA-8DB0-01B2AF7829D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46F0506B-5061-42DA-8DB0-01B2AF7829D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +107,7 @@ Global
 		{8B7741B5-9518-40FB-ABFB-C3EDC9CB3986} = {4DF02F46-B4EE-4529-8B82-CACC99DAD9E5}
 		{5CB52D85-90EB-4154-A892-4801054C650F} = {957C28CB-1562-444E-97EA-69F9EBD29B9C}
 		{3E6774BA-ACC8-4487-8ACF-75A5A9979475} = {957C28CB-1562-444E-97EA-69F9EBD29B9C}
+		{ED4EC423-6CA6-4A81-B3B4-827B6F250885} = {4DF02F46-B4EE-4529-8B82-CACC99DAD9E5}
+		{46F0506B-5061-42DA-8DB0-01B2AF7829D1} = {4DF02F46-B4EE-4529-8B82-CACC99DAD9E5}
 	EndGlobalSection
 EndGlobal

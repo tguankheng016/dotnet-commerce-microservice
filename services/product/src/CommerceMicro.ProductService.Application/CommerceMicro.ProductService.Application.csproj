@@ -8,8 +8,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Caching\CommerceMicro.Modules.Caching.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Contracts\CommerceMicro.Modules.Contracts.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Core\CommerceMicro.Modules.Core.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Logging\CommerceMicro.Modules.Logging.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.MassTransit\CommerceMicro.Modules.MassTransit.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Permissions\CommerceMicro.Modules.Permissions.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Postgres\CommerceMicro.Modules.Postgres.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Security\CommerceMicro.Modules.Security.csproj" />

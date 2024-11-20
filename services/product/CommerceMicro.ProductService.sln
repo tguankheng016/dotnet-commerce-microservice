@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Secur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Web", "..\shared\CommerceMicro.Modules.Web\CommerceMicro.Modules.Web.csproj", "{E3699609-7F8E-4548-88A5-DADD28028B23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.MassTransit", "..\shared\CommerceMicro.Modules.MassTransit\CommerceMicro.Modules.MassTransit.csproj", "{FD398D1F-0AD4-47EC-AA6A-1BB540B464CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Contracts", "..\shared\CommerceMicro.Modules.Contracts\CommerceMicro.Modules.Contracts.csproj", "{BD260D64-2ECB-4227-9702-E6EB171A71A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +71,14 @@ Global
 		{E3699609-7F8E-4548-88A5-DADD28028B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3699609-7F8E-4548-88A5-DADD28028B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3699609-7F8E-4548-88A5-DADD28028B23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD398D1F-0AD4-47EC-AA6A-1BB540B464CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD398D1F-0AD4-47EC-AA6A-1BB540B464CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD398D1F-0AD4-47EC-AA6A-1BB540B464CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD398D1F-0AD4-47EC-AA6A-1BB540B464CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD260D64-2ECB-4227-9702-E6EB171A71A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD260D64-2ECB-4227-9702-E6EB171A71A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD260D64-2ECB-4227-9702-E6EB171A71A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD260D64-2ECB-4227-9702-E6EB171A71A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +93,7 @@ Global
 		{D99CBE6A-1885-4E14-BBF3-837123EE901B} = {B64136D0-F918-4001-93F2-04F896CB98CB}
 		{D6C5296E-7109-478F-8135-288F212C73C5} = {B64136D0-F918-4001-93F2-04F896CB98CB}
 		{E3699609-7F8E-4548-88A5-DADD28028B23} = {B64136D0-F918-4001-93F2-04F896CB98CB}
+		{FD398D1F-0AD4-47EC-AA6A-1BB540B464CA} = {B64136D0-F918-4001-93F2-04F896CB98CB}
+		{BD260D64-2ECB-4227-9702-E6EB171A71A7} = {B64136D0-F918-4001-93F2-04F896CB98CB}
 	EndGlobalSection
 EndGlobal

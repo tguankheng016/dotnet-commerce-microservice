@@ -2,12 +2,14 @@ using CommerceMicro.IdentityService.Application.Roles.Constants;
 using CommerceMicro.IdentityService.Application.Roles.Models;
 using CommerceMicro.IdentityService.Application.Users.Dtos;
 using CommerceMicro.IdentityService.Application.Users.Models;
+using CommerceMicro.Modules.Contracts;
 using CommerceMicro.Modules.Core.CQRS;
 using CommerceMicro.Modules.Core.EFCore;
 using CommerceMicro.Modules.Core.Exceptions;
 using CommerceMicro.Modules.Permissions;
 using CommerceMicro.Modules.Web;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -88,7 +90,8 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
 // Handler
 internal class CreateUserHandler(
 	UserManager<User> userManager,
-	RoleManager<Role> roleManager
+	RoleManager<Role> roleManager,
+	IPublishEndpoint publishEndpoint
 ) : ICommandHandler<CreateUserCommand, CreateUserResult>
 {
 	public async Task<CreateUserResult> Handle(CreateUserCommand command, CancellationToken cancellationToken)
@@ -124,6 +127,16 @@ internal class CreateUserHandler(
 		}
 
 		var userDto = mapper.UserToUserDto(user);
+
+		await publishEndpoint.Publish(
+			new UserCreatedEvent(
+				userDto.Id,
+				userDto.UserName,
+				userDto.FirstName ?? "",
+				userDto.LastName ?? ""
+			),
+			cancellationToken
+		);
 
 		return new CreateUserResult(userDto);
 	}

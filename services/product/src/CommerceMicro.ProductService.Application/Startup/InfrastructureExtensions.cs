@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using CommerceMicro.ProductService.Application.Data;
+using CommerceMicro.Modules.MassTransit;
 
 namespace CommerceMicro.ProductService.Application.Startup;
 
@@ -64,6 +65,8 @@ public static class InfrastructureExtensions
 		builder.Services.AddValidatorsFromAssembly(assembly);
 
 		builder.Services.AddProblemDetails();
+
+		builder.Services.AddCustomMassTransit(env, assembly);
 
 		builder.Services.AddCustomJwtTokenHandler();
 		builder.Services.AddCustomJwtAuthentication();

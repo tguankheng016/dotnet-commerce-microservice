@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.IdentityServi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "product", "product", "{D0841D57-4FB3-4BDC-AE90-B756A03163EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.MassTransit", "services\shared\CommerceMicro.Modules.MassTransit\CommerceMicro.Modules.MassTransit.csproj", "{D704E2BE-69AF-40F5-84F9-D862689691F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Contracts", "services\shared\CommerceMicro.Modules.Contracts\CommerceMicro.Modules.Contracts.csproj", "{77445089-D9F8-4248-A8B5-5F2201AE1F03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,14 @@ Global
 		{925B991E-6067-438A-BFA3-3CAA452FEFC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{925B991E-6067-438A-BFA3-3CAA452FEFC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{925B991E-6067-438A-BFA3-3CAA452FEFC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D704E2BE-69AF-40F5-84F9-D862689691F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D704E2BE-69AF-40F5-84F9-D862689691F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D704E2BE-69AF-40F5-84F9-D862689691F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D704E2BE-69AF-40F5-84F9-D862689691F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77445089-D9F8-4248-A8B5-5F2201AE1F03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77445089-D9F8-4248-A8B5-5F2201AE1F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77445089-D9F8-4248-A8B5-5F2201AE1F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77445089-D9F8-4248-A8B5-5F2201AE1F03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,5 +106,7 @@ Global
 		{C4D88D38-43B5-4E1F-8E83-4846DD7888A8} = {DD07BDD4-70B4-4396-8152-B1B446C67E0C}
 		{925B991E-6067-438A-BFA3-3CAA452FEFC2} = {DD07BDD4-70B4-4396-8152-B1B446C67E0C}
 		{D0841D57-4FB3-4BDC-AE90-B756A03163EE} = {F80FFD61-68CC-4E40-8A27-897B4BB2EE3A}
+		{D704E2BE-69AF-40F5-84F9-D862689691F3} = {5B5E8ABD-751F-452E-A680-BF3213E76E78}
+		{77445089-D9F8-4248-A8B5-5F2201AE1F03} = {5B5E8ABD-751F-452E-A680-BF3213E76E78}
 	EndGlobalSection
 EndGlobal

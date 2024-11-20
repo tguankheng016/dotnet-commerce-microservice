@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using CommerceMicro.Modules.MassTransit;
 
 namespace CommerceMicro.IdentityService.Application.Startup;
 
@@ -71,6 +72,8 @@ public static class InfrastructureExtensions
 		builder.Services.AddValidatorsFromAssembly(assembly);
 
 		builder.Services.AddProblemDetails();
+
+		builder.Services.AddCustomMassTransit(env, assembly);
 
 		builder.Services.AddIdentity<User, Role>(config =>
 			{

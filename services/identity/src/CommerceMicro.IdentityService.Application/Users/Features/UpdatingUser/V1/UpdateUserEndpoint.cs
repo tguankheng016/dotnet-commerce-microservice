@@ -2,12 +2,14 @@ using CommerceMicro.IdentityService.Application.Users.Constants;
 using CommerceMicro.IdentityService.Application.Users.Dtos;
 using CommerceMicro.IdentityService.Application.Users.Models;
 using CommerceMicro.IdentityService.Application.Users.Services;
+using CommerceMicro.Modules.Contracts;
 using CommerceMicro.Modules.Core.CQRS;
 using CommerceMicro.Modules.Core.EFCore;
 using CommerceMicro.Modules.Core.Exceptions;
 using CommerceMicro.Modules.Permissions;
 using CommerceMicro.Modules.Web;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -86,7 +88,8 @@ public class UpdateUserValidator : AbstractValidator<UpdateUserCommand>
 // Handler
 internal class UpdateUserHandler(
 	UserManager<User> userManager,
-	IUserRolePermissionManager userRolePermissionManager
+	IUserRolePermissionManager userRolePermissionManager,
+	IPublishEndpoint publishEndpoint
 ) : ICommandHandler<UpdateUserCommand, UpdateUserResult>
 {
 	public async Task<UpdateUserResult> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
@@ -157,6 +160,16 @@ internal class UpdateUserHandler(
 
 		var userDto = mapper.UserToUserDto(user);
 		userDto.Roles = await userManager.GetRolesAsync(user);
+
+		await publishEndpoint.Publish(
+			new UserUpdatedEvent(
+				userDto.Id,
+				userDto.UserName,
+				userDto.FirstName ?? "",
+				userDto.LastName ?? ""
+			),
+			cancellationToken
+		);
 
 		return new UpdateUserResult(userDto);
 	}

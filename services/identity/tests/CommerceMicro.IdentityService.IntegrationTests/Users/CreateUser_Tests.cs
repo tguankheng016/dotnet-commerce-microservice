@@ -113,6 +113,8 @@ public class CreateUser_Tests : CreateUserTestBase
 			.RuleFor(x => x.Password, f => f.Internet.Password())
 			.RuleFor(x => x.ConfirmPassword, (f, u) => u.Password);
 
+		await TestHarness.Start();
+
 		if (username is null)
 		{
 			testUser.RuleFor(x => x.UserName, (f) => f.Internet.UserName());
@@ -134,6 +136,11 @@ public class CreateUser_Tests : CreateUserTestBase
 		var failureResponse = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 		failureResponse.Should().NotBeNull();
 		failureResponse!.Detail.Should().Be(errorMessage);
+
+		var publishedMessage = await TestHarness.Published.SelectAsync<UserCreatedEvent>().FirstOrDefault();
+		publishedMessage.Should().BeNull();
+
+		await TestHarness.Stop();
 	}
 
 	[Fact]
@@ -151,6 +158,8 @@ public class CreateUser_Tests : CreateUserTestBase
 		var request = testUser.Generate();
 		request.ConfirmPassword = request.Password;
 
+		await TestHarness.Start();
+
 		// Act
 		var response = await client.PostAsJsonAsync(Endpoint, request);
 
@@ -159,6 +168,11 @@ public class CreateUser_Tests : CreateUserTestBase
 
 		var failureResponse = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 		failureResponse.Should().NotBeNull();
+
+		var publishedMessage = await TestHarness.Published.SelectAsync<UserCreatedEvent>().FirstOrDefault();
+		publishedMessage.Should().BeNull();
+
+		await TestHarness.Stop();
 	}
 }
 
@@ -173,10 +187,11 @@ public class CreateUserValidation_Tests : CreateUserTestBase
 
 	[Theory]
 	[ClassData(typeof(GetValidateUserCreationTestData))]
-	public async Task Should_Create_Role_With_Invalid_Input_Test(CreateUserDto request, string errorMessage)
+	public async Task Should_Create_User_With_Invalid_Input_Test(CreateUserDto request, string errorMessage)
 	{
 		// Arrange
 		var client = await ApiFactory.LoginAsAdmin();
+		await TestHarness.Start();
 
 		// Act
 		var response = await client.PostAsJsonAsync(Endpoint, request);
@@ -187,6 +202,11 @@ public class CreateUserValidation_Tests : CreateUserTestBase
 		var failureResponse = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 		failureResponse.Should().NotBeNull();
 		failureResponse!.Detail.Should().Be(errorMessage);
+
+		var publishedMessage = await TestHarness.Published.SelectAsync<UserCreatedEvent>().FirstOrDefault();
+		publishedMessage.Should().BeNull();
+
+		await TestHarness.Stop();
 	}
 
 	private static CreateUserDto GetCreateUserRequest(int scenario)

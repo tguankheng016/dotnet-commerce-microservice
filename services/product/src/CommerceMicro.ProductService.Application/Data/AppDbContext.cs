@@ -3,6 +3,7 @@ using CommerceMicro.Modules.Core.EFCore;
 using CommerceMicro.Modules.Core.Sessions;
 using CommerceMicro.Modules.Postgres;
 using CommerceMicro.ProductService.Application.Users.Models;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -23,6 +24,11 @@ public class AppDbContext : NpgDbContextBase
 	{
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		base.OnModelCreating(builder);
+
+		builder.AddInboxStateEntity();
+		builder.AddOutboxMessageEntity();
+		builder.AddOutboxStateEntity();
+
 		builder.SetSoftDeletedFilter();
 		builder.ToSnakeCaseTableNames();
 	}

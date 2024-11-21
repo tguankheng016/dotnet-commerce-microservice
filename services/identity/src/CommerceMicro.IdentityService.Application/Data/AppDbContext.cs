@@ -6,6 +6,7 @@ using CommerceMicro.Modules.Core.Domain;
 using CommerceMicro.Modules.Core.EFCore;
 using CommerceMicro.Modules.Core.Persistences;
 using CommerceMicro.Modules.Core.Sessions;
+using MassTransit;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -32,8 +33,13 @@ public class AppDbContext : IdentityDbContext<User, Role, long,
 	{
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		base.OnModelCreating(builder);
+
 		builder.SetSoftDeletedFilter();
 		builder.ToSnakeCaseTableNames();
+
+		builder.AddInboxStateEntity();
+		builder.AddOutboxMessageEntity();
+		builder.AddOutboxStateEntity();
 	}
 
 	public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)

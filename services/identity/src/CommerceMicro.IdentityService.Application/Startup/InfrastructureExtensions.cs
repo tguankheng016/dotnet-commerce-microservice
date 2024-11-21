@@ -73,7 +73,7 @@ public static class InfrastructureExtensions
 
 		builder.Services.AddProblemDetails();
 
-		builder.Services.AddCustomMassTransit(env, assembly);
+		builder.Services.AddCustomMassTransit<AppDbContext>(assembly);
 
 		builder.Services.AddIdentity<User, Role>(config =>
 			{

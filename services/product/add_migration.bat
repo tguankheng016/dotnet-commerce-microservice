@@ -1,7 +1,7 @@
 @echo off
 
 :: Set the migration name
-set MIGRATION_NAME=Initial
+set MIGRATION_NAME=Added_MassTransitOutboxPattern
 
 :: Set the migration project
 set MIGRATION_PROJECT=src\CommerceMicro.ProductService.Application\CommerceMicro.ProductService.Application.csproj

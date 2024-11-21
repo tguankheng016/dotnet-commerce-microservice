@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.MassTransit\CommerceMicro.Modules.MassTransit.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Permissions\CommerceMicro.Modules.Permissions.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Postgres\CommerceMicro.Modules.Postgres.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Resiliency\CommerceMicro.Modules.Resiliency.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Security\CommerceMicro.Modules.Security.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Web\CommerceMicro.Modules.Web.csproj" />
   </ItemGroup>
@@ -24,6 +25,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="PasswordGenerator" Version="2.1.0" />
     <PackageReference Include="Riok.Mapperly" Version="4.1.0" />
   </ItemGroup>
 

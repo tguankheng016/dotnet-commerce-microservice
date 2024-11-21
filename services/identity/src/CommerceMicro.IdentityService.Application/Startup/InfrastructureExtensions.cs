@@ -106,6 +106,8 @@ public static class InfrastructureExtensions
 				ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 		});
 
+		builder.Services.AddCustomHttpClients(configuration);
+
 		return builder;
 	}
 

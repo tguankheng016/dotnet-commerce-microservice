@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.MassT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Contracts", "services\shared\CommerceMicro.Modules.Contracts\CommerceMicro.Modules.Contracts.csproj", "{77445089-D9F8-4248-A8B5-5F2201AE1F03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Resiliency", "services\shared\CommerceMicro.Modules.Resiliency\CommerceMicro.Modules.Resiliency.csproj", "{EDB341EA-22EA-49C9-BB1D-CC8FF19A0F51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{77445089-D9F8-4248-A8B5-5F2201AE1F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77445089-D9F8-4248-A8B5-5F2201AE1F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77445089-D9F8-4248-A8B5-5F2201AE1F03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDB341EA-22EA-49C9-BB1D-CC8FF19A0F51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDB341EA-22EA-49C9-BB1D-CC8FF19A0F51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDB341EA-22EA-49C9-BB1D-CC8FF19A0F51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDB341EA-22EA-49C9-BB1D-CC8FF19A0F51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,5 +114,6 @@ Global
 		{D0841D57-4FB3-4BDC-AE90-B756A03163EE} = {F80FFD61-68CC-4E40-8A27-897B4BB2EE3A}
 		{D704E2BE-69AF-40F5-84F9-D862689691F3} = {5B5E8ABD-751F-452E-A680-BF3213E76E78}
 		{77445089-D9F8-4248-A8B5-5F2201AE1F03} = {5B5E8ABD-751F-452E-A680-BF3213E76E78}
+		{EDB341EA-22EA-49C9-BB1D-CC8FF19A0F51} = {5B5E8ABD-751F-452E-A680-BF3213E76E78}
 	EndGlobalSection
 EndGlobal

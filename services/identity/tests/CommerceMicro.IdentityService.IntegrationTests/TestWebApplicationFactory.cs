@@ -1,5 +1,6 @@
 using CommerceMicro.IdentityService.Api;
 using CommerceMicro.IdentityService.Application.Startup;
+using CommerceMicro.Modules.Caching;
 using CommerceMicro.Modules.Postgres;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
@@ -60,6 +61,23 @@ public class TestWebApplicationFactory : WebApplicationFactory<IApplicationRoot>
 				};
 
 				services.AddSingleton(newPostgresOptions);
+			}
+
+			descriptor = services
+				.SingleOrDefault(s => s.ServiceType == typeof(RedisOptions));
+
+			if (descriptor is not null)
+			{
+				services.Remove(descriptor);
+
+				var newRedisOptions = new RedisOptions()
+				{
+					Enabled = false
+				};
+
+				services.AddSingleton(newRedisOptions);
+
+				services.AddCustomEasyCaching();
 			}
 
 			services.AddMassTransitTestHarness(configure =>

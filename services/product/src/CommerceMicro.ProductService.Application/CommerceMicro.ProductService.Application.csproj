@@ -22,4 +22,10 @@
     <PackageReference Include="Riok.Mapperly" Version="4.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Categories\Features\CreatingCategory\" />
+    <Folder Include="Categories\Features\GettingCategoryById\" />
+    <Folder Include="Categories\Features\UpdatingCategory\" />
+  </ItemGroup>
+
 </Project>

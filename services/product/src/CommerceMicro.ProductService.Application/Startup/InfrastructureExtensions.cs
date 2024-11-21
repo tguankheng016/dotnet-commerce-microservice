@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using CommerceMicro.ProductService.Application.Data;
 using CommerceMicro.Modules.MassTransit;
+using CommerceMicro.Modules.Core;
+using CommerceMicro.Modules.Core.Configurations;
 
 namespace CommerceMicro.ProductService.Application.Startup;
 
@@ -28,6 +30,9 @@ public static class InfrastructureExtensions
 		var configuration = builder.Configuration;
 		var env = builder.Environment;
 		assembly = typeof(InfrastructureExtensions).Assembly;
+
+		var appOptions = builder.Services.GetOptions<AppOptions>(nameof(AppOptions));
+		Console.WriteLine(appOptions.Name);
 
 		builder.Services.AddDefaultDependencyInjection(assembly);
 
@@ -75,6 +80,13 @@ public static class InfrastructureExtensions
 
 		builder.Services.AddHttpContextAccessor();
 
+		builder.Services.AddGrpc(options =>
+		{
+			options.Interceptors.Add<GrpcExceptionInterceptor>();
+		});
+
+		builder.Services.AddGrpcClients();
+
 		builder.Services.Configure<ForwardedHeadersOptions>(options =>
 		{
 			options.ForwardedHeaders =
@@ -86,6 +98,8 @@ public static class InfrastructureExtensions
 
 	public static WebApplication UseInfrastructure(this WebApplication app)
 	{
+		var appOptions = app.GetOptions<AppOptions>(nameof(AppOptions));
+
 		app.UseForwardedHeaders();
 
 		app.UseCustomProblemDetails();
@@ -111,6 +125,9 @@ public static class InfrastructureExtensions
 		app.MapMinimalEndpoints();
 
 		app.UseCustomSwagger();
+
+		// Write app options name to http response
+		app.MapGet("/", x => x.Response.WriteAsync(appOptions.Name));
 
 		return app;
 	}

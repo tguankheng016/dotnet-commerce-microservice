@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "CommerceMicro.IdentityService";
+
+service IdentityGrpcService {
+  rpc ValidateKey (GetValidateTokenKeyRequest) returns (GetValidateTokenKeyResponse);
+  rpc ValidateSecurityStamp (GetValidateSecurityStampRequest) returns (GetValidateSecurityStampResponse);
+}
+
+message GetValidateTokenKeyRequest {
+  string CacheKey = 1;
+  int64 UserId = 2;
+  string TokenKey = 3;
+}
+
+message GetValidateTokenKeyResponse {
+  bool IsValid = 1;
+}
+
+message GetValidateSecurityStampRequest {
+  string CacheKey = 1;
+  string UserId = 2;
+  string SecurityStamp = 3;
+}
+
+message GetValidateSecurityStampResponse {
+  bool IsValid = 1;
+}

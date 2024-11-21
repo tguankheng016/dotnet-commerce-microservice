@@ -21,6 +21,17 @@ public static class RolePermissions
 	public const string Pages_Administration_Roles_Delete = "Pages.Administration.Roles.Delete";
 }
 
+public static class CategoryPermissions
+{
+	public const string GroupName = "Categories";
+
+	public const string Pages_Categories = "Pages.Categories";
+	public const string Pages_Categories_Create = "Pages.Categories.Create";
+	public const string Pages_Categories_Edit = "Pages.Categories.Edit";
+	public const string Pages_Categories_Delete = "Pages.Categories.Delete";
+	public const string Pages_Categories_View = "Pages.Categories.View";
+}
+
 public static class AppPermissionProvider
 {
 	public static List<Permission> GetPermissions()

@@ -23,6 +23,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using CommerceMicro.Modules.MassTransit;
+using CommerceMicro.IdentityService.Application.Identities.GrpcServer.Services;
+using CommerceMicro.Modules.Core.Configurations;
+using CommerceMicro.Modules.Core;
 
 namespace CommerceMicro.IdentityService.Application.Startup;
 
@@ -33,6 +36,9 @@ public static class InfrastructureExtensions
 		var configuration = builder.Configuration;
 		var env = builder.Environment;
 		assembly = typeof(InfrastructureExtensions).Assembly;
+
+		var appOptions = builder.Services.GetOptions<AppOptions>(nameof(AppOptions));
+		Console.WriteLine(appOptions.Name);
 
 		builder.Services.AddDefaultDependencyInjection(assembly);
 
@@ -89,6 +95,11 @@ public static class InfrastructureExtensions
 		builder.Services.AddCustomJwtAuthentication();
 		builder.Services.AddCustomIdentityPermissionAuthorization();
 
+		builder.Services.AddGrpc(options =>
+		{
+			options.Interceptors.Add<GrpcExceptionInterceptor>();
+		});
+
 		builder.Services.Configure<ForwardedHeadersOptions>(options =>
 		{
 			options.ForwardedHeaders =
@@ -100,6 +111,8 @@ public static class InfrastructureExtensions
 
 	public static WebApplication UseInfrastructure(this WebApplication app)
 	{
+		var appOptions = app.GetOptions<AppOptions>(nameof(AppOptions));
+
 		app.UseForwardedHeaders();
 
 		app.UseCustomProblemDetails();
@@ -121,10 +134,17 @@ public static class InfrastructureExtensions
 
 		app.UseAuthorization();
 
+		app.MapGrpcService<IdentityGrpcServices>();
+
+		app.MapGrpcService<PermissionGrpcServices>();
+
 		// Must come before custom swagger for versions to be visible in ui
 		app.MapMinimalEndpoints();
 
 		app.UseCustomSwagger();
+
+		// Write app options name to http response
+		app.MapGet("/", x => x.Response.WriteAsync(appOptions.Name));
 
 		return app;
 	}

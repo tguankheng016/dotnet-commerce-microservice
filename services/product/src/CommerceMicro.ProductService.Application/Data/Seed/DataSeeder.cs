@@ -1,5 +1,6 @@
 using CommerceMicro.Modules.Core.Persistences;
 using CommerceMicro.ProductService.Application.Categories.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommerceMicro.ProductService.Application.Data.Seed;
 
@@ -19,17 +20,22 @@ public class DataSeeder : IDataSeeder
 
 	public async Task SeedCategoryAsync()
 	{
-		var categories = new List<Category>
-		{
-			new Category { CategoryName = "Furniture", Id = 0 },
-			new Category { CategoryName = "Clothing", Id = 0 },
-			new Category { CategoryName = "Electronics", Id = 0 },
-			new Category { CategoryName = "Travel", Id = 0 },
-			new Category { CategoryName = "Books", Id = 0 },
-			new Category { CategoryName = "Kitchen", Id = 0 },
-		};
+		var existingCategories = await _appDbContext.Categories.CountAsync();
 
-		await _appDbContext.Categories.AddRangeAsync(categories);
-		await _appDbContext.SaveChangesAsync();
+		if (existingCategories == 0)
+		{
+			var categories = new List<Category>
+			{
+				new Category { CategoryName = "Furniture", Id = 0 },
+				new Category { CategoryName = "Clothing", Id = 0 },
+				new Category { CategoryName = "Electronics", Id = 0 },
+				new Category { CategoryName = "Travel", Id = 0 },
+				new Category { CategoryName = "Books", Id = 0 },
+				new Category { CategoryName = "Kitchen", Id = 0 },
+			};
+
+			await _appDbContext.Categories.AddRangeAsync(categories);
+			await _appDbContext.SaveChangesAsync();
+		}
 	}
 }

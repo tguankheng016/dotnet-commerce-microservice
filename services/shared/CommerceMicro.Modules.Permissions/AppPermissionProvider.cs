@@ -48,6 +48,12 @@ public static class AppPermissionProvider
 			new Permission(UserPermissions.Pages_Administration_Users_Edit, "Edit user", UserPermissions.GroupName),
 			new Permission(UserPermissions.Pages_Administration_Users_Delete, "Delete user", UserPermissions.GroupName),
 			new Permission(UserPermissions.Pages_Administration_Users_ChangePermissions, "Change user permissions", UserPermissions.GroupName),
+
+			new Permission(CategoryPermissions.Pages_Categories, "View categories", CategoryPermissions.GroupName),
+			new Permission(CategoryPermissions.Pages_Categories_Create, "Create category", CategoryPermissions.GroupName),
+			new Permission(CategoryPermissions.Pages_Categories_Edit, "Edit category", CategoryPermissions.GroupName),
+			new Permission(CategoryPermissions.Pages_Categories_Delete, "Delete category", CategoryPermissions.GroupName),
+			new Permission(CategoryPermissions.Pages_Categories_View, "View category details", CategoryPermissions.GroupName),
 		};
 
 		return permissions;

@@ -3,6 +3,7 @@ using CommerceMicro.Modules.Core.EFCore;
 using CommerceMicro.Modules.Core.Sessions;
 using CommerceMicro.Modules.Postgres;
 using CommerceMicro.ProductService.Application.Categories.Models;
+using CommerceMicro.ProductService.Application.Products.Models;
 using CommerceMicro.ProductService.Application.Users.Models;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,8 @@ public class AppDbContext : NpgDbContextBase
 	}
 
 	public DbSet<Category> Categories => Set<Category>();
+
+	public DbSet<Product> Products => Set<Product>();
 
 	public DbSet<User> Users => Set<User>();
 

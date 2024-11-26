@@ -32,6 +32,17 @@ public static class CategoryPermissions
 	public const string Pages_Categories_View = "Pages.Categories.View";
 }
 
+public static class ProductPermissions
+{
+	public const string GroupName = "Products";
+
+	public const string Pages_Products = "Pages.Products";
+	public const string Pages_Products_Create = "Pages.Products.Create";
+	public const string Pages_Products_Edit = "Pages.Products.Edit";
+	public const string Pages_Products_Delete = "Pages.Products.Delete";
+	public const string Pages_Products_View = "Pages.Products.View";
+}
+
 public static class AppPermissionProvider
 {
 	public static List<Permission> GetPermissions()
@@ -54,6 +65,12 @@ public static class AppPermissionProvider
 			new Permission(CategoryPermissions.Pages_Categories_Edit, "Edit category", CategoryPermissions.GroupName),
 			new Permission(CategoryPermissions.Pages_Categories_Delete, "Delete category", CategoryPermissions.GroupName),
 			new Permission(CategoryPermissions.Pages_Categories_View, "View category details", CategoryPermissions.GroupName),
+
+			new Permission(ProductPermissions.Pages_Products, "View products", ProductPermissions.GroupName),
+			new Permission(ProductPermissions.Pages_Products_Create, "Create product", ProductPermissions.GroupName),
+			new Permission(ProductPermissions.Pages_Products_Edit, "Edit product", ProductPermissions.GroupName),
+			new Permission(ProductPermissions.Pages_Products_Delete, "Delete product", ProductPermissions.GroupName),
+			new Permission(ProductPermissions.Pages_Products_View, "View product details", ProductPermissions.GroupName),
 		};
 
 		return permissions;

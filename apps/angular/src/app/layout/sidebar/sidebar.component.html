@@ -1,0 +1,27 @@
+<div 
+    id="kt_app_sidebar" 
+    class="app-sidebar flex-column"
+    [ngClass]="mobileView ? 'drawer drawer-start' : ''"
+    (clickOutside)="hideSidebar()"
+    [excludeDocumentId]="'kt_app_sidebar_mobile_toggle'"
+>
+    <div 
+        class="d-flex flex-column justify-content-between h-100 hover-scroll-overlay-y my-2 d-flex flex-column" 
+        id="kt_app_sidebar_main"
+    >
+        <div 
+            id="#kt_app_sidebar_menu" 
+            class="flex-column-fluid menu menu-sub-indention menu-column menu-rounded menu-active-bg mb-7"
+        >
+            <sidebar-menu></sidebar-menu>
+        </div>
+        <div class="app-sidebar-project-default app-sidebar-project-minimize text-center min-h-lg-400px flex-column-auto d-flex flex-column justify-content-end" id="kt_app_sidebar_footer">
+            <h2 class="fw-bold text-gray-800">Welcome to Saul</h2>
+            <div class="fw-semibold text-gray-700 fs-7 lh-2 px-7 mb-1">Join the movement make a difference.</div>
+            <img class="mx-auto h-150px h-lg-175px mb-4" src="assets/images/saul-welcome.png" alt="" />
+            <div class="text-center mb-lg-5 pb-lg-3">
+                <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#kt_modal_create_account">Get Started</a>
+            </div>
+        </div>
+    </div>
+</div>

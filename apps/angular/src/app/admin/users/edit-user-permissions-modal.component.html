@@ -1,0 +1,85 @@
+<div
+    bsModal
+    #editModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="editModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #userForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>Permissions: {{ user.userName }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <permission-tree #permissionTree></permission-tree>
+                    <div
+                        class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6 mt-5"
+                    >
+                        <i
+                            class="ki-duotone ki-design-1 fs-2tx text-primary me-4"
+                        ></i>
+                        <div class="d-flex flex-stack flex-grow-1">
+                            <div class="fw-semibold">
+                                <div class="fs-6 text-gray-700">
+                                    If you are changing your own permissions,
+                                    you may need to refresh page (F5) to take
+                                    effect of permission changes on your own
+                                    screen.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        [buttonBusy]="resetting"
+                        [busyText]="'Resetting ...'"
+                        [disabled]="saving"
+                        (click)="resetSpecialPermissions()"
+                    >
+                        <i class="fa fa-sync"></i>
+                        <span>Reset</span>
+                    </button>
+                    <button
+                        [disabled]="saving || resetting"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary fw-bold"
+                        [buttonBusy]="saving"
+                        [busyText]="'Saving ...'"
+                        [disabled]="resetting"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

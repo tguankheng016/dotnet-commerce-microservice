@@ -1,0 +1,206 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #userForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="isEdit"
+                            >Edit User: {{ user.userName }}</span
+                        >
+                        <span *ngIf="!isEdit">Create New User</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <tabset>
+                        <tab class="p-3 pt-6" heading="General">
+                            <div class="mb-5">
+                                <label
+                                    class="form-label required"
+                                    for="FirstName"
+                                    >First name</label
+                                >
+                                <input
+                                    pInputText
+                                    id="FirstName"
+                                    #firstNameInput="ngModel"
+                                    type="text"
+                                    name="FirstName"
+                                    [(ngModel)]="user.firstName"
+                                    maxlength="64"
+                                    required
+                                />
+                                <validation-messages
+                                    [formCtrl]="firstNameInput"
+                                ></validation-messages>
+                            </div>
+                            <div class="mb-5">
+                                <label
+                                    class="form-label required"
+                                    for="LastName"
+                                    >Last name</label
+                                >
+                                <input
+                                    pInputText
+                                    id="LastName"
+                                    #lastNameInput="ngModel"
+                                    type="text"
+                                    name="LastName"
+                                    [(ngModel)]="user.lastName"
+                                    maxlength="64"
+                                    required
+                                />
+                                <validation-messages
+                                    [formCtrl]="lastNameInput"
+                                ></validation-messages>
+                            </div>
+                            <div class="mb-5">
+                                <label
+                                    class="form-label required"
+                                    for="EmailAddress"
+                                    >Email address</label
+                                >
+                                <input
+                                    pInputText
+                                    id="EmailAddress"
+                                    #emailAddressInput="ngModel"
+                                    type="email"
+                                    name="EmailAddress"
+                                    [(ngModel)]="user.email"
+                                    email
+                                    maxlength="256"
+                                    required
+                                />
+                                <validation-messages
+                                    [formCtrl]="emailAddressInput"
+                                ></validation-messages>
+                            </div>
+                            <div class="mb-5">
+                                <label
+                                    class="form-label required"
+                                    for="Username"
+                                    >Username</label
+                                >
+                                <input
+                                    pInputText
+                                    id="Username"
+                                    #userNameInput="ngModel"
+                                    type="text"
+                                    name="Username"
+                                    [(ngModel)]="user.userName"
+                                    maxlength="64"
+                                    required
+                                />
+                                <validation-messages
+                                    [formCtrl]="userNameInput"
+                                ></validation-messages>
+                            </div>
+                            <div class="mb-5">
+                                <label
+                                    class="form-label"
+                                    [class.required]="!isEdit"
+                                    for="Password"
+                                    >Password</label
+                                >
+                                <input
+                                    pInputText
+                                    id="Password"
+                                    #passwordInput="ngModel"
+                                    type="password"
+                                    name="Password"
+                                    [(ngModel)]="user.password"
+                                    maxlength="64"
+                                    [required]="!isEdit"
+                                />
+                                <validation-messages
+                                    [formCtrl]="passwordInput"
+                                ></validation-messages>
+                            </div>
+                            <div class="mb-5">
+                                <label
+                                    class="form-label"
+                                    [class.required]="!isEdit"
+                                    for="ConfirmPassword"
+                                    >Confirm Password</label
+                                >
+                                <input
+                                    pInputText
+                                    id="ConfirmPassword"
+                                    #confimPasswordInput="ngModel"
+                                    type="password"
+                                    name="ConfirmPassword"
+                                    [(ngModel)]="user.confirmPassword"
+                                    maxlength="64"
+                                    [required]="!isEdit"
+                                />
+                                <validation-messages
+                                    [formCtrl]="confimPasswordInput"
+                                ></validation-messages>
+                            </div>
+                        </tab>
+                        <tab class="p-3 pt-6" heading="Roles">
+                            <div class="row">
+                                <div *ngFor="let role of roles">
+                                    <label
+                                        class="form-check form-check-custom form-check-solid py-2"
+                                    >
+                                        <input
+                                            id="User_{{ role.name }}"
+                                            type="checkbox"
+                                            name="{{ role.name }}"
+                                            [(ngModel)]="role.isAssigned"
+                                            class="form-check-input"
+                                        />
+                                        <span class="fw-semibold ps-2 fs-6">
+                                            {{ role.name }}
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary fw-bold"
+                        [buttonBusy]="saving"
+                        [busyText]="'Saving ...'"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

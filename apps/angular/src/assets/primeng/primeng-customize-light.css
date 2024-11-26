@@ -1,0 +1,65 @@
+/* Overwrite PrimeNg Component Light Theme */
+.p-inputtext:enabled:hover, .p-multiselect:not(.p-disabled):hover, .p-dropdown:not(.p-disabled):hover, 
+.p-autocomplete .p-autocomplete-multiple-container:not(.p-disabled):hover,
+.p-calendar-w-btn:not(.p-calendar-disabled):hover {
+    border-color: var(--bs-primary);
+}
+
+.p-inputtext:enabled:focus, 
+.p-multiselect:not(.p-disabled).p-focus, 
+.p-dropdown:not(.p-disabled).p-focus,
+.p-autocomplete:not(.p-disabled).p-focus > ul,
+.p-calendar-w-btn:not(.p-calendar-disabled).p-focus {
+    border-color: var(--bs-primary);
+    box-shadow: inset 0 0 0 1px var(--bs-primary), inset 0 0 0 1px var(--bs-primary), inset 0 0 0 1px var(--bs-primary), inset 0 0 0 1px var(--bs-primary);
+}
+
+.p-multiselect.p-multiselect-chip .p-multiselect-token, 
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight,
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus.p-highlight,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
+.p-datepicker table td > span.p-highlight,
+.p-datepicker table td.p-datepicker-today > span.p-highlight,
+.p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-token {
+    color: var(--bs-primary);
+    background-color: var(--bs-primary-12-visibility)
+}
+
+.p-calendar-w-btn .p-datepicker-trigger.p-button:enabled:hover,
+.p-button.p-button-text:enabled:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.p-datatable .p-sortable-column:not(.p-highlight):hover, .p-datatable .p-sortable-column:focus {
+    background-color: var(--bs-primary-active);
+}
+
+.p-datatable .p-datatable-thead > tr > th, .p-datatable .p-sortable-column.p-highlight {
+    background-color: var(--bs-primary);
+    color: var(--bs-white);
+    border-bottom: none;
+}
+
+.p-datatable .p-sortable-column .p-sortable-column-icon, .p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: var(--bs-white);
+}
+
+.p-datatable .p-datatable-tbody > tr.p-highlight {
+    background: var(--bs-primary-12-visibility);
+    color: var(--kt-black);
+}
+
+.p-disabled, .p-component:disabled {
+    opacity: 1;
+    border-color: #ebedf2;
+    color: #575962;
+    background-color: #f3f3f3 !important;
+}
+
+p-button.p-disabled {
+    background-color: transparent !important;
+}
+
+.p-calendar-w-btn .p-datepicker-trigger.p-button {
+    color: var(--bs-primary);
+}

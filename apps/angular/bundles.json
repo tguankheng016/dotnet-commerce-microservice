@@ -1,0 +1,23 @@
+{
+    "styles": [
+        {
+            "output": "src/assets/primeng/primeng-customize.min.css",
+            "input": [
+                "src/assets/primeng/primeng-customize.css"
+            ]
+        },
+        {
+            "output": "src/assets/primeng/primeng-customize-light.min.css",
+            "input": [
+                "src/assets/primeng/primeng-customize-light.css"
+            ]
+        },
+        {
+            "output": "src/assets/primeng/primeng-customize-dark.min.css",
+            "input": [
+                "src/assets/primeng/primeng-customize-dark.css"
+            ]
+        }
+    ],
+    "scripts": []
+}

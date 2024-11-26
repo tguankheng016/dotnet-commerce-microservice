@@ -1,0 +1,37 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "lib": [ "es6", "dom" ],
+    "module": "esnext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "target": "ES2022",
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*": [ "./app/*" ],
+      "@shared/*": [ "./shared/*" ]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true,
+    "strictInputTypes": false,
+    "strictAttributeTypes": false,
+    "strictOutputEventTypes": false,
+    "strictDomEventTypes": false,
+    "strictLiteralTypes": false,
+    "strictInjectionParameters": false
+  }
+}

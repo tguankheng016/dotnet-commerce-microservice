@@ -108,12 +108,16 @@ public static class InfrastructureExtensions
 
 		builder.Services.AddCustomHttpClients(configuration);
 
+		builder.Services.AddCustomCors(appOptions);
+
 		return builder;
 	}
 
 	public static WebApplication UseInfrastructure(this WebApplication app)
 	{
 		var appOptions = app.GetOptions<AppOptions>(nameof(AppOptions));
+
+		app.UseCustomCors();
 
 		app.UseForwardedHeaders();
 

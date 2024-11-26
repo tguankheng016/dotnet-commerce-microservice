@@ -1,0 +1,20 @@
+.menu-item .menu-link {
+    color: var(--bs-gray-600);
+    font-size: 1.15rem;
+    font-weight: 600;
+    padding: .675rem 1.25rem;
+}
+
+.menu-item .menu-link.active {
+    transition: color .2s ease;
+    background-color: var(--bs-gray-200);
+    color: var(--bs-gray-900);
+    border-radius: .75rem;
+}
+
+.menu-item:not(.here) .menu-link:hover:not(.disabled):not(.active):not(.here) {
+    transition: color .2s ease;
+    color: var(--bs-gray-900);
+    background-color: var(--bs-gray-200);
+    border-radius: .75rem;
+}

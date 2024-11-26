@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-4">
+        <label class="form-check form-check-custom form-check-solid py-2">
+            <input
+                #isGrantAllCheckbox
+                type="checkbox"
+                name="IsGrantAllPermissions"
+                class="form-check-input"
+                [(ngModel)]="isGrantAll"
+                (change)="selectIsGrantAllPermission()"
+            />
+            <span class="fw-semibold ps-2 fs-6">
+                Grant all permissions
+            </span>
+        </label>
+        <hr />
+    </div>
+    <div class="col-8">
+        <label class="form-check form-check-custom form-check-solid py-2">
+            <input
+                #selectAllCheckbox
+                type="checkbox"
+                name="SelectAllPermissionsUnderGroup"
+                class="form-check-input"
+                [(ngModel)]="selectAll"
+                (change)="selectAllPermission()"
+            />
+            <span class="fw-semibold ps-2 fs-6">
+                Select all
+            </span>
+        </label>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <div *ngFor="let group of allPermissions" class="menu-item menu-accordion">
+            <a 
+                href="javascript:;" 
+                class="menu-link" 
+                [class.active]="group.isActive"
+                (click)="setActive(group)"
+            >
+                <span class="text-truncate">{{ group.groupName }} 
+                    <ng-container *ngIf="group.selectedCount > 0">
+                        ({{ group.selectedCount }})
+                    </ng-container>
+                </span>
+            </a>
+        </div>
+    </div>
+    <div class="col-8">
+        <ng-container *ngIf="permissionNodes && permissionNodes.length > 0">
+            <p-tree
+                [value]="permissionNodes"
+                [(selection)]="selectedPermissions"
+                selectionMode="checkbox"
+                (onNodeSelect)="nodeSelect($event)"
+                (onNodeUnselect)="onNodeUnselect($event)"
+                [propagateSelectionUp]="false"
+            ></p-tree>
+        </ng-container>
+    </div>
+</div>

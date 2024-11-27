@@ -1,7 +1,6 @@
 @echo off
 
-:: Run the migration
-cd CommerceMicro.Gateways.Web
-dotnet run
+:: Run the project
+dotnet run --project CommerceMicro.Gateways.Web/CommerceMicro.Gateways.Web.csproj
 
 pause

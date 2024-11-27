@@ -12,12 +12,11 @@ import { SharedModule } from '@shared/shared.module';
 import { ServiceProxyModule } from '@shared/service-proxies/service-proxy.module';
 import { RootRoutingModule } from './root-routing.module';
 import { AppConsts } from '@shared/app-consts';
-// import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 
 import { RootComponent } from './root.component';
 import { AppInitializer } from './app-initializer';
 import { API_BASE_URL as IdentityUrl } from '@shared/service-proxies/identity-service-proxies';
-//import { API_BASE_URL as FlightUrl } from '@shared/service-proxies/flight-service-proxies';
+import { API_BASE_URL as ProductUrl } from '@shared/service-proxies/product-service-proxies';
 import { CustomHttpInterceptor } from '@shared/service-proxies/http-interceptor.service';
 
 @NgModule({
@@ -42,7 +41,7 @@ import { CustomHttpInterceptor } from '@shared/service-proxies/http-interceptor.
       deps: [AppInitializer],
       multi: true,
     },
-    //{ provide: FlightUrl, useFactory: () => AppConsts.remoteServiceBaseUrl },
+    { provide: ProductUrl, useFactory: () => AppConsts.remoteServiceBaseUrl },
     { provide: IdentityUrl, useFactory: () => AppConsts.remoteServiceBaseUrl },
   ],
   bootstrap: [RootComponent],

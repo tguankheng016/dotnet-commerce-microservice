@@ -1,0 +1,77 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    category="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #categoryForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="isEdit">
+                            Edit Category: {{ category.categoryName }}
+                        </span>
+                        <span *ngIf="!isEdit">Create New Category</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-5">
+                        <label class="form-label required" for="CategoryName">
+                            Category Name
+                        </label>
+                        <input
+                            pInputText
+                            id="CategoryName"
+                            #categoryNameInput="ngModel"
+                            type="text"
+                            name="CategoryName"
+                            [(ngModel)]="category.categoryName"
+                            maxlength="50"
+                            required
+                        />
+                        <validation-messages
+                            [formCtrl]="categoryNameInput"
+                        ></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary fw-bold"
+                        [buttonBusy]="saving"
+                        [busyText]="'Saving ...'"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

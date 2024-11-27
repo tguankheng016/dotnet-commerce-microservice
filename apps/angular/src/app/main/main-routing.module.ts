@@ -7,6 +7,14 @@ import { RouterModule } from "@angular/router";
             {
                 path: '',
                 children: [
+                    {
+                        path: 'categories',
+                        loadChildren: () => import('./categories/categories.module').then((m) => m.CategoriesModule),
+                    },
+                    {
+                        path: 'products',
+                        loadChildren: () => import('./products/products.module').then((m) => m.ProductsModule),
+                    },
                 ]
             },
         ]),

@@ -7,18 +7,16 @@ import { AppMenuItem } from "./app-menu-item";
 export class AppNavigationService {
     constructor(
         private _stringService: StringService
-    ) {}
+    ) { }
 
     getMenuItems(): AppMenuItem[] {
         return [
             new AppMenuItem('About', '/app/about', 'fas fa-info-circle'),
-            new AppMenuItem('Aircrafts', '/app/main/aircrafts', 'fas fa-plane', 'Pages.Aircrafts'),
-            new AppMenuItem('Airports', '/app/main/airports', 'fas fa-plane-arrival', 'Pages.Airports'),
-            new AppMenuItem('Flights', '/app/main/flights', 'fas fa-plane-departure', 'Pages.Flights'),
-            new AppMenuItem('Seats', '/app/main/seats', 'fas fa-chair', 'Pages.Seats'),
+            new AppMenuItem('Categories', '/app/main/categories', 'fas fa-tags', 'Pages.Categories'),
+            new AppMenuItem('Products', '/app/main/products', 'fas fa-store', 'Pages.Products'),
             new AppMenuItem('Administration', '', 'fas fa-tasks', '', [
                 new AppMenuItem('Roles', '/app/admin/roles', 'fas fa-layer-group', 'Pages.Administration.Roles'),
-                new AppMenuItem('Users', '/app/admin/users', 'fas fa-users','Pages.Administration.Users'),
+                new AppMenuItem('Users', '/app/admin/users', 'fas fa-users', 'Pages.Administration.Users'),
                 new AppMenuItem('Audit Logs', '/app/admin/audit-logs', 'far fa-file-alt', 'Pages.Administration.AuditLogs')
             ]),
         ];

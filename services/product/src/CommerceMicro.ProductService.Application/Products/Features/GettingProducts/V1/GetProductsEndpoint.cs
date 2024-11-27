@@ -43,7 +43,8 @@ public class GetProductsEndpoint : IMinimalEndpoint
 			SkipCount = request.SkipCount ?? 0,
 			MaxResultCount = request.MaxResultCount ?? 0,
 			Filters = request.Filters,
-			Sorting = request.Sorting
+			Sorting = request.Sorting,
+			CategoryIdFilter = request.CategoryIdFilter
 		};
 
 		var result = await mediator.Send(query, cancellationToken);
@@ -53,13 +54,19 @@ public class GetProductsEndpoint : IMinimalEndpoint
 }
 
 // Request
-public class GetProductsRequest() : PageRequest;
+public class GetProductsRequest() : PageRequest
+{
+	public int? CategoryIdFilter { get; set; }
+}
 
 // Result
 public class GetProductsResult : PagedResultDto<ProductDto>;
 
 // Query
-public class GetProductsQuery : PageQuery<GetProductsResult>;
+public class GetProductsQuery : PageQuery<GetProductsResult>
+{
+	public int? CategoryIdFilter { get; set; }
+}
 
 // Validator
 public class GetProductsValidator : AbstractValidator<GetProductsQuery>
@@ -86,11 +93,13 @@ internal class GetProductsHandler(
 		var results = new List<ProductDto>();
 
 		var filteredProducts = appDbContext.Products.AsNoTracking()
+			.Include(x => x.CategoryFK)
 			.WhereIf(!string.IsNullOrWhiteSpace(request.Filters),
 				e =>
 					e.Name!.Contains(request.Filters!) ||
 					e.Description!.Contains(request.Filters!)
-			);
+			)
+			.WhereIf(request.CategoryIdFilter.HasValue, e => e.CategoryId == request.CategoryIdFilter);
 
 		IQueryable<Product>? pagedAndFilteredProducts = null;
 
@@ -115,6 +124,7 @@ internal class GetProductsHandler(
 		foreach (var o in dbList)
 		{
 			var res = mapper.ProductToProductDto(o);
+			res.CategoryName = o.CategoryFK?.CategoryName;
 			results.Add(res);
 		}
 

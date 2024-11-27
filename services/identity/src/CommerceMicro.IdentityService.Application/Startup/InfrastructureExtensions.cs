@@ -26,6 +26,7 @@ using CommerceMicro.Modules.MassTransit;
 using CommerceMicro.IdentityService.Application.Identities.GrpcServer.Services;
 using CommerceMicro.Modules.Core.Configurations;
 using CommerceMicro.Modules.Core;
+using CommerceMicro.Modules.OpenTelemetry;
 
 namespace CommerceMicro.IdentityService.Application.Startup;
 
@@ -108,7 +109,9 @@ public static class InfrastructureExtensions
 
 		builder.Services.AddCustomHttpClients(configuration);
 
-		builder.Services.AddCustomCors(appOptions);
+		builder.Services.AddCustomCors();
+
+		builder.Services.AddCustomOpenTelemetry();
 
 		return builder;
 	}

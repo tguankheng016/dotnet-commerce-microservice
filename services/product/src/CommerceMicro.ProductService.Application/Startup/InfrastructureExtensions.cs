@@ -20,6 +20,7 @@ using CommerceMicro.ProductService.Application.Data;
 using CommerceMicro.Modules.MassTransit;
 using CommerceMicro.Modules.Core;
 using CommerceMicro.Modules.Core.Configurations;
+using CommerceMicro.Modules.OpenTelemetry;
 
 namespace CommerceMicro.ProductService.Application.Startup;
 
@@ -93,7 +94,9 @@ public static class InfrastructureExtensions
 				ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 		});
 
-		builder.Services.AddCustomCors(appOptions);
+		builder.Services.AddCustomCors();
+
+		builder.Services.AddCustomOpenTelemetry();
 
 		return builder;
 	}

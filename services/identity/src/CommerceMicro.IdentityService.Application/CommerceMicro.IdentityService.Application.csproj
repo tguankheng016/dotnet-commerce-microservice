@@ -12,6 +12,7 @@
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Core\CommerceMicro.Modules.Core.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Logging\CommerceMicro.Modules.Logging.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.MassTransit\CommerceMicro.Modules.MassTransit.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.OpenTelemetry\CommerceMicro.Modules.OpenTelemetry.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Permissions\CommerceMicro.Modules.Permissions.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Postgres\CommerceMicro.Modules.Postgres.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Resiliency\CommerceMicro.Modules.Resiliency.csproj" />

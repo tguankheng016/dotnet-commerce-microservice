@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CommerceMicro.Gateways.Web",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/CommerceMicro.Gateways.Web/CommerceMicro.Gateways.Web.csproj",
+      "launchConfigurationId": "TargetFramework=;http"
+    }
+  ]
+}

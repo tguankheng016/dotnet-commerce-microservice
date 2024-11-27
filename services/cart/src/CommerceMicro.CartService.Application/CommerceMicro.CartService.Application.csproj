@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Caching\CommerceMicro.Modules.Caching.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Contracts\CommerceMicro.Modules.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Core\CommerceMicro.Modules.Core.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Logging\CommerceMicro.Modules.Logging.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.MassTransit\CommerceMicro.Modules.MassTransit.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Permissions\CommerceMicro.Modules.Permissions.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Resiliency\CommerceMicro.Modules.Resiliency.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Security\CommerceMicro.Modules.Security.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Web\CommerceMicro.Modules.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Riok.Mapperly" Version="4.1.0" />
+  </ItemGroup>
+  
+</Project>

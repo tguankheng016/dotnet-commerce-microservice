@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using CommerceMicro.ProductService.Application.Products.Models;
+using CommerceMicro.Modules.Contracts;
+using MassTransit;
 
 namespace CommerceMicro.ProductService.Application.Products.Features.CreatingProduct.V1;
 
@@ -77,7 +79,8 @@ public class CreateProductValidator : AbstractValidator<CreateProductCommand>
 
 // Handler
 internal class CreateProductHandler(
-	AppDbContext appDbContext
+	AppDbContext appDbContext,
+	IPublishEndpoint publishEndpoint
 ) : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
 	public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
@@ -90,7 +93,16 @@ internal class CreateProductHandler(
 
 		var productDto = mapper.ProductToProductDto(product);
 
-		// TODO: publish event to cart
+		await publishEndpoint.Publish(
+			new ProductCreatedEvent(
+				product.Id,
+				product.Name,
+				product.Description,
+				product.Price,
+				product.StockQuantity
+			),
+			cancellationToken
+		);
 
 		return new CreateProductResult(productDto);
 	}

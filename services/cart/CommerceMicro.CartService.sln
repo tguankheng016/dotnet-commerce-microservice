@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Contr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Resiliency", "..\shared\CommerceMicro.Modules.Resiliency\CommerceMicro.Modules.Resiliency.csproj", "{3A835663-36EF-4320-AD0C-DC1BAB9AB604}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Mongo", "..\shared\CommerceMicro.Modules.Mongo\CommerceMicro.Modules.Mongo.csproj", "{6980C073-5DBF-497B-BD06-341A98D10032}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.OpenTelemetry", "..\shared\CommerceMicro.Modules.OpenTelemetry\CommerceMicro.Modules.OpenTelemetry.csproj", "{24497B91-F338-4BB9-8020-93B388DCD744}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,14 @@ Global
 		{3A835663-36EF-4320-AD0C-DC1BAB9AB604}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A835663-36EF-4320-AD0C-DC1BAB9AB604}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A835663-36EF-4320-AD0C-DC1BAB9AB604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6980C073-5DBF-497B-BD06-341A98D10032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6980C073-5DBF-497B-BD06-341A98D10032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6980C073-5DBF-497B-BD06-341A98D10032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6980C073-5DBF-497B-BD06-341A98D10032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24497B91-F338-4BB9-8020-93B388DCD744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24497B91-F338-4BB9-8020-93B388DCD744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24497B91-F338-4BB9-8020-93B388DCD744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24497B91-F338-4BB9-8020-93B388DCD744}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +107,7 @@ Global
 		{39460909-9F6B-4601-945C-6998A14D513E} = {620E3983-8E93-42E7-A3AC-A683D63A46F2}
 		{0419FC5A-60A1-4794-A494-A5794678A881} = {620E3983-8E93-42E7-A3AC-A683D63A46F2}
 		{3A835663-36EF-4320-AD0C-DC1BAB9AB604} = {620E3983-8E93-42E7-A3AC-A683D63A46F2}
+		{6980C073-5DBF-497B-BD06-341A98D10032} = {620E3983-8E93-42E7-A3AC-A683D63A46F2}
+		{24497B91-F338-4BB9-8020-93B388DCD744} = {620E3983-8E93-42E7-A3AC-A683D63A46F2}
 	EndGlobalSection
 EndGlobal

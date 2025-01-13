@@ -50,7 +50,7 @@ public class UserPermissions_Tests : UserPermissionsTestBase
 	{
 		// Arrange
 		// Act
-		var response = await client.GetAsync($"{EndpointPrefix}/{EndpointVersion}/user/{user.Id}/permissions");
+		var response = await client.GetAsync($"{EndpointPrefix}/{EndpointVersion}/identities/user/{user.Id}/permissions");
 
 		// Assert
 		response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -64,7 +64,7 @@ public class UserPermissions_Tests : UserPermissionsTestBase
 	{
 		// Arrange
 		// Act
-		var response = await client.PutAsJsonAsync($"{EndpointPrefix}/{EndpointVersion}/user/{user.Id}/permissions", updatedPermissions);
+		var response = await client.PutAsJsonAsync($"{EndpointPrefix}/{EndpointVersion}/identities/user/{user.Id}/permissions", updatedPermissions);
 
 		// Assert
 		response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -86,7 +86,7 @@ public class UserPermissions_Tests : UserPermissionsTestBase
 	{
 		// Arrange
 		// Act
-		var response = await client.PutAsync($"{EndpointPrefix}/{EndpointVersion}/user/{user.Id}/reset-permissions", null);
+		var response = await client.PutAsync($"{EndpointPrefix}/{EndpointVersion}/identities/user/{user.Id}/reset-permissions", null);
 
 		// Assert
 		var userPemissions = await DbContext.UserRolePermissions

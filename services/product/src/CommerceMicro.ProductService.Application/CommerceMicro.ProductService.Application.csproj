@@ -21,6 +21,15 @@
 
   <ItemGroup>
     <PackageReference Include="Riok.Mapperly" Version="4.1.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.67.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Products\GrpcServer\Protos\products.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

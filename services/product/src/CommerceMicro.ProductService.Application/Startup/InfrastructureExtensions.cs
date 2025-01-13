@@ -21,6 +21,7 @@ using CommerceMicro.Modules.MassTransit;
 using CommerceMicro.Modules.Core;
 using CommerceMicro.Modules.Core.Configurations;
 using CommerceMicro.Modules.OpenTelemetry;
+using CommerceMicro.ProductService.Application.Products.GrpcServers.Services;
 
 namespace CommerceMicro.ProductService.Application.Startup;
 
@@ -127,6 +128,8 @@ public static class InfrastructureExtensions
 		app.UsePermissionMiddleware();
 
 		app.UseAuthorization();
+
+		app.MapGrpcService<ProductGrpcServices>();
 
 		// Must come before custom swagger for versions to be visible in ui
 		app.MapMinimalEndpoints();

@@ -76,8 +76,6 @@ public class TestWebApplicationFactory : WebApplicationFactory<IApplicationRoot>
 				};
 
 				services.AddSingleton(newRedisOptions);
-
-				services.AddCustomEasyCaching();
 			}
 
 			services.AddMassTransitTestHarness(configure =>

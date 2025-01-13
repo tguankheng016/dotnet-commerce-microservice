@@ -4,6 +4,7 @@ using CommerceMicro.Modules.Core.Exceptions;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 
 namespace CommerceMicro.Modules.MassTransit;
 
@@ -14,22 +15,66 @@ public static class MassTransitExtensions
 	{
 		services.AddValidateOptions<RabbitMqOptions>();
 
-		services.AddMassTransit(configure => { SetupMasstransitConfigurations<TContext>(services, configure, assembly); });
+		services.AddMassTransit(configure =>
+		{
+			SetupMasstransitConfigurations(services, configure, assembly);
+			SetupEntityFrameworkOutboxConfigurations<TContext>(configure);
+		});
 
 		return services;
 	}
 
-	private static void SetupMasstransitConfigurations<TContext>(IServiceCollection services, IBusRegistrationConfigurator configure, Assembly assembly)
+	public static IServiceCollection AddCustomMongoMassTransit(this IServiceCollection services, Assembly assembly)
+	{
+		services.AddValidateOptions<RabbitMqOptions>();
+
+		services.AddMassTransit(configure =>
+		{
+			SetupMasstransitConfigurations(services, configure, assembly);
+			//SetupMongoOutboxConfiguration(configure);
+		});
+
+		return services;
+	}
+
+	private static void SetupEntityFrameworkOutboxConfigurations<TContext>(IBusRegistrationConfigurator configure)
 		where TContext : DbContext
 	{
-		configure.SetKebabCaseEndpointNameFormatter();
-		configure.AddConsumers(assembly);
-
 		configure.AddEntityFrameworkOutbox<TContext>(o =>
 		{
+			o.QueryDelay = TimeSpan.FromSeconds(1);
+			o.DuplicateDetectionWindow = TimeSpan.FromSeconds(30);
 			o.UsePostgres();
 			o.UseBusOutbox();
 		});
+
+		configure.AddConfigureEndpointsCallback((context, name, cfg) =>
+		{
+			cfg.UseEntityFrameworkOutbox<TContext>(context);
+		});
+	}
+
+	private static void SetupMongoOutboxConfiguration(IBusRegistrationConfigurator configure)
+	{
+		configure.AddMongoDbOutbox(o =>
+		{
+			o.QueryDelay = TimeSpan.FromSeconds(1);
+			o.DuplicateDetectionWindow = TimeSpan.FromSeconds(30);
+			o.ClientFactory(provider => provider.GetRequiredService<IMongoClient>());
+			o.DatabaseFactory(provider => provider.GetRequiredService<IMongoDatabase>());
+			o.UseBusOutbox();
+		});
+
+		configure.AddConfigureEndpointsCallback((context, name, cfg) =>
+		{
+			cfg.UseMongoDbOutbox(context);
+		});
+	}
+
+	private static void SetupMasstransitConfigurations(IServiceCollection services, IBusRegistrationConfigurator configure, Assembly assembly)
+	{
+		configure.SetKebabCaseEndpointNameFormatter();
+		configure.AddConsumers(assembly);
 
 		configure.UsingRabbitMq((context, configurator) =>
 		{

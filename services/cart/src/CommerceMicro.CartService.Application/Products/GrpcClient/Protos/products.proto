@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "CommerceMicro.ProductService";
+
+service ProductGrpcService {
+  rpc GetAllProducts (GetAllProductsRequest) returns (GetAllProductsResponse) {}
+}
+
+message GetAllProductsRequest {
+}
+
+message GetAllProductsResponse {
+  repeated ProductModel products = 1;
+}
+
+message ProductModel {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stockQuantity = 5;
+}

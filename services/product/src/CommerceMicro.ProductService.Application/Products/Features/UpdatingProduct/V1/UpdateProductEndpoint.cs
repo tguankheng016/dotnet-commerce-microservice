@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using CommerceMicro.ProductService.Application.Products.Models;
+using MassTransit;
+using CommerceMicro.Modules.Contracts;
 
 namespace CommerceMicro.ProductService.Application.Products.Features.UpdatingProduct.V1;
 
@@ -80,7 +82,8 @@ public class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
 
 // Handler
 internal class UpdateProductHandler(
-	AppDbContext appDbContext
+	AppDbContext appDbContext,
+	IPublishEndpoint publishEndpoint
 ) : ICommandHandler<UpdateProductCommand, UpdateProductResult>
 {
 	public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
@@ -100,6 +103,17 @@ internal class UpdateProductHandler(
 		var productResult = appDbContext.Products.Update(product);
 
 		var productDto = mapper.ProductToProductDto(product);
+
+		await publishEndpoint.Publish(
+			new ProductUpdatedEvent(
+				product.Id,
+				product.Name,
+				product.Description,
+				product.Price,
+				product.StockQuantity
+			),
+			cancellationToken
+		);
 
 		return new UpdateProductResult(productDto);
 	}

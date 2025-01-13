@@ -1,5 +1,6 @@
 using CommerceMicro.CartService.Application.Carts.Models;
 using CommerceMicro.CartService.Application.Data;
+using CommerceMicro.Modules.Contracts;
 using CommerceMicro.Modules.Core.CQRS;
 using CommerceMicro.Modules.Core.Exceptions;
 using CommerceMicro.Modules.Core.Sessions;
@@ -110,6 +111,14 @@ internal class AddCartHandler(
 						.Set(x => x.Quantity, cart.Quantity + 1)
 				);
 		}
+
+		await publishEndpoint.Publish(
+			new ChangeProductQuantityEvent(
+				product.Id,
+				-1
+			),
+			cancellationToken
+		);
 
 		return new AddCartResult();
 	}

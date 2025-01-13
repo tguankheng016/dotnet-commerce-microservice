@@ -1,8 +1,10 @@
 using CommerceMicro.CartService.Application.Carts.Models;
 using CommerceMicro.CartService.Application.Data;
+using CommerceMicro.Modules.Contracts;
 using CommerceMicro.Modules.Core.CQRS;
 using CommerceMicro.Modules.Core.Exceptions;
 using CommerceMicro.Modules.Core.Sessions;
+using CommerceMicro.Modules.Mongo;
 using CommerceMicro.Modules.Web;
 using FluentValidation;
 using MassTransit;
@@ -76,9 +78,24 @@ internal class DeleteCartHandler(
 			throw new UnAuthorizedException("User not found");
 		}
 
+		var cart = await appDbContext.Carts.FirstOrDefaultAsync(x => x.Id == command.Id.ToString() && x.UserId == userId.Value, cancellationToken);
+
+		if (cart is null)
+		{
+			throw new NotFoundException("Cart not found");
+		}
+
 		var filter = Builders<Cart>.Filter.Where(x => x.Id == command.Id.ToString() && x.UserId == userId.Value);
 
 		await appDbContext.Carts.DeleteOneAsync(filter, cancellationToken);
+
+		await publishEndpoint.Publish(
+			new ChangeProductQuantityEvent(
+				cart.Product.Id,
+				cart.Quantity
+			),
+			cancellationToken
+		);
 
 		return new DeleteCartResult();
 	}

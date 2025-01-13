@@ -1,5 +1,6 @@
 using CommerceMicro.CartService.Application.Carts.Models;
 using CommerceMicro.CartService.Application.Data;
+using CommerceMicro.Modules.Contracts;
 using CommerceMicro.Modules.Core.CQRS;
 using CommerceMicro.Modules.Core.Exceptions;
 using CommerceMicro.Modules.Core.Sessions;
@@ -125,15 +126,21 @@ internal class UpdateCartHandler(
 			}
 
 			await appDbContext.Carts.UpdateOneAsync(
-					x => x.UserId == userId.Value && x.Id == cartId,
-					Builders<Cart>.Update
-						.Set(x => x.Quantity, command.Quantity)
-				);
+				x => x.UserId == userId.Value && x.Id == cartId,
+				Builders<Cart>.Update
+					.Set(x => x.Quantity, command.Quantity)
+			);
 		}
 
 		if (quantityChanged != 0)
 		{
-			// TODO: Publish 
+			await publishEndpoint.Publish(
+				new ChangeProductQuantityEvent(
+					product.Id,
+					quantityChanged
+				),
+				cancellationToken
+			);
 		}
 
 		return new UpdateCartResult();

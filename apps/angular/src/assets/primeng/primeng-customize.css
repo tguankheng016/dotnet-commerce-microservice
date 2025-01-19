@@ -177,7 +177,8 @@ p-autoComplete {
 
 .p-inputtext.ng-dirty.ng-invalid,
 p-calendar.ng-dirty.ng-invalid .p-calendar-w-btn,
-p-inputnumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext{
+p-inputnumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext,
+p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
     border-color: #b00020;
 }
 

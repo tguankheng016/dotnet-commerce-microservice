@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { BreadcrumbItem } from "@app/layout/default-page.component";
 import { appModuleAnimation } from "@shared/animations/router-transition";
 import { AppComponentBase } from "@shared/app-component-base";
@@ -14,7 +14,8 @@ import { PTableSkeletonTemplateComponent } from "@app/shared/ptable-skeleton-tem
 
 @Component({
     templateUrl: './users.component.html',
-    animations: [appModuleAnimation()]
+    animations: [appModuleAnimation()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersComponent extends AppComponentBase implements OnInit {
     @ViewChild('createOrEditUserModal', { static: true }) createOrEditUserModal: CreateOrEditUserModalComponent;
@@ -39,6 +40,7 @@ export class UsersComponent extends AppComponentBase implements OnInit {
 
     constructor(
         injector: Injector,
+        private _cdRef: ChangeDetectorRef,
         private _usersService: UserServiceProxy
     ) {
         super(injector);
@@ -85,7 +87,10 @@ export class UsersComponent extends AppComponentBase implements OnInit {
             }
         }
 
-        this.primengTableHelper.showLoadingIndicator();
+        const loadingTimer = setTimeout(() => {
+            this.primengTableHelper.showLoadingIndicator();
+            this._cdRef.markForCheck();
+        }, 200);
 
         this._usersService
             .getUsers(
@@ -94,7 +99,11 @@ export class UsersComponent extends AppComponentBase implements OnInit {
                 this.filterText,
                 this.primengTableHelper.getSorting(this.dataTable)
             )
-            .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
+            .pipe(finalize(() => {
+                clearTimeout(loadingTimer);
+                this.primengTableHelper.hideLoadingIndicator();
+                this._cdRef.markForCheck();
+            }))
             .subscribe((res) => {
                 this.primengTableHelper.totalRecordsCount = res.totalCount;
                 this.primengTableHelper.records = res.items;
@@ -140,5 +149,10 @@ export class UsersComponent extends AppComponentBase implements OnInit {
                 AppConsts.uiAvatarsBaseUrl,
                 user.firstName + ' ' + user.lastName);
         }
+    }
+
+    resetFilters(): void {
+        this.filterText = '';
+        this.getUsers();
     }
 }

@@ -88,7 +88,7 @@ internal class GetCategoriesHandler(
 		var filteredCategories = appDbContext.Categories.AsNoTracking()
 			.WhereIf(!string.IsNullOrWhiteSpace(request.Filters),
 				e =>
-					e.CategoryName!.Contains(request.Filters!)
+					e.CategoryName!.ToUpper().Contains(request.Filters!.ToUpper())
 			);
 
 		IQueryable<Category>? pagedAndFilteredCategories = null;

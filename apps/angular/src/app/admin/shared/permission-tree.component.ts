@@ -1,8 +1,9 @@
-import { Component, ElementRef, Injector, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Injector, Input, ViewChild } from "@angular/core";
 import { AppComponentBase } from "@shared/app-component-base";
 import { IdentityServiceProxy, PermissionGroupDto } from "@shared/service-proxies/identity-service-proxies";
 import { plainToInstance } from "class-transformer";
 import { TreeNode } from "primeng/api";
+import { finalize } from "rxjs";
 
 export class ExtendedPermissionGroupDto extends PermissionGroupDto {
     isActive: boolean;
@@ -12,13 +13,14 @@ export class ExtendedPermissionGroupDto extends PermissionGroupDto {
 @Component({
     selector: 'permission-tree',
     templateUrl: './permission-tree.component.html',
-    styleUrl: './permission-tree.component.css'
+    styleUrl: './permission-tree.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PermissionTreeComponent extends AppComponentBase {
     @ViewChild('isGrantAllCheckbox', { static: false }) isGrantAllCheckboxElem!: ElementRef;
     @ViewChild('selectAllCheckbox', { static: false }) selectAllCheckboxElem!: ElementRef;
+    @Input() grantedPermissions: string[] = [];
 
-    grantedPermissions: string[] = [];
     allPermissions: ExtendedPermissionGroupDto[] = [];
     activePermissionGroup: ExtendedPermissionGroupDto;
     permissionNodes: TreeNode[];
@@ -33,13 +35,13 @@ export class PermissionTreeComponent extends AppComponentBase {
 
     constructor(
         injector: Injector,
+        private _cdRef: ChangeDetectorRef,
         private _identityService: IdentityServiceProxy
     ) {
         super(injector);
     }
 
-    set editData(grantedPermissions: string[]) {
-        this.grantedPermissions = grantedPermissions;
+    ngAfterViewInit(): void {
         this.setTreeData();
     }
 
@@ -48,6 +50,9 @@ export class PermissionTreeComponent extends AppComponentBase {
         this.selectAllCheckbox = this.selectAllCheckboxElem.nativeElement as HTMLInputElement;
 
         this._identityService.getAllPermissions()
+            .pipe(finalize(() => {
+                this._cdRef.markForCheck();
+            }))
             .subscribe((res) => {
                 this.allPermissions = plainToInstance(ExtendedPermissionGroupDto, res.items);
 
@@ -79,6 +84,10 @@ export class PermissionTreeComponent extends AppComponentBase {
 
     getGrantedPermissions(): string[] {
         return this.grantedPermissions;
+    }
+
+    trackByPermission(index: number, item: ExtendedPermissionGroupDto) {
+        return item.groupName;
     }
 
     setActive(group: ExtendedPermissionGroupDto): void {

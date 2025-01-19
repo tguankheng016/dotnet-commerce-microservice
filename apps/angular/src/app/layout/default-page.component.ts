@@ -1,4 +1,4 @@
-import { Component, Injector, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Injector, Input } from "@angular/core";
 import { NavigationExtras, Router } from "@angular/router";
 import { appModuleAnimation } from "@shared/animations/router-transition";
 import { AppComponentBase } from "@shared/app-component-base";
@@ -22,7 +22,8 @@ export class BreadcrumbItem {
 @Component({
     selector: 'default-page',
     templateUrl: './default-page.component.html',
-    animations: [appModuleAnimation()]
+    animations: [appModuleAnimation()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefaultPageComponent extends AppComponentBase {
     @Input() title: string;

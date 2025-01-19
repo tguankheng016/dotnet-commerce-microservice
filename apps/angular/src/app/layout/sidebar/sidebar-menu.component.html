@@ -1,13 +1,13 @@
-<ng-container *ngFor="let item of menuItems">
+<ng-container *ngFor="let item of menuItems; trackBy: trackByMenuItem">
     <div
         *ngIf="isMenuItemVisible(item)"
         class="menu-item menu-accordion"
         [class.here]="item.isActive"
         [class.show]="!item.isCollapsed"
     >
-        <a 
+        <a
             *ngIf="item.route"
-            class="menu-link" 
+            class="menu-link"
             [class.active]="item.isActive"
             [routerLink]="item.route"
         >
@@ -16,9 +16,9 @@
             </span>
             <span class="menu-title">{{ item.label }}</span>
         </a>
-        <span 
+        <span
             *ngIf="!item.route && item.children"
-            class="menu-link" 
+            class="menu-link"
             [class.active]="item.isActive"
             (click)="item.isCollapsed = !item.isCollapsed"
         >
@@ -28,14 +28,19 @@
             <span class="menu-title">{{ item.label }}</span>
             <span class="menu-arrow"></span>
         </span>
-        <div 
+        <div
             *ngIf="item.children"
             class="menu-sub menu-sub-accordion"
             [class.show]="!item.isCollapsed"
         >
-            <ng-container *ngFor="let childItem of item.children">
+            <ng-container
+                *ngFor="
+                    let childItem of item.children;
+                    trackBy: trackByMenuItem
+                "
+            >
                 <div *ngIf="isMenuItemVisible(childItem)" class="menu-item">
-                    <a 
+                    <a
                         class="menu-link"
                         [class.active]="childItem.isActive"
                         [routerLink]="childItem.route"

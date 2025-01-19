@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Injector, Output, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Output, ViewChild, ViewEncapsulation } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { AppComponentBase } from "@shared/app-component-base";
 import { CategoryDto, CategoryServiceProxy, CreateOrEditProductDto, CreateProductDto, EditProductDto, ProductServiceProxy } from "@shared/service-proxies/product-service-proxies";
-import { plainToInstance } from "class-transformer";
 import { ModalDirective } from "ngx-bootstrap/modal";
 import { concatMap, finalize, forkJoin } from "rxjs";
 import { forEach as _forEach } from 'lodash-es';
@@ -10,7 +9,7 @@ import { forEach as _forEach } from 'lodash-es';
 @Component({
     selector: 'createOrEditProductModal',
     templateUrl: './create-or-edit-product-modal.component.html',
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateOrEditProductModalComponent extends AppComponentBase {
     @ViewChild('productForm', { static: false }) productForm: NgForm;
@@ -27,6 +26,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     constructor(
         injector: Injector,
+        private _cdRef: ChangeDetectorRef,
         private _productService: ProductServiceProxy,
         private _categoryService: CategoryServiceProxy
     ) {
@@ -45,6 +45,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
                 this.categories = results[0].items;
 
                 return product$;
+            }),
+            finalize(() => {
+                this._cdRef.markForCheck();
             })
         ).subscribe((res) => {
             this.product = res.product;
@@ -62,12 +65,13 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
         if (this.validateFormGroup(this.productForm.form)) {
             if (this.isEdit) {
-                let input = plainToInstance(EditProductDto, this.product);
+                let input = EditProductDto.fromJS(this.product);
 
                 this._productService.updateProduct(input)
                     .pipe(
                         finalize(() => {
                             this.saving = false;
+                            this._cdRef.markForCheck();
                         })
                     )
                     .subscribe(() => {
@@ -76,12 +80,13 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
                         this.modalSave.emit(null);
                     });
             } else {
-                let input = plainToInstance(CreateProductDto, this.product);
+                let input = CreateProductDto.fromJS(this.product);
 
                 this._productService.createProduct(input)
                     .pipe(
                         finalize(() => {
                             this.saving = false;
+                            this._cdRef.markForCheck();
                         })
                     )
                     .subscribe(() => {

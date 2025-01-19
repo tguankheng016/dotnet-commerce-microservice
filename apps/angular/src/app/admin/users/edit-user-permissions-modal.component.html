@@ -29,7 +29,10 @@
                     ></button>
                 </div>
                 <div class="modal-body">
-                    <permission-tree #permissionTree></permission-tree>
+                    <permission-tree
+                        #permissionTree
+                        [grantedPermissions]="grantedUserPermissions"
+                    ></permission-tree>
                     <div
                         class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6 mt-5"
                     >

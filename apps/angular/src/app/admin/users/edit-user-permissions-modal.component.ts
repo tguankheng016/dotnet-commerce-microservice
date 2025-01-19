@@ -1,4 +1,4 @@
-import { Component, Injector, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, ViewChild } from "@angular/core";
 import { AppComponentBase } from "@shared/app-component-base";
 import { UserDto, UserServiceProxy } from "@shared/service-proxies/identity-service-proxies";
 import { ModalDirective } from "ngx-bootstrap/modal";
@@ -8,6 +8,7 @@ import { finalize } from "rxjs";
 @Component({
     selector: 'editUserPermissionsModal',
     templateUrl: './edit-user-permissions-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditUserPermissionsModalComponent extends AppComponentBase {
     @ViewChild('editModal', { static: true }) modal: ModalDirective;
@@ -22,6 +23,7 @@ export class EditUserPermissionsModalComponent extends AppComponentBase {
 
     constructor(
         injector: Injector,
+        private _cdRef: ChangeDetectorRef,
         private _userService: UserServiceProxy
     ) {
         super(injector);
@@ -32,9 +34,13 @@ export class EditUserPermissionsModalComponent extends AppComponentBase {
         this.user = user;
 
         this._userService.getUserPermissions(user.id)
+            .pipe(
+                finalize(() => {
+                    this._cdRef.markForCheck();
+                })
+            )
             .subscribe((res) => {
                 this.grantedUserPermissions = res.items;
-                this.permissionTree.editData = this.grantedUserPermissions;
             });
 
         this.modal.show();
@@ -48,6 +54,7 @@ export class EditUserPermissionsModalComponent extends AppComponentBase {
             .pipe(
                 finalize(() => {
                     this.saving = false;
+                    this._cdRef.markForCheck();
                 })
             )
             .subscribe((res => {
@@ -64,6 +71,7 @@ export class EditUserPermissionsModalComponent extends AppComponentBase {
             .pipe(
                 finalize(() => {
                     this.resetting = false;
+                    this._cdRef.markForCheck();
                 })
             )
             .subscribe((res => {

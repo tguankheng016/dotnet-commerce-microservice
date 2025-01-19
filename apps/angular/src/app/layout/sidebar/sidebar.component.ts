@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Injector, OnInit, Renderer2 } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Injector, OnInit, Renderer2 } from "@angular/core";
 import { NavigationEnd, NavigationStart, Router, RouterEvent } from "@angular/router";
 import { AppComponentBase } from "@shared/app-component-base";
 import { LayoutStoreService } from "@shared/layout/layout-store.service";
@@ -6,7 +6,8 @@ import { Subscription } from "rxjs";
 
 @Component({
     selector: 'app-sidebar',
-    templateUrl: './sidebar.component.html'
+    templateUrl: './sidebar.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarComponent extends AppComponentBase {
     mobileView = false;

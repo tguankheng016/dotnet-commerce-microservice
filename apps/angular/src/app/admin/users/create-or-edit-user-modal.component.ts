@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Output, ViewChild, ViewEncapsulation } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Output, ViewChild, ViewEncapsulation } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { AppComponentBase } from "@shared/app-component-base";
 import { CreateOrEditUserDto, CreateUserDto, EditUserDto, RoleDto, RoleServiceProxy, UserServiceProxy } from "@shared/service-proxies/identity-service-proxies";
@@ -10,7 +10,7 @@ import { forEach as _forEach } from 'lodash-es';
 @Component({
     selector: 'createOrEditUserModal',
     templateUrl: './create-or-edit-user-modal.component.html',
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateOrEditUserModalComponent extends AppComponentBase {
     @ViewChild('userForm', { static: false }) userForm: NgForm;
@@ -26,6 +26,7 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
 
     constructor(
         injector: Injector,
+        private _cdRef: ChangeDetectorRef,
         private _userService: UserServiceProxy,
         private _roleService: RoleServiceProxy
     ) {
@@ -43,19 +44,21 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
             concatMap((res) => {
                 this.roles = res.items;
                 return users$;
+            }),
+            finalize(() => {
+                this._cdRef.markForCheck();
             })
-        )
-            .subscribe((res) => {
-                this.user = res.user;
+        ).subscribe((res) => {
+            this.user = res.user;
 
-                this.roles.forEach(r => {
-                    if (!userId) {
-                        r.isAssigned = r.isDefault;
-                    } else {
-                        r.isAssigned = this.user.roles.indexOf(r.name) !== -1;
-                    }
-                });
+            this.roles.forEach(r => {
+                if (!userId) {
+                    r.isAssigned = r.isDefault;
+                } else {
+                    r.isAssigned = this.user.roles.indexOf(r.name) !== -1;
+                }
             });
+        });
 
         this.modal.show();
     }
@@ -71,12 +74,13 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
             this.user.roles = this.roles.filter(x => x.isAssigned).map(x => x.name);
 
             if (this.isEdit) {
-                let input = plainToInstance(EditUserDto, this.user);
+                let input = EditUserDto.fromJS(this.user);
 
                 this._userService.updateUser(input)
                     .pipe(
                         finalize(() => {
                             this.saving = false;
+                            this._cdRef.markForCheck();
                         })
                     )
                     .subscribe(() => {
@@ -85,12 +89,13 @@ export class CreateOrEditUserModalComponent extends AppComponentBase {
                         this.modalSave.emit(null);
                     });
             } else {
-                let input = plainToInstance(CreateUserDto, this.user);
+                let input = CreateUserDto.fromJS(this.user);
 
                 this._userService.createUser(input)
                     .pipe(
                         finalize(() => {
                             this.saving = false;
+                            this._cdRef.markForCheck();
                         })
                     )
                     .subscribe(() => {

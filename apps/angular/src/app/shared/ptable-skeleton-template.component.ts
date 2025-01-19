@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from "@angular/core";
 
 @Component({
     selector: 'p-datatable-skeleton-template',
@@ -11,6 +11,7 @@ import { Component, TemplateRef, ViewChild } from "@angular/core";
             </tr>
         </ng-template>
     `,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PTableSkeletonTemplateComponent {
     @ViewChild('dataTableSkeletonTemplate', { static: true }) template!: TemplateRef<any>;

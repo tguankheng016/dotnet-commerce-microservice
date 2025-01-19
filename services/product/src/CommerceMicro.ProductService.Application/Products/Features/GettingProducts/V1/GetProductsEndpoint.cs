@@ -96,8 +96,8 @@ internal class GetProductsHandler(
 			.Include(x => x.CategoryFK)
 			.WhereIf(!string.IsNullOrWhiteSpace(request.Filters),
 				e =>
-					e.Name!.Contains(request.Filters!) ||
-					e.Description!.Contains(request.Filters!)
+					e.Name!.ToUpper().Contains(request.Filters!.ToUpper()) ||
+					e.Description!.ToUpper().Contains(request.Filters!.ToUpper())
 			)
 			.WhereIf(request.CategoryIdFilter.HasValue, e => e.CategoryId == request.CategoryIdFilter);
 

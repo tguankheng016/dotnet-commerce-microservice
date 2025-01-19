@@ -11,7 +11,12 @@
 >
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form *ngIf="active" #roleForm="ngForm" novalidate (ngSubmit)="save()">
+            <form
+                *ngIf="active"
+                #roleForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+            >
                 <div class="modal-header">
                     <h4 class="modal-title">
                         <span *ngIf="isEdit">Edit Role: {{ role.name }}</span>
@@ -23,13 +28,17 @@
                         (click)="close()"
                         aria-label="Close"
                         [disabled]="saving"
-                    ></button>   
+                    ></button>
                 </div>
                 <div class="modal-body">
                     <tabset>
                         <tab class="p-3 pt-6" heading="General">
                             <div class="mb-5">
-                                <label class="form-label required" for="FirstName">Role name</label>
+                                <label
+                                    class="form-label required"
+                                    for="FirstName"
+                                    >Role name</label
+                                >
                                 <input
                                     pInputText
                                     id="RoleName"
@@ -40,9 +49,13 @@
                                     maxlength="256"
                                     required
                                 />
-                                <validation-messages [formCtrl]="roleNameInput"></validation-messages>
+                                <validation-messages
+                                    [formCtrl]="roleNameInput"
+                                ></validation-messages>
                             </div>
-                            <label class="form-check form-check-custom form-check-solid py-2">
+                            <label
+                                class="form-check form-check-custom form-check-solid py-2"
+                            >
                                 <input
                                     id="Role_IsDefault"
                                     type="checkbox"
@@ -56,22 +69,40 @@
                             </label>
                         </tab>
                         <tab class="p-3 pt-6" heading="Permissions">
-                            <permission-tree #permissionTree></permission-tree>
+                            <permission-tree
+                                #permissionTree
+                                [grantedPermissions]="
+                                    role?.grantedPermissions ?? []
+                                "
+                            ></permission-tree>
                         </tab>
                     </tabset>
-                    <div *ngIf="isEdit" class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6">
-                        <i class="ki-duotone ki-design-1 fs-2tx text-primary me-4"></i>
+                    <div
+                        *ngIf="isEdit"
+                        class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6"
+                    >
+                        <i
+                            class="ki-duotone ki-design-1 fs-2tx text-primary me-4"
+                        ></i>
                         <div class="d-flex flex-stack flex-grow-1">
                             <div class="fw-semibold">
                                 <div class="fs-6 text-gray-700">
-                                    If you are changing your own permissions, you may need to refresh page (F5) to take effect of permission changes on your own screen.
+                                    If you are changing your own permissions,
+                                    you may need to refresh page (F5) to take
+                                    effect of permission changes on your own
+                                    screen.
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
                         Cancel
                     </button>
                     <button

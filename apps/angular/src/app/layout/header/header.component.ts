@@ -1,11 +1,12 @@
-import { Component, HostListener, Injector, OnInit, Renderer2 } from "@angular/core";
+import { ChangeDetectionStrategy, Component, HostListener, Injector, OnInit, Renderer2 } from "@angular/core";
 import { AppComponentBase } from "@shared/app-component-base";
 import { LayoutStoreService } from "@shared/layout/layout-store.service";
 import { Subscription } from "rxjs";
 
 @Component({
     selector: 'app-header',
-    templateUrl: './header.component.html'
+    templateUrl: './header.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent extends AppComponentBase implements OnInit {
     sidebarExpanded = true;

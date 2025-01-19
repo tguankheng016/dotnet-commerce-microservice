@@ -18,15 +18,11 @@ export class PrimengTableHelper {
     isLoading = false;
 
     showLoadingIndicator(): void {
-        setTimeout(() => {
-            this.isLoading = true;
-        }, 0);
+        this.isLoading = true;
     }
 
     hideLoadingIndicator(): void {
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 0);
+        this.isLoading = false;
     }
 
     getSorting(table: Table): string {
@@ -84,7 +80,7 @@ export class PrimengTableHelper {
     getSkeletonCols(colNumber: number): number[] {
         let cols = [];
 
-        for(let i = 0; i < colNumber; i++) {
+        for (let i = 0; i < colNumber; i++) {
             cols.push(i);
         }
 

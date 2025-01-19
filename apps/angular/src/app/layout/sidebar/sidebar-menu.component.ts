@@ -1,15 +1,14 @@
-import { Component, Injector, OnInit, ViewEncapsulation } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit, ViewEncapsulation } from "@angular/core";
 import { NavigationEnd, PRIMARY_OUTLET, Router } from "@angular/router";
 import { AppComponentBase } from "@shared/app-component-base";
 import { AppMenuItem } from "@shared/layout/app-menu-item";
 import { AppNavigationService } from "@shared/layout/app-navigation.service";
-import { filter } from "rxjs";
 
 @Component({
     selector: 'sidebar-menu',
     templateUrl: './sidebar-menu.component.html',
     styleUrls: ['./sidebar-menu.component.css'],
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarMenuComponent extends AppComponentBase implements OnInit {
     menuItems: AppMenuItem[];
@@ -20,6 +19,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
         injector: Injector,
         private router: Router,
         private _appNavigationService: AppNavigationService,
+        private _cdRef: ChangeDetectorRef
     ) {
         super(injector);
     }
@@ -34,6 +34,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 .children[PRIMARY_OUTLET];
             if (primaryUrlSegmentGroup) {
                 this.activateMenuItems('/' + primaryUrlSegmentGroup.toString());
+                this._cdRef.markForCheck();
             }
         });
     }
@@ -100,5 +101,9 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
 
     isMenuItemVisible(item: AppMenuItem): boolean {
         return this._appNavigationService.isMenuItemVisible(item);
+    }
+
+    trackByMenuItem(index: number, item: AppMenuItem) {
+        return item.id;
     }
 }

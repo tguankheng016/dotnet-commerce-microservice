@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { accountModuleAnimation } from '@shared/animations/router-transition';
 import { AppAuthService } from '@shared/auth/app-auth.service';
@@ -8,15 +8,17 @@ import { AppConsts } from '@shared/app-consts';
 
 @Component({
     templateUrl: './login.component.html',
-    animations: [accountModuleAnimation()]
+    animations: [accountModuleAnimation()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent extends AppComponentBase implements OnInit {
     @ViewChild('loginForm', { static: false }) loginForm: NgForm;
 
     submitting = false;
-    
+
     constructor(
         injector: Injector,
+        private _cdRef: ChangeDetectorRef,
         public authService: AppAuthService,
         private _cookieService: CookieService
     ) {
@@ -33,6 +35,7 @@ export class LoginComponent extends AppComponentBase implements OnInit {
             this.authService.authenticate(
                 () => {
                     this.submitting = false;
+                    this._cdRef.markForCheck();
                 },
                 null,
             );

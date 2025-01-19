@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from "@angular/core";
 import { AppComponentBase } from "@shared/app-component-base";
 import { AppConsts } from "@shared/app-consts";
 import { AppAuthService } from "@shared/auth/app-auth.service";
@@ -6,7 +6,8 @@ import { LocalStorageService } from "@shared/utils/local-storage.service";
 
 @Component({
     selector: 'header-user-menu',
-    templateUrl: './header-user-menu.component.html'
+    templateUrl: './header-user-menu.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderUserMenuComponent extends AppComponentBase implements OnInit {
     profilePicture = '';

@@ -11,86 +11,36 @@
     </div>
     <div role="app-content">
         <form class="form">
-            <div class="row align-items-center mb-2">
-                <div class="col-xl-12">
-                    <div class="mb-2 m-form__group align-items-center">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button
-                                    (click)="getProducts()"
-                                    class="btn btn-primary"
-                                    type="submit"
-                                >
-                                    <i
-                                        class="fas fa-search"
-                                        aria-label="Search"
-                                    ></i>
-                                </button>
-                            </div>
-                            <input
-                                pInputText
-                                [(ngModel)]="filterText"
-                                name="filterText"
-                                placeholder="Search ..."
-                                type="text"
-                                (keyup.enter)="getProducts()"
-                                (blur)="getProducts()"
-                            />
+            <advanced-searchbox
+                [filterText]="filterText"
+                (onSearch)="filterText = $event; getProducts()"
+            />
+            <advanced-filter (onResetFilters)="resetFilters()">
+                <div class="row" role="advanced-filter-content">
+                    <div class="row">
+                        <div class="col-md-6 mb-5">
+                            <label class="form-label" for="CategoryIdFilter">
+                                Category
+                            </label>
+                            <p-dropdown
+                                id="CategoryIdFilter"
+                                #CategoryIdFilterInput="ngModel"
+                                name="CategoryIdFilter"
+                                [autoDisplayFirst]="false"
+                                [options]="categories"
+                                [(ngModel)]="categoryIdFilter"
+                                optionLabel="categoryName"
+                                optionValue="id"
+                                [showClear]="true"
+                                [filter]="true"
+                                filterBy="categoryName"
+                                (onChange)="getProducts()"
+                            >
+                            </p-dropdown>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div *ngIf="advancedFiltersAreShown" class="row">
-                <div class="row">
-                    <div class="col-md-6 mb-5">
-                        <label
-                            class="form-label required"
-                            for="CategoryIdFilter"
-                        >
-                            Category
-                        </label>
-                        <p-dropdown
-                            id="CategoryIdFilter"
-                            #CategoryIdFilterInput="ngModel"
-                            name="CategoryIdFilter"
-                            [autoDisplayFirst]="false"
-                            [options]="categories"
-                            [(ngModel)]="categoryIdFilter"
-                            optionLabel="categoryName"
-                            optionValue="id"
-                            [showClear]="true"
-                            [filter]="true"
-                            filterBy="categoryName"
-                            (onChange)="getProducts()"
-                        >
-                        </p-dropdown>
-                    </div>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <span
-                        class="cursor-pointer text-muted"
-                        *ngIf="!advancedFiltersAreShown"
-                        (click)="
-                            advancedFiltersAreShown = !advancedFiltersAreShown
-                        "
-                    >
-                        <i class="fa fa-angle-down"></i>
-                        Show advanced filters
-                    </span>
-                    <span
-                        class="cursor-pointer text-muted"
-                        *ngIf="advancedFiltersAreShown"
-                        (click)="
-                            advancedFiltersAreShown = !advancedFiltersAreShown
-                        "
-                    >
-                        <i class="fa fa-angle-up"></i>
-                        Hide advanced filters
-                    </span>
-                </div>
-            </div>
+            </advanced-filter>
         </form>
         <div class="row align-items-center mx-0">
             <div class="primeng-datatable-container">

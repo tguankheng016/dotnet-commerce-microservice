@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { BreadcrumbItem } from "@app/layout/default-page.component";
 import { appModuleAnimation } from "@shared/animations/router-transition";
 import { AppComponentBase } from "@shared/app-component-base";
@@ -12,7 +12,8 @@ import { PTableSkeletonTemplateComponent } from "@app/shared/ptable-skeleton-tem
 
 @Component({
     templateUrl: './categories.component.html',
-    animations: [appModuleAnimation()]
+    animations: [appModuleAnimation()],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoriesComponent extends AppComponentBase implements OnInit {
     @ViewChild('createOrEditCategoryModal', { static: true }) createOrEditCategoryModal: CreateOrEditCategoryModalComponent;
@@ -35,6 +36,7 @@ export class CategoriesComponent extends AppComponentBase implements OnInit {
 
     constructor(
         injector: Injector,
+        private _cdRef: ChangeDetectorRef,
         private _categoryService: CategoryServiceProxy
     ) {
         super(injector);
@@ -74,7 +76,10 @@ export class CategoriesComponent extends AppComponentBase implements OnInit {
             }
         }
 
-        this.primengTableHelper.showLoadingIndicator();
+        const loadingTimer = setTimeout(() => {
+            this.primengTableHelper.showLoadingIndicator();
+            this._cdRef.markForCheck();
+        }, 200);
 
         this._categoryService
             .getCategories(
@@ -83,7 +88,11 @@ export class CategoriesComponent extends AppComponentBase implements OnInit {
                 this.filterText,
                 this.primengTableHelper.getSorting(this.dataTable)
             )
-            .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
+            .pipe(finalize(() => {
+                clearTimeout(loadingTimer);
+                this.primengTableHelper.hideLoadingIndicator();
+                this._cdRef.markForCheck();
+            }))
             .subscribe((res) => {
                 this.primengTableHelper.totalRecordsCount = res.totalCount;
                 this.primengTableHelper.records = res.items;
@@ -115,5 +124,10 @@ export class CategoriesComponent extends AppComponentBase implements OnInit {
                 });
             }
         });
+    }
+
+    resetFilters(): void {
+        this.filterText = '';
+        this.getCategories();
     }
 }

@@ -19,15 +19,15 @@ interface Props {
 
 const HeaderNavbar = ({ isMobile, navbarRef }: Props) => {
     const location = useLocation();
-    const { isExpanded, setExpanded } = useLayoutStore();
+    const { isExpanded } = useLayoutStore();
 
     const menuItemClassName = 'menu-item menu-lg-down-accordion me-lg-1';
     const activeMenuItemClassName = menuItemClassName + ' here';
 
     const menuItems: AppMenuItem[] = [
         new AppMenuItem('/app/home', 'About'),
-        new AppMenuItem('/app/flights', 'Shops'),
-        new AppMenuItem('/app/my-booking', 'My Bookings'),
+        new AppMenuItem('/app/shop', 'Shops'),
+        new AppMenuItem('/app/cart', 'My Carts'),
     ];
 
     const checkIsActive = (item: AppMenuItem) => {

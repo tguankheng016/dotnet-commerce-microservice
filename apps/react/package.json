@@ -8,8 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "gulp-build": "gulp buildDev -f gulpfile.cjs",
     "nswag-identity": "cd nswag/identity && ../../node_modules/.bin/nswag run",
-    "nswag-product": "cd nswag/product && ../../node_modules/.bin/nswag run"
+    "nswag-product": "cd nswag/product && ../../node_modules/.bin/nswag run",
+    "nswag-cart": "cd nswag/cart && ../../node_modules/.bin/nswag run"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -28,6 +30,7 @@
     "react-router-dom": "^6.26.2",
     "react-spinners": "^0.14.1",
     "sweetalert2": "^11.14.0",
+    "usehooks-ts": "^3.1.0",
     "zod": "^3.23.8",
     "zustand": "^4.5.5"
   },
@@ -42,10 +45,19 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
+    "globby": "^11.0.4",
+    "gulp": "^4.0.1",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-less": "^5.0.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-uglify": "^3.0.2",
+    "merge-stream": "^2.0.0",
     "nswag": "^14.1.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1",
+    "vite-plugin-static-copy": "^2.2.0",
     "vite-tsconfig-paths": "^5.0.1"
   }
 }

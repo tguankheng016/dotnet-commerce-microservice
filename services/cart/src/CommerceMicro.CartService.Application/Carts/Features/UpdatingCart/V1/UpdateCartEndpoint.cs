@@ -121,14 +121,15 @@ internal class UpdateCartHandler(
 
 				if (-1 * quantityChanged > product.StockQuantity)
 				{
-					throw new BadRequestException("The selected quantity exceeds the remaining stock");
+					//throw new BadRequestException("The selected quantity exceeds the remaining stock");
+					quantityChanged = -1 * product.StockQuantity;
 				}
 			}
 
 			await appDbContext.Carts.UpdateOneAsync(
 				x => x.UserId == userId.Value && x.Id == cartId,
 				Builders<Cart>.Update
-					.Set(x => x.Quantity, command.Quantity)
+					.Set(x => x.Quantity, cart.Quantity - quantityChanged)
 			);
 		}
 

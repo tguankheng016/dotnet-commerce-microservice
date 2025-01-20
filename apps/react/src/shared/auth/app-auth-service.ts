@@ -1,6 +1,6 @@
 import { AppConsts } from "@shared/app-consts";
 import { CookieService } from "@shared/cookies/cookie-service";
-import APIClient from "@shared/service-proxies/api-client";
+import { APIClient } from "@shared/service-proxies";
 import { AuthenticateRequest, AuthenticateResult, OAuthAuthenticateRequest, RefreshTokenRequest } from "@shared/service-proxies/identity-service-proxies";
 
 export class AppAuthService {

@@ -11,7 +11,7 @@ const pageVariants = {
 
 const Layout = () => {
     const location = useLocation();
-    
+
     useEffect(() => {
         const bodyClassNames = 'app-layout header-fixed header-tablet-and-mobile-fixed toolbar-enabled';
         const classNamesToAdd = bodyClassNames.split(' ');

@@ -1,19 +1,21 @@
 import { useLayoutStore, useThemeStore } from "@shared/theme";
+import { useEffect } from "react";
 
 const HeaderToggle = () => {
     const { isDarkMode } = useThemeStore();
     const { isExpanded, setExpanded } = useLayoutStore();
 
-    const handleToggle = () => {
-        console.log('toggled');
-        if (isExpanded) {
+    useEffect(() => {
+        if (!isExpanded) {
             document.body.removeAttribute("data-kt-drawer-header-menu");
             document.body.removeAttribute("data-kt-drawer");
         } else {
             document.body.setAttribute("data-kt-drawer-header-menu", "on");
             document.body.setAttribute("data-kt-drawer", "on");
         }
+    }, [isExpanded]);
 
+    const handleToggle = () => {
         setExpanded();
     };
 

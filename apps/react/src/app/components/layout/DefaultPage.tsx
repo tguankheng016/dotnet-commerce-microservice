@@ -36,11 +36,11 @@ const DefaultPage = ({ title, breadcrumbs, children }: Props) => {
                                     <i className="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
                                 </Link>
                             </li>
-                            { 
-                                breadcrumbs && breadcrumbs.length > 0 && 
+                            {
+                                breadcrumbs && breadcrumbs.length > 0 &&
                                 <li className="breadcrumb-item">
                                     <i className="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                                </li> 
+                                </li>
                             }
                             {
                                 breadcrumbs.map((item, index) => (

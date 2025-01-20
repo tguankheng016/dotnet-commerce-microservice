@@ -2,7 +2,9 @@ import { AccountLayout } from "@account/components/layout"
 import { CallbackLoginPage } from "@account/pages/callback-login";
 import { LoginPage } from "@account/pages/login";
 import { AppLayout } from "@app/components/layout";
+import { CartPage } from "@app/pages/cart";
 import { HomePage } from "@app/pages/home";
+import { ShopPage } from "@app/pages/shop";
 import { AccountRoute, AppProtectedRoute, Error404Page } from "@shared/components/routing";
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 
@@ -25,7 +27,8 @@ const appRoutes: RouteObject[] = [
         children: [
             { index: true, element: <Navigate to="home" /> },
             { path: 'home', element: <HomePage /> },
-            //{ path: 'flights', element: <AppProtectedRoute><FlightPage /></AppProtectedRoute> },
+            { path: 'shop', element: <ShopPage /> },
+            { path: 'cart', element: <AppProtectedRoute><CartPage /></AppProtectedRoute> },
         ]
     }
 ];

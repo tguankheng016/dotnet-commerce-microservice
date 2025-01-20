@@ -18,7 +18,7 @@ const AppSessionProvider = ({ children }: Props) => {
         return () => {
             abortController.abort();
         };
-    }, [fetchCurrentUser]);
+    }, []);
 
     if (loading) {
         return <LoadingScreen />;

@@ -1,4 +1,4 @@
-import DefaultPage, { BreadcrumbItem } from "@app/components/layout/DefaultPage"
+import { BreadcrumbItem, DefaultPage } from "@app/components/layout"
 
 const HomePage = () => {
     const breadcrumbs: BreadcrumbItem[] = [
@@ -14,7 +14,7 @@ const HomePage = () => {
                         framework and Module Zero. If you need an enterprise startup
                         project, check
                         <a href="http://aspnetzero.com?ref=abptmpl" target="_blank">
-                            ASP.NET ZERO 
+                            ASP.NET ZERO
                         </a>.
                     </p>
                     <h3>What is ASP.NET Boilerplate?</h3>

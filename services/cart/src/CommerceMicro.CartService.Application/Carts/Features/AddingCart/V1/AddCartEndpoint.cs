@@ -89,6 +89,11 @@ internal class AddCartHandler(
 			throw new NotFoundException("Invalid product id");
 		}
 
+		if (product.StockQuantity == 0)
+		{
+			return new AddCartResult();
+		}
+
 		var cart = await appDbContext.Carts.FirstOrDefaultAsync(x => x.UserId == userId.Value && x.Product.Id == command.ProductId, cancellationToken);
 
 		if (cart is null)

@@ -8,13 +8,19 @@ import { AppThemeProvider } from '@shared/theme'
 import '@assets/css/style.bundle.css'
 import '@assets/plugins/global/plugins.bundle.css'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import "primereact/resources/themes/mdc-dark-indigo/theme.css"
+import '@assets/primeng/primeng-customize.css'
+import '@assets/primeng/primeng-customize-dark.css'
 import './index.css'
+import { AppCartProvider } from '@shared/carts'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <AppThemeProvider>
             <AppSessionProvider>
-                <RouterProvider router={router} />
+                <AppCartProvider>
+                    <RouterProvider router={router} />
+                </AppCartProvider>
             </AppSessionProvider>
         </AppThemeProvider>
     </StrictMode>

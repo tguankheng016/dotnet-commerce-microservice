@@ -22,7 +22,7 @@ const HeaderNavbarMobileContainer = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [isExpanded, setExpanded, isMobileView]);
+    }, [isExpanded, isMobileView]);
 
     useEffect(() => {
         if (isExpanded) {

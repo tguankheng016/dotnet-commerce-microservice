@@ -4,8 +4,10 @@ import { AppConsts } from "@shared/app-consts";
 import { CookieService } from "@shared/cookies/cookie-service";
 import { SwalMessageService } from '@shared/sweetalert2';
 import { AppAuthService } from "@shared/auth/app-auth-service";
+import { ProductServiceProxy } from "./product-service-proxies";
+import { CartServiceProxy } from "./cart-service-proxies";
 
-interface ApiException {
+export interface ApiException {
     status: number;
     detail: string;
 }
@@ -97,6 +99,16 @@ const handleErrorResponse = (error: AxiosError): Promise<never> => {
 class APIClient {
     static getIdentityService(): IdentityServiceProxy {
         const service = new IdentityServiceProxy(baseUrl, axiosInstance);
+        return service;
+    }
+
+    static getProductService(): ProductServiceProxy {
+        const service = new ProductServiceProxy(baseUrl, axiosInstance);
+        return service;
+    }
+
+    static getCartService(): CartServiceProxy {
+        const service = new CartServiceProxy(baseUrl, axiosInstance);
         return service;
     }
 }

@@ -1,6 +1,7 @@
 import { useSessionStore } from "@shared/session";
 import { Link } from "react-router-dom";
 import HeaderUserMenu from "./HeaderUserMenu";
+import HeaderCart from "./HeaderCart";
 
 const HeaderTopbar = () => {
     const { user } = useSessionStore();
@@ -18,7 +19,10 @@ const HeaderTopbar = () => {
                 }
                 {
                     user &&
-                    <HeaderUserMenu />
+                    <>
+                        <HeaderCart />
+                        <HeaderUserMenu />
+                    </>
                 }
             </div>
         </div>

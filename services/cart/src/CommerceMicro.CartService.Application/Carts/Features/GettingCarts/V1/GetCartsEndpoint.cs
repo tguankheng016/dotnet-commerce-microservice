@@ -16,7 +16,7 @@ using MediatR;
 
 namespace CommerceMicro.CartService.Application.Carts.Features.GettingCarts.V1;
 
-public class GettingCartsEndpoint : IMinimalEndpoint
+public class GetCartsEndpoint : IMinimalEndpoint
 {
 	public IEndpointRouteBuilder MapEndpoint(IEndpointRouteBuilder builder)
 	{

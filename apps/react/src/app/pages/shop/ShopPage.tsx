@@ -2,12 +2,13 @@ import { BreadcrumbItem, DefaultPage } from "@app/components/layout"
 import { APIClient } from "@shared/service-proxies";
 import { useEffect, useState } from "react";
 import { Skeleton } from "primereact/skeleton";
-import { ProductDto } from "@shared/service-proxies/product-service-proxies";
+import { CategoryDto, ProductDto } from "@shared/service-proxies/product-service-proxies";
 import { useCartStore } from "@shared/carts";
 import { AddCartDto } from "@shared/service-proxies/cart-service-proxies";
 import { SwalNotifyService } from "@shared/sweetalert2";
 import { useSessionStore } from "@shared/session";
 import { useNavigate } from "react-router-dom";
+import { Dropdown } from "primereact/dropdown";
 
 interface CatalogCardViewProps {
     loading: boolean;
@@ -156,6 +157,8 @@ const ShopPage = () => {
 
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState<ProductDto[]>([]);
+    const [categoryIdFilter, setCategoryIdFilter] = useState<(number | undefined)>(undefined);
+    const [categories, setCategories] = useState<CategoryDto[]>([]);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -168,7 +171,7 @@ const ShopPage = () => {
         }, 200);
 
         productService.getProducts(
-            undefined,
+            categoryIdFilter,
             0,
             0,
             undefined,
@@ -184,12 +187,43 @@ const ShopPage = () => {
         return () => {
             abortController.abort();
         };
+    }, [categoryIdFilter]);
+
+    useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+
+        const categoryService = APIClient.getCategoryService();
+
+        categoryService.getCategories(undefined, undefined, undefined, undefined, signal)
+            .then((res) => {
+                setCategories(res.items ?? []);
+            });
+
+        return () => {
+            abortController.abort();
+        };
     }, []);
 
     return (
         <DefaultPage title="Shop" breadcrumbs={breadcrumbs}>
             <div className="card">
                 <div className="card-body p-lg-17">
+                    <div className="col-md-3 mb-5">
+                        <label className="form-label" htmlFor="CategoryIdFilter">
+                            Category
+                        </label>
+                        <Dropdown
+                            id="CategoryIdFilter"
+                            name="CategoryIdFilter"
+                            value={categoryIdFilter}
+                            onChange={(e) => setCategoryIdFilter(e.value)}
+                            options={categories}
+                            optionLabel="categoryName"
+                            optionValue="id"
+                            showClear={true}
+                        />
+                    </div>
                     <CatalogCardView loading={loading} products={products} />
                 </div>
             </div>

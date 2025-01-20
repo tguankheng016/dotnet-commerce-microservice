@@ -4,7 +4,7 @@ import { AppConsts } from "@shared/app-consts";
 import { CookieService } from "@shared/cookies/cookie-service";
 import { SwalMessageService } from '@shared/sweetalert2';
 import { AppAuthService } from "@shared/auth/app-auth-service";
-import { ProductServiceProxy } from "./product-service-proxies";
+import { CategoryServiceProxy, ProductServiceProxy } from "./product-service-proxies";
 import { CartServiceProxy } from "./cart-service-proxies";
 
 export interface ApiException {
@@ -109,6 +109,11 @@ class APIClient {
 
     static getCartService(): CartServiceProxy {
         const service = new CartServiceProxy(baseUrl, axiosInstance);
+        return service;
+    }
+
+    static getCategoryService(): CategoryServiceProxy {
+        const service = new CategoryServiceProxy(baseUrl, axiosInstance);
         return service;
     }
 }

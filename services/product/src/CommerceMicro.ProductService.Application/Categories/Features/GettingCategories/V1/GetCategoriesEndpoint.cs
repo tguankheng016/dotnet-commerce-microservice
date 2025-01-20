@@ -20,7 +20,6 @@ public class GetCategoriesEndpoint : IMinimalEndpoint
 	public IEndpointRouteBuilder MapEndpoint(IEndpointRouteBuilder builder)
 	{
 		builder.MapGet($"{EndpointConfig.BaseApiPath}/products/categories", Handle)
-			.RequireAuthorization()
 			.WithName("GetCategories")
 			.WithApiVersionSet(builder.GetApiVersionSet())
 			.Produces<GetCategoriesResult>()

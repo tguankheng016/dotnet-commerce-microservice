@@ -6,7 +6,7 @@ using Riok.Mapperly.Abstractions;
 
 namespace CommerceMicro.IdentityService.Application.Roles;
 
-[Mapper]
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
 public partial class RoleMapper
 {
 	public partial RoleDto RoleToRoleDto(Role role);

@@ -6,7 +6,7 @@ using Riok.Mapperly.Abstractions;
 
 namespace CommerceMicro.ProductService.Application.Categories;
 
-[Mapper]
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
 public partial class CategoryMapper
 {
 	public partial CategoryDto CategoryToCategoryDto(Category category);

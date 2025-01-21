@@ -6,7 +6,7 @@ using Riok.Mapperly.Abstractions;
 
 namespace CommerceMicro.IdentityService.Application.Users;
 
-[Mapper]
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
 public partial class UserMapper
 {
 	public partial UserDto UserToUserDto(User user);

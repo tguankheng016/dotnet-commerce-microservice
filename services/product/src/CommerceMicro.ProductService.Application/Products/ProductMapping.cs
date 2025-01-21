@@ -6,7 +6,7 @@ using Riok.Mapperly.Abstractions;
 
 namespace CommerceMicro.ProductService.Application.Products;
 
-[Mapper]
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
 public partial class ProductMapper
 {
 	public partial ProductDto ProductToProductDto(Product product);

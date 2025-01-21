@@ -7,9 +7,9 @@ export class AppConsts {
     static uiAvatarsBaseUrl: string;
 
     static readonly cookieName = {
-        accessToken: "flightbooking.access.token",
-        refreshToken: "flightbooking.refresh.token",
-        statekey: "flightbooking.portal.openiddict.statekey"
+        accessToken: "dotnet.commercemicro.portal.access.token",
+        refreshToken: "dotnet.commercemicro.portal.refresh.token",
+        statekey: "dotnet.commercemicro.portal.openiddict.statekey"
     }
 
     static readonly cookiePath = "/";

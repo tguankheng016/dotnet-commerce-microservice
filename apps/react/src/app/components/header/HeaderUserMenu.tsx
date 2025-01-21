@@ -4,6 +4,7 @@ import { useThemeStore, Theme } from '@shared/theme';
 import { StringHelper } from "@shared/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Overlay } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 const HeaderUserMenu = () => {
     const { isDarkMode, setTheme } = useThemeStore();
@@ -89,7 +90,7 @@ const HeaderUserMenu = () => {
                         </div>
                         <div className="separator my-2"></div>
                         <div className="menu-item px-5">
-                            <a href="/" className="menu-link px-5">My Profile</a>
+                            <Link to={import.meta.env.VITE_OPENIDDICT_URL} className="menu-link px-5" target="_blank">My Profile</Link>
                         </div>
                         <div className="menu-item px-5">
                             <a onClick={handleSignout} className="menu-link px-5">Sign Out</a>

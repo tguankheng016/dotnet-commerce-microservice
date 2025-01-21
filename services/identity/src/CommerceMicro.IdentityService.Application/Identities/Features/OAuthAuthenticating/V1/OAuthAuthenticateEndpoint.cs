@@ -99,7 +99,7 @@ internal class OAuthAuthenticateHandler(
 		var user = await userManager.Users
 			.FirstOrDefaultAsync(x => x.ExternalUserId == externalUserId, cancellationToken);
 
-		if (user == null && userInfo.Preferred_Username != UserConsts.DefaultUsername.Admin)
+		if (user == null)
 		{
 			// Create New User
 			var newUser = new User
@@ -111,7 +111,7 @@ internal class OAuthAuthenticateHandler(
 				EmailConfirmed = userInfo.Email_Verified,
 			};
 
-			var result = await userManager.CreateAsync(newUser, GenerateRandomPassword());
+			var result = await userManager.CreateAsync(newUser, Guid.NewGuid().ToString());
 
 			if (result.Succeeded)
 			{
@@ -133,15 +133,6 @@ internal class OAuthAuthenticateHandler(
 		}
 		else
 		{
-			// Auto Link For Admin Case Only
-			if (user == null && userInfo.Preferred_Username == UserConsts.DefaultUsername.Admin)
-			{
-				user = await userManager.Users
-					.FirstAsync(x => x.UserName == UserConsts.DefaultUsername.Admin, cancellationToken);
-
-				user.ExternalUserId = externalUserId;
-			}
-
 			// Existing User
 			// Try Update
 			try
@@ -185,11 +176,5 @@ internal class OAuthAuthenticateHandler(
 			refreshToken.Token,
 			(int)TokenConsts.RefreshTokenExpiration.TotalSeconds
 		);
-	}
-
-	private string GenerateRandomPassword()
-	{
-		var pwd = new Password(16);
-		return pwd.Next();
 	}
 }

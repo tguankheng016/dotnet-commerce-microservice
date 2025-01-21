@@ -14,6 +14,7 @@ export class HeaderUserMenuComponent extends AppComponentBase implements OnInit 
     userName = '';
     emailAddress = '';
     isDarkMode = false;
+    ssoUrl = AppConsts.openIddictUrl;
 
     constructor(
         injector: Injector,

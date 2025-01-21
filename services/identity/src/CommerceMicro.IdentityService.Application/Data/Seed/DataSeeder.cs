@@ -55,7 +55,8 @@ public class DataSeeder : IDataSeeder
 				LastName = "Tan",
 				UserName = UserConsts.DefaultUsername.Admin,
 				Email = "admin@testgk.com",
-				SecurityStamp = Guid.NewGuid().ToString()
+				SecurityStamp = Guid.NewGuid().ToString(),
+				ExternalUserId = new Guid("c5fb6ddb-3551-487b-a38a-686d27376c30")
 			};
 
 			var result = await _userManager.CreateAsync(adminUser, "123qwe");

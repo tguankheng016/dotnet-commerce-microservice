@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Resil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.OpenTelemetry", "..\shared\CommerceMicro.Modules.OpenTelemetry\CommerceMicro.Modules.OpenTelemetry.csproj", "{5DC75343-227D-4518-98DF-C04D4EFDB753}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommerceMicro.Modules.Azure", "..\shared\CommerceMicro.Modules.Azure\CommerceMicro.Modules.Azure.csproj", "{542FF071-CF80-4C1B-8AA0-C01BD0BEB6CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{5DC75343-227D-4518-98DF-C04D4EFDB753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DC75343-227D-4518-98DF-C04D4EFDB753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DC75343-227D-4518-98DF-C04D4EFDB753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{542FF071-CF80-4C1B-8AA0-C01BD0BEB6CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{542FF071-CF80-4C1B-8AA0-C01BD0BEB6CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{542FF071-CF80-4C1B-8AA0-C01BD0BEB6CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{542FF071-CF80-4C1B-8AA0-C01BD0BEB6CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,5 +129,6 @@ Global
 		{46F0506B-5061-42DA-8DB0-01B2AF7829D1} = {4DF02F46-B4EE-4529-8B82-CACC99DAD9E5}
 		{73B89682-F65D-4610-A9C2-F027CEAABDC9} = {4DF02F46-B4EE-4529-8B82-CACC99DAD9E5}
 		{5DC75343-227D-4518-98DF-C04D4EFDB753} = {4DF02F46-B4EE-4529-8B82-CACC99DAD9E5}
+		{542FF071-CF80-4C1B-8AA0-C01BD0BEB6CB} = {4DF02F46-B4EE-4529-8B82-CACC99DAD9E5}
 	EndGlobalSection
 EndGlobal

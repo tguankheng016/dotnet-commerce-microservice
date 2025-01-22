@@ -22,6 +22,7 @@ using CommerceMicro.Modules.Core.Exceptions;
 using Serilog;
 using CommerceMicro.Modules.Core.Persistences;
 using CommerceMicro.CartService.Application.Data.Seed;
+using CommerceMicro.Modules.Azure;
 
 namespace CommerceMicro.CartService.Application.Startup;
 
@@ -32,6 +33,8 @@ public static class InfrastructureExtensions
 		var configuration = builder.Configuration;
 		var env = builder.Environment;
 		assembly = typeof(InfrastructureExtensions).Assembly;
+
+		builder.LoadAzureKeyVault();
 
 		var appOptions = builder.Services.GetOptions<AppOptions>(nameof(AppOptions));
 		Console.WriteLine(appOptions.Name);

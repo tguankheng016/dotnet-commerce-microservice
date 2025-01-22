@@ -22,6 +22,7 @@ using CommerceMicro.Modules.Core;
 using CommerceMicro.Modules.Core.Configurations;
 using CommerceMicro.Modules.OpenTelemetry;
 using CommerceMicro.ProductService.Application.Products.GrpcServers.Services;
+using CommerceMicro.Modules.Azure;
 
 namespace CommerceMicro.ProductService.Application.Startup;
 
@@ -32,6 +33,8 @@ public static class InfrastructureExtensions
 		var configuration = builder.Configuration;
 		var env = builder.Environment;
 		assembly = typeof(InfrastructureExtensions).Assembly;
+
+		builder.LoadAzureKeyVault();
 
 		var appOptions = builder.Services.GetOptions<AppOptions>(nameof(AppOptions));
 		Console.WriteLine(appOptions.Name);

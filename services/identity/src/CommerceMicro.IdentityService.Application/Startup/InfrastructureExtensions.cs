@@ -26,6 +26,7 @@ using CommerceMicro.Modules.MassTransit;
 using CommerceMicro.IdentityService.Application.Identities.GrpcServer.Services;
 using CommerceMicro.Modules.Core.Configurations;
 using CommerceMicro.Modules.Core;
+using CommerceMicro.Modules.Azure;
 using CommerceMicro.Modules.OpenTelemetry;
 
 namespace CommerceMicro.IdentityService.Application.Startup;
@@ -37,6 +38,8 @@ public static class InfrastructureExtensions
 		var configuration = builder.Configuration;
 		var env = builder.Environment;
 		assembly = typeof(InfrastructureExtensions).Assembly;
+
+		builder.LoadAzureKeyVault();
 
 		var appOptions = builder.Services.GetOptions<AppOptions>(nameof(AppOptions));
 		Console.WriteLine(appOptions.Name);

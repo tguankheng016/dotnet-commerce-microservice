@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Azure\CommerceMicro.Modules.Azure.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Caching\CommerceMicro.Modules.Caching.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Contracts\CommerceMicro.Modules.Contracts.csproj" />
     <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Core\CommerceMicro.Modules.Core.csproj" />

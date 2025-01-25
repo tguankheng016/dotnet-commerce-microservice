@@ -1,0 +1,74 @@
+services:
+  postgres-cip:
+    container_name: postgres-cip
+    image: postgres:16
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - infrastructure-network
+
+  mongo-cip:
+    image: mongo:7.0
+    restart: always
+    container_name: mongo-cip
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - "27017:27017"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+    networks:
+      - infrastructure-network
+
+  redis-cip:
+    image: redis:7.4.0-bookworm
+    restart: always
+    container_name: redis-cip
+    ports:
+      - "6379:6379"
+    networks:
+      - infrastructure-network
+
+  rabbitmq-cip:
+    container_name: rabbitmq-cip
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - infrastructure-network
+
+  jaeger-cip:
+    container_name: jaeger-cip
+    image: jaegertracing/all-in-one:1.61.0
+    restart: always
+    ports:
+      - "5775:5775" # for UDP sampling
+      - "6831:6831/udp" # for UDP traces
+      - "6832:6832/udp" # for additional UDP traces
+      - "5778:5778" # for service discovery
+      - "16686:16686" # for Jaeger UI
+      - "14268:14268" # for HTTP collector
+      - "14250:14250" # for gRPC collector
+      - "4317:4317" # for HTTP collector For OpenTelemetry
+      - "4318:4318" # for gRPC collector For OpenTelemetry
+    networks:
+      - infrastructure-network
+
+networks:
+  infrastructure-network:
+    name: infrastructure-network
+    driver: bridge

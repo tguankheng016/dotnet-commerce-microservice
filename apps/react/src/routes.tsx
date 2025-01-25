@@ -1,34 +1,82 @@
-import { AccountLayout } from "@account/components/layout"
-import { CallbackLoginPage } from "@account/pages/callback-login";
-import { LoginPage } from "@account/pages/login";
-import { AppLayout } from "@app/components/layout";
-import { CartPage } from "@app/pages/cart";
-import { HomePage } from "@app/pages/home";
-import { ShopPage } from "@app/pages/shop";
+import { LoadingScreen } from "@shared/components/loading-screen";
 import { AccountRoute, AppProtectedRoute, Error404Page } from "@shared/components/routing";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
+
+// Lazy load the components
+const AccountLayout = lazy(() => import('@account/components/layout').then(module => ({ default: module.AccountLayout })));
+const LoginPage = lazy(() => import('@account/pages/login').then(module => ({ default: module.LoginPage })));
+const CallbackLoginPage = lazy(() => import('@account/pages/callback-login').then(module => ({ default: module.CallbackLoginPage })));
 
 const accountRoutes: RouteObject[] = [
     {
         path: '',
-        element: <AccountLayout />,
+        element: (
+            <Suspense fallback={<LoadingScreen />}>
+                <AccountLayout />
+            </Suspense>
+        ),
         children: [
             { index: true, element: <Navigate to="login" /> },
-            { path: 'login', element: <AccountRoute><LoginPage /></AccountRoute> },
-            { path: 'callback/login', element: <CallbackLoginPage /> }
+            {
+                path: 'login',
+                element: (
+                    <Suspense fallback={<LoadingScreen />}>
+                        <AccountRoute><LoginPage /></AccountRoute>
+                    </Suspense>
+                )
+            },
+            {
+                path: 'callback/login',
+                element: (
+                    <Suspense fallback={<LoadingScreen />}>
+                        <CallbackLoginPage />
+                    </Suspense>
+                )
+            },
         ]
     }
 ];
 
+const AppLayout = lazy(() => import('@app/components/layout').then(module => ({ default: module.AppLayout })));
+const CartPage = lazy(() => import('@app/pages/cart').then(module => ({ default: module.CartPage })));
+const HomePage = lazy(() => import('@app/pages/home').then(module => ({ default: module.HomePage })));
+const ShopPage = lazy(() => import('@app/pages/shop').then(module => ({ default: module.ShopPage })));
+
 const appRoutes: RouteObject[] = [
     {
         path: '',
-        element: <AppLayout />,
+        element: (
+            <Suspense fallback={<LoadingScreen />}>
+                <AppLayout />
+            </Suspense>
+        ),
         children: [
             { index: true, element: <Navigate to="home" /> },
-            { path: 'home', element: <HomePage /> },
-            { path: 'shop', element: <ShopPage /> },
-            { path: 'cart', element: <AppProtectedRoute><CartPage /></AppProtectedRoute> },
+            {
+                path: 'home',
+                element: (
+                    <Suspense fallback={<LoadingScreen />}>
+                        <HomePage />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'shop',
+                element: (
+                    <Suspense fallback={<LoadingScreen />}>
+                        <ShopPage />
+                    </Suspense>
+                )
+            },
+            {
+                path: 'cart',
+                element: (
+                    <Suspense fallback={<LoadingScreen />}>
+                        <AppProtectedRoute><CartPage /></AppProtectedRoute>
+                    </Suspense>
+                )
+            },
         ]
     }
 ];

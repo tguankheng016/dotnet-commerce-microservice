@@ -69,7 +69,7 @@ const CartTable = ({ filterText }: CartTableProps) => {
     const images: string[] = [];
 
     for (let i = 1; i <= 6; i++) {
-        images.push('/src/assets/images/fake_product_0' + i + '.png')
+        images.push('/assets/images/fake_product_0' + i + '.png')
     }
 
     const getImage = () => {

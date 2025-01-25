@@ -9,7 +9,8 @@
     "test": "ng test",
     "nswag-identity": "cd nswag/identity && ../../node_modules/.bin/nswag run",
     "nswag-product": "cd nswag/product && ../../node_modules/.bin/nswag run",
-    "gulp-build": "gulp buildDev"
+    "gulp-build": "gulp buildDev",
+    "publish": "gulp build && ng build --configuration production"
   },
   "private": true,
   "dependencies": {

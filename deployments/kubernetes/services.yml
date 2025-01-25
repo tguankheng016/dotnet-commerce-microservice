@@ -1,0 +1,181 @@
+# Identity
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-identity-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnet-identity-service
+  template:
+    metadata:
+      labels:
+        app: dotnet-identity-service
+    spec:
+      containers:
+        - name: dotnet-identity-service
+          image: ghcr.io/tguankheng016/dotnet-commerce-identity:latest
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: AzureOptions__KeyVaultName
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: dotnetIdentityKeyVault
+            - name: AzureOptions__TenantId
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: tenantId
+            - name: AzureOptions__ClientId
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: clientId
+            - name: AzureOptions__ClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: clientSecret
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet-identity-cip
+spec:
+  selector:
+    app: dotnet-identity-service
+  ports:
+    - name: dotnet-identity-http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: dotnet-identity-grpc
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP
+---
+# Products
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-product-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnet-product-service
+  template:
+    metadata:
+      labels:
+        app: dotnet-product-service
+    spec:
+      containers:
+        - name: dotnet-product-service
+          image: ghcr.io/tguankheng016/dotnet-commerce-product:latest
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: AzureOptions__KeyVaultName
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: dotnetProductKeyVault
+            - name: AzureOptions__TenantId
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: tenantId
+            - name: AzureOptions__ClientId
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: clientId
+            - name: AzureOptions__ClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: clientSecret
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet-product-cip
+spec:
+  selector:
+    app: dotnet-product-service
+  ports:
+    - name: dotnet-product-http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: dotnet-product-grpc
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP
+---
+# Carts
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-cart-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnet-cart-service
+  template:
+    metadata:
+      labels:
+        app: dotnet-cart-service
+    spec:
+      containers:
+        - name: dotnet-cart-service
+          image: ghcr.io/tguankheng016/dotnet-commerce-cart:latest
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: AzureOptions__KeyVaultName
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: dotnetCartKeyVault
+            - name: AzureOptions__TenantId
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: tenantId
+            - name: AzureOptions__ClientId
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: clientId
+            - name: AzureOptions__ClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: clientSecret
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet-cart-cip
+spec:
+  selector:
+    app: dotnet-cart-service
+  ports:
+    - name: dotnet-cart-http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

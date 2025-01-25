@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["services/shared/CommerceMicro.Modules.Core/CommerceMicro.Modules.Core.csproj", "shared/CommerceMicro.Modules.Core/"]
+COPY ["services/shared/CommerceMicro.Modules.Azure/CommerceMicro.Modules.Azure.csproj", "shared/CommerceMicro.Modules.Azure/"]
 COPY ["services/shared/CommerceMicro.Modules.Caching/CommerceMicro.Modules.Caching.csproj", "shared/CommerceMicro.Modules.Caching/"]
 COPY ["services/shared/CommerceMicro.Modules.Contracts/CommerceMicro.Modules.Contracts.csproj", "shared/CommerceMicro.Modules.Contracts/"]
 COPY ["services/shared/CommerceMicro.Modules.Logging/CommerceMicro.Modules.Logging.csproj", "shared/CommerceMicro.Modules.Logging/"]

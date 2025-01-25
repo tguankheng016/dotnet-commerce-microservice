@@ -11,7 +11,8 @@
     "gulp-build": "gulp buildDev -f gulpfile.cjs",
     "nswag-identity": "cd nswag/identity && ../../node_modules/.bin/nswag run",
     "nswag-product": "cd nswag/product && ../../node_modules/.bin/nswag run",
-    "nswag-cart": "cd nswag/cart && ../../node_modules/.bin/nswag run"
+    "nswag-cart": "cd nswag/cart && ../../node_modules/.bin/nswag run",
+    "publish": "gulp build -f gulpfile.cjs && tsc -b && vite build --mode production"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

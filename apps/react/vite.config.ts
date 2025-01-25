@@ -11,6 +11,10 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
+          src: 'src/assets/images/**',
+          dest: 'assets/images'
+        },
+        {
           src: 'src/assets/primeng/**.min.css',
           dest: 'assets/primeng'
         },

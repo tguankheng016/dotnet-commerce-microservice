@@ -15,4 +15,14 @@
     <ProjectReference Include="..\CommerceMicro.Modules.Core\CommerceMicro.Modules.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Grpc.Tools" Version="2.67.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="GrpcClient\Protos\identities.proto" GrpcServices="Client" />
+  </ItemGroup>
 </Project>

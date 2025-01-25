@@ -15,6 +15,7 @@ public static class PermissionExtensions
 		services.AddSingleton(appPermissions);
 
 		services.AddScoped<IPermissionManager, PermissionManager>();
+		services.AddScoped<IPermissionDbManager, DefaultPermissionDbManager>();
 
 		// Add authorization policies
 		services.AddAuthorization(options =>

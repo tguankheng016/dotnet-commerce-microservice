@@ -1,0 +1,53 @@
+body.app-layout {
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 100% 350px;
+}
+
+body.swal2-shown.swal2-height-auto {
+    height: 100% !important;
+}
+
+div#root, div.animated-box {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+[data-bs-theme=dark] body.app-layout {
+    background-color: var(--bs-app-blank-bg-color);
+}
+
+[data-bs-theme=light] body.app-layout {
+    background-color: #EBECEE;
+}
+
+[data-bs-theme=light] body.app-layout {
+    background-image: url(assets/media/header-bg.png);
+}
+
+[data-bs-theme=dark] body.app-layout {
+    background-image: url(assets/media/header-bg-dark.png);
+}
+
+[data-bs-theme=light] div.auth-page-bg {
+    background-image: url(assets/media/14.png);
+}
+
+[data-bs-theme=dark] div.auth-page-bg {
+    background-image: url(assets/media/14-dark.png);
+}
+
+.form-control-feedback {
+    color: #fd397a;
+    margin-top: 0.2rem;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+@media (max-width: 991.98px) {
+    .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: none;
+        padding: 0 20px;
+    }
+}

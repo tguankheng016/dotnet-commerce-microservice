@@ -2,7 +2,6 @@ using System.Reflection;
 using System.Threading.RateLimiting;
 using CommerceMicro.IdentityService.Application.Data;
 using CommerceMicro.IdentityService.Application.Data.Seed;
-using CommerceMicro.IdentityService.Application.Identities.Services;
 using CommerceMicro.IdentityService.Application.Roles.Models;
 using CommerceMicro.IdentityService.Application.Users.Models;
 using CommerceMicro.Modules.Logging;
@@ -23,6 +22,12 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using CommerceMicro.Modules.MassTransit;
+using CommerceMicro.IdentityService.Application.Identities.GrpcServer.Services;
+using CommerceMicro.Modules.Core.Configurations;
+using CommerceMicro.Modules.Core;
+using CommerceMicro.Modules.Azure;
+using CommerceMicro.Modules.OpenTelemetry;
 
 namespace CommerceMicro.IdentityService.Application.Startup;
 
@@ -34,13 +39,15 @@ public static class InfrastructureExtensions
 		var env = builder.Environment;
 		assembly = typeof(InfrastructureExtensions).Assembly;
 
+		builder.LoadAzureKeyVault();
+
+		var appOptions = builder.Services.GetOptions<AppOptions>(nameof(AppOptions));
+		Console.WriteLine(appOptions.Name);
+
 		builder.Services.AddDefaultDependencyInjection(assembly);
 
 		builder.Services.AddScoped<IAppSession, AppSession>();
 		builder.Services.AddScoped<IDataSeeder, DataSeeder>();
-		builder.Services.AddScoped<ITokenKeyDbValidator, TokenKeyDbValidator>();
-		builder.Services.AddScoped<ITokenSecurityStampDbValidator, TokenSecurityStampDbValidator>();
-		builder.Services.AddScoped<IPermissionDbManager, PermissionDbManager>();
 
 		builder.Services.AddRateLimiter(options =>
 		{
@@ -76,6 +83,8 @@ public static class InfrastructureExtensions
 
 		builder.Services.AddProblemDetails();
 
+		builder.Services.AddCustomMassTransit<AppDbContext>(assembly);
+
 		builder.Services.AddIdentity<User, Role>(config =>
 			{
 				config.User.RequireUniqueEmail = true;
@@ -86,10 +95,14 @@ public static class InfrastructureExtensions
 			}
 		).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
-		builder.Services.AddCustomJwtTokenHandler();
+		builder.Services.AddCustomIdentityJwtTokenHandler();
 		builder.Services.AddCustomJwtAuthentication();
+		builder.Services.AddCustomIdentityPermissionAuthorization();
 
-		builder.Services.AddPermissionAuthorization();
+		builder.Services.AddGrpc(options =>
+		{
+			options.Interceptors.Add<GrpcExceptionInterceptor>();
+		});
 
 		builder.Services.Configure<ForwardedHeadersOptions>(options =>
 		{
@@ -97,11 +110,21 @@ public static class InfrastructureExtensions
 				ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 		});
 
+		builder.Services.AddCustomHttpClients(configuration);
+
+		builder.Services.AddCustomCors();
+
+		builder.Services.AddCustomOpenTelemetry();
+
 		return builder;
 	}
 
 	public static WebApplication UseInfrastructure(this WebApplication app)
 	{
+		var appOptions = app.GetOptions<AppOptions>(nameof(AppOptions));
+
+		app.UseCustomCors();
+
 		app.UseForwardedHeaders();
 
 		app.UseCustomProblemDetails();
@@ -123,10 +146,17 @@ public static class InfrastructureExtensions
 
 		app.UseAuthorization();
 
+		app.MapGrpcService<IdentityGrpcServices>();
+
+		app.MapGrpcService<PermissionGrpcServices>();
+
 		// Must come before custom swagger for versions to be visible in ui
 		app.MapMinimalEndpoints();
 
 		app.UseCustomSwagger();
+
+		// Write app options name to http response
+		app.MapGet("/", x => x.Response.WriteAsync(appOptions.Name));
 
 		return app;
 	}

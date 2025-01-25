@@ -1,4 +1,3 @@
-using CommerceMicro.IdentityService.Api;
 using CommerceMicro.IdentityService.Application.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +10,7 @@ builder.Host.UseDefaultServiceProvider((context, options) =>
     options.ValidateOnBuild = true;
 });
 
-var assembly = typeof(IApplicationRoot).Assembly;
+var assembly = typeof(Program).Assembly;
 builder.AddInfrastructure(assembly);
 
 var app = builder.Build();

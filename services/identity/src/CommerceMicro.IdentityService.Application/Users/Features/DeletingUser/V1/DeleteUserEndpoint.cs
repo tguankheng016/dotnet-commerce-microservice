@@ -1,6 +1,7 @@
 using CommerceMicro.IdentityService.Application.Users.Constants;
 using CommerceMicro.IdentityService.Application.Users.Models;
 using CommerceMicro.Modules.Caching;
+using CommerceMicro.Modules.Contracts;
 using CommerceMicro.Modules.Core.CQRS;
 using CommerceMicro.Modules.Core.EFCore;
 using CommerceMicro.Modules.Core.Exceptions;
@@ -9,6 +10,7 @@ using CommerceMicro.Modules.Permissions;
 using CommerceMicro.Modules.Security.Caching;
 using CommerceMicro.Modules.Web;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -67,7 +69,8 @@ public class DeleteUserValidator : AbstractValidator<DeleteUserCommand>
 internal class DeleteUserHandler(
 	UserManager<User> userManager,
 	IAppSession appSession,
-	ICacheManager cacheManager
+	ICacheManager cacheManager,
+	IPublishEndpoint publishEndpoint
 ) : ICommandHandler<DeleteUserCommand, DeleteUserResult>
 {
 	public async Task<DeleteUserResult> Handle(DeleteUserCommand command, CancellationToken cancellationToken)
@@ -90,7 +93,9 @@ internal class DeleteUserHandler(
 		}
 
 		// TODO: Temporary Solution because of unique index username and soft delete issue
+		var deletedUsername = user.UserName!;
 		user.UserName += "_DELETED";
+
 		await userManager.UpdateAsync(user);
 
 		await userManager.DeleteAsync(user);
@@ -99,6 +104,14 @@ internal class DeleteUserHandler(
 
 		// Invalidate Deleted User Tokens
 		await _cacheProvider.RemoveAsync(SecurityStampCacheItem.GenerateCacheKey(user.Id.ToString()), cancellationToken);
+
+		await publishEndpoint.Publish(
+			new UserDeletedEvent(
+				user.Id,
+				deletedUsername
+			),
+			cancellationToken
+		);
 
 		return new DeleteUserResult();
 	}

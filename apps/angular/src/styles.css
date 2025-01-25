@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+body.app-blank app-root,
+body.app-default app-root {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+body.app-blank app-root > ng-component,
+body.app-default app-root > ng-component {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.input-group> .input-group-prepend> .btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.form-control-feedback {
+    color: #fd397a;
+    margin-top: 0.2rem;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.hidden-modal {
+    visibility: collapse;
+}

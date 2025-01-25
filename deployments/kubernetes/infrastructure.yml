@@ -1,0 +1,268 @@
+# Postgres
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-secret
+                  key: dbPassword
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-cip
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-lb
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: LoadBalancer
+---
+# Mongo
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:7.0
+          ports:
+            - containerPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-cip
+spec:
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-lb
+spec:
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: LoadBalancer
+---
+# Redis
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.4.0-bookworm
+          ports:
+            - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cip
+spec:
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  type: ClusterIP
+---
+# Rabbit MQ
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management
+          ports:
+            - containerPort: 15672
+              name: rbmq-mgmt-port
+            - containerPort: 5672
+              name: rbmq-msg-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-cip
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - name: rbmq-mgmt-port
+      protocol: TCP
+      port: 15672
+      targetPort: 15672
+    - name: rbmq-msg-port
+      protocol: TCP
+      port: 5672
+      targetPort: 5672
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-lb
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - name: rbmq-mgmt-port
+      protocol: TCP
+      port: 15672
+      targetPort: 15672
+    - name: rbmq-msg-port
+      protocol: TCP
+      port: 5672
+      targetPort: 5672
+  type: LoadBalancer
+---
+# Jaeger
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+        - name: jaeger
+          image: jaegertracing/all-in-one:1.61.0
+          ports:
+            - containerPort: 5775 # for UDP sampling
+            - containerPort: 6831 # for UDP traces
+              protocol: UDP
+            - containerPort: 6832 # for additional UDP traces
+              protocol: UDP
+            - containerPort: 5778 # for service discovery
+            - containerPort: 16686 # for Jaeger UI
+            - containerPort: 14268 # for HTTP collector
+            - containerPort: 14250 # for gRPC collector
+            - containerPort: 4317 # for HTTP collector For OpenTelemetry
+            - containerPort: 4318 # for gRPC collector For OpenTelemetry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-cip
+spec:
+  selector:
+    app: jaeger
+  ports:
+    - name: udp-sampling
+      protocol: UDP
+      port: 5775
+      targetPort: 5775
+    - name: udp-traces
+      protocol: UDP
+      port: 6831
+      targetPort: 6831
+    - name: udp-additional-traces
+      protocol: UDP
+      port: 6832
+      targetPort: 6832
+    - name: service-discovery
+      protocol: TCP
+      port: 5778
+      targetPort: 5778
+    - name: jaeger-ui
+      protocol: TCP
+      port: 16686
+      targetPort: 16686
+    - name: http-collector
+      protocol: TCP
+      port: 14268
+      targetPort: 14268
+    - name: grpc-collector
+      protocol: TCP
+      port: 14250
+      targetPort: 14250
+    - name: http-otel-collector
+      protocol: TCP
+      port: 4317
+      targetPort: 4317
+    - name: grpc-otel-collector
+      protocol: TCP
+      port: 4318
+      targetPort: 4318

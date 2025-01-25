@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CommerceMicro.CartService.Api",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/CommerceMicro.CartService.Api/CommerceMicro.CartService.Api.csproj",
+      "launchConfigurationId": "TargetFramework=;http"
+    }
+  ]
+}

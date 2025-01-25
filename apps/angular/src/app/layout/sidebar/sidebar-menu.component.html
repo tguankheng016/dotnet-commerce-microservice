@@ -1,0 +1,57 @@
+<ng-container *ngFor="let item of menuItems; trackBy: trackByMenuItem">
+    <div
+        *ngIf="isMenuItemVisible(item)"
+        class="menu-item menu-accordion"
+        [class.here]="item.isActive"
+        [class.show]="!item.isCollapsed"
+    >
+        <a
+            *ngIf="item.route"
+            class="menu-link"
+            [class.active]="item.isActive"
+            [routerLink]="item.route"
+        >
+            <span class="menu-icon">
+                <i class="{{ item.icon }}"></i>
+            </span>
+            <span class="menu-title">{{ item.label }}</span>
+        </a>
+        <span
+            *ngIf="!item.route && item.children"
+            class="menu-link"
+            [class.active]="item.isActive"
+            (click)="item.isCollapsed = !item.isCollapsed"
+        >
+            <span class="menu-icon">
+                <i class="{{ item.icon }}"></i>
+            </span>
+            <span class="menu-title">{{ item.label }}</span>
+            <span class="menu-arrow"></span>
+        </span>
+        <div
+            *ngIf="item.children"
+            class="menu-sub menu-sub-accordion"
+            [class.show]="!item.isCollapsed"
+        >
+            <ng-container
+                *ngFor="
+                    let childItem of item.children;
+                    trackBy: trackByMenuItem
+                "
+            >
+                <div *ngIf="isMenuItemVisible(childItem)" class="menu-item">
+                    <a
+                        class="menu-link"
+                        [class.active]="childItem.isActive"
+                        [routerLink]="childItem.route"
+                    >
+                        <span class="menu-icon">
+                            <i class="{{ childItem.icon }}"></i>
+                        </span>
+                        <span class="menu-title">{{ childItem.label }}</span>
+                    </a>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>

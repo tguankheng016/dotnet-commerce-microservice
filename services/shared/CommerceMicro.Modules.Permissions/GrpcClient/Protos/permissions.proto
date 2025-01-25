@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "CommerceMicro.PermissionService";
+
+service PermissionGrpcService {
+  rpc GetUserGrantedPermissions (GetUserPermissionsRequest) returns (GetUserPermissionsResponse);
+}
+
+message GetUserPermissionsRequest {
+  int64 UserId = 1;
+}
+
+message GetUserPermissionsResponse {
+  repeated string Permissions = 1;
+}

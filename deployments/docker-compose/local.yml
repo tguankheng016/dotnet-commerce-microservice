@@ -1,0 +1,150 @@
+name: dotnet-commerce
+
+services:
+  gateway:
+    image: dotnet-commerce-gateway-local
+    build:
+      context: ../../
+      dockerfile: gateways/web/CommerceMicro.Gateways.Web/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    depends_on:
+      - postgres-local
+      - mongodb-local
+      - redis-local
+      - rabbitmq-local
+      - jaeger-local
+    ports:
+      - "5081:8080"
+    networks:
+      - dotnet-commerce-network
+
+  identity-api:
+    image: dotnet-commerce-identity-api-local
+    build:
+      context: ../../
+      dockerfile: services/identity/src/CommerceMicro.IdentityService.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    depends_on:
+      - gateway
+    ports:
+      - "5196:8080"
+    networks:
+      - dotnet-commerce-network
+
+  product-api:
+    image: dotnet-commerce-product-api-local
+    build:
+      context: ../../
+      dockerfile: services/product/src/CommerceMicro.ProductService.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    depends_on:
+      - identity-api
+    ports:
+      - "5285:8080"
+    networks:
+      - dotnet-commerce-network
+
+  cart-api:
+    image: dotnet-commerce-cart-api-local
+    restart: on-failure:5
+    build:
+      context: ../../
+      dockerfile: services/cart/src/CommerceMicro.CartService.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    depends_on:
+      - product-api
+    ports:
+      - "5118:8080"
+    networks:
+      - dotnet-commerce-network
+
+  postgres-local:
+    container_name: postgres-local
+    image: postgres:16
+    ports:
+      - 5434:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: myStong_Password123#
+    networks:
+      - dotnet-commerce-network
+
+  mongodb-local:
+    image: mongo:7.0
+    container_name: mongodb-local
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - "27017:27017"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+    volumes:
+      - mongo1_data:/data/db
+      - mongo1_config:/data/configdb
+    networks:
+      - dotnet-commerce-network
+
+  redis-local:
+    image: redis:7.4.0-bookworm
+    container_name: redis-local
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - dotnet-commerce-network
+
+  rabbitmq-local:
+    container_name: rabbitmq-local
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq_log:/var/log/rabbitmq
+    networks:
+      - dotnet-commerce-network
+
+  jaeger-local:
+    container_name: jaeger-local
+    image: jaegertracing/all-in-one:1.61.0
+    ports:
+      - "5775:5775" # for UDP sampling
+      - "6831:6831/udp" # for UDP traces
+      - "6832:6832/udp" # for additional UDP traces
+      - "5778:5778" # for service discovery
+      - "16686:16686" # for Jaeger UI
+      - "14268:14268" # for HTTP collector
+      - "14250:14250" # for gRPC collector
+      - "4317:4317" # for HTTP collector For OpenTelemetry
+      - "4318:4318" # for gRPC collector For OpenTelemetry
+    networks:
+      - dotnet-commerce-network
+
+volumes:
+  postgres-data:
+  mongo1_data:
+  mongo1_config:
+  redis-data:
+  rabbitmq_data:
+  rabbitmq_log:
+
+networks:
+  dotnet-commerce-network:
+    name: dotnet-commerce-network
+    driver: bridge

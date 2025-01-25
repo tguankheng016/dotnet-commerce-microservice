@@ -1,3 +1,4 @@
+using Grpc.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -83,6 +84,12 @@ public static class ProblemDetailExtensions
 								exceptionType.Message,
 								exceptionType.GetType().Name,
 								context.Response.StatusCode = StatusCodes.Status409Conflict
+							),
+							RpcException =>
+							(
+								exceptionType.Message,
+								exceptionType.GetType().Name,
+								context.Response.StatusCode = StatusCodes.Status400BadRequest
 							),
 							_ =>
 							(

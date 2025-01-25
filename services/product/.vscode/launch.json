@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CommerceMicro.ProductService.Api",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/CommerceMicro.ProductService.Api/CommerceMicro.ProductService.Api.csproj",
+      "launchConfigurationId": "TargetFramework=;http"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "remoteServiceBaseUrl": "http://localhost:5081",
+  "appBaseUrl": "http://localhost:4200",
+  "openIddict": {
+    "baseUrl": "http://localhost:5062",
+    "clientId": "dotnet-commerce"
+  },
+  "uiAvatarsBaseUrl": "https://ui-avatars.com/api/?name={0}&size=256&background=3f51b5&color=fff"
+}

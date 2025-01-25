@@ -1,0 +1,44 @@
+
+<div [@routerTransition]>
+    <div id="kt_app_toolbar" class="app-toolbar pt-8">
+        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex align-items-stretch">
+            <div class="app-toolbar-wrapper d-flex flex-stack flex-wrap gap-4 w-100">
+                <div class="page-title d-flex flex-column gap-1 me-3 mb-2">
+                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold mb-6">
+                        <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                            <a href="/" class="text-gray-500">
+                                <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
+                            </a>
+                        </li>
+                        <li *ngIf="breadcrumbs && breadcrumbs.length > 0" class="breadcrumb-item">
+                            <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                        </li>
+                        <ng-container *ngFor="let item of breadcrumbs; let isLast = last">
+                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                                <a
+                                    *ngIf="item.isLink()"
+                                    style="cursor: pointer"
+                                    (click)="goToBreadcrumb(item)"
+                                    class="text-muted"
+                                >
+                                    {{ item.text }}
+                                </a>
+                                <span *ngIf="!item.isLink()">{{ item.text }}</span>
+                            </li>
+                            <li *ngIf="!isLast" class="breadcrumb-item">
+                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                            </li>
+                        </ng-container>
+                    </ul>
+                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-1 lh-0">{{ title }}</h1>
+                </div>
+                <ng-content select="div[role=action-button]"></ng-content>
+            </div>
+        </div>
+    </div>
+    <div id="kt_app_content" class="app-content d-flex flex-column flex-root flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid d-flex flex-column flex-root">
+            <ng-content select="div[role=app-content]"></ng-content>
+        </div>
+    </div>
+</div>

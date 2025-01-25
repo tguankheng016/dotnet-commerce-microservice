@@ -1,0 +1,169 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    product="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #productForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="isEdit">
+                            Edit Product: {{ product.name }}
+                        </span>
+                        <span *ngIf="!isEdit">Create New Product</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-5">
+                        <label class="form-label required" for="ProductName">
+                            Product Name
+                        </label>
+                        <input
+                            pInputText
+                            id="ProductName"
+                            #productNameInput="ngModel"
+                            type="text"
+                            name="ProductName"
+                            [(ngModel)]="product.name"
+                            maxlength="50"
+                            required
+                        />
+                        <validation-messages
+                            [formCtrl]="productNameInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="mb-5">
+                        <label
+                            class="form-label required"
+                            for="ProductDescription"
+                        >
+                            Product Description
+                        </label>
+                        <input
+                            pInputText
+                            id="ProductDescription"
+                            #productDescriptionInput="ngModel"
+                            type="text"
+                            name="ProductDescription"
+                            [(ngModel)]="product.description"
+                            maxlength="150"
+                            required
+                        />
+                        <validation-messages
+                            [formCtrl]="productDescriptionInput"
+                        ></validation-messages>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-5">
+                            <label class="form-label required" for="Price">
+                                Price
+                            </label>
+                            <p-inputNumber
+                                #PriceInput="ngModel"
+                                [(ngModel)]="product.price"
+                                name="Price"
+                                inputId="Price"
+                                mode="decimal"
+                                prefix="RM "
+                                locale="en-US"
+                                [minFractionDigits]="2"
+                                [maxFractionDigits]="2"
+                                required
+                            >
+                            </p-inputNumber>
+                            <validation-messages
+                                [formCtrl]="PriceInput"
+                            ></validation-messages>
+                        </div>
+                        <div class="mb-5 col-md-6">
+                            <label
+                                class="form-label required"
+                                for="StockQuantity"
+                            >
+                                Stock Quantity
+                            </label>
+                            <p-inputNumber
+                                #StockQuantityInput="ngModel"
+                                [(ngModel)]="product.stockQuantity"
+                                name="StockQuantity"
+                                mode="decimal"
+                                inputId="StockQuantity"
+                                [useGrouping]="false"
+                                [showButtons]="true"
+                                [maxFractionDigits]="0"
+                                required
+                            >
+                            </p-inputNumber>
+                            <validation-messages
+                                [formCtrl]="StockQuantityInput"
+                            ></validation-messages>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-5">
+                            <label class="form-label required" for="CategoryId">
+                                Category
+                            </label>
+                            <p-dropdown
+                                id="CategoryId"
+                                #CategoryIdInput="ngModel"
+                                name="CategoryId"
+                                [autoDisplayFirst]="false"
+                                [options]="categories"
+                                [(ngModel)]="product.categoryId"
+                                optionLabel="categoryName"
+                                optionValue="id"
+                                [showClear]="true"
+                                [filter]="true"
+                                filterBy="categoryName"
+                                required
+                            >
+                            </p-dropdown>
+                            <validation-messages
+                                [formCtrl]="CategoryIdInput"
+                            ></validation-messages>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary fw-bold"
+                        [buttonBusy]="saving"
+                        [busyText]="'Saving ...'"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

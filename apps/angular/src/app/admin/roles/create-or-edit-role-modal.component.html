@@ -1,0 +1,121 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    (onShown)="onShown()"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form
+                *ngIf="active"
+                #roleForm="ngForm"
+                novalidate
+                (ngSubmit)="save()"
+            >
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="isEdit">Edit Role: {{ role.name }}</span>
+                        <span *ngIf="!isEdit">Create New Role</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        aria-label="Close"
+                        [disabled]="saving"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <tabset>
+                        <tab class="p-3 pt-6" heading="General">
+                            <div class="mb-5">
+                                <label
+                                    class="form-label required"
+                                    for="FirstName"
+                                    >Role name</label
+                                >
+                                <input
+                                    pInputText
+                                    id="RoleName"
+                                    #roleNameInput="ngModel"
+                                    type="text"
+                                    name="RoleName"
+                                    [(ngModel)]="role.name"
+                                    maxlength="256"
+                                    required
+                                />
+                                <validation-messages
+                                    [formCtrl]="roleNameInput"
+                                ></validation-messages>
+                            </div>
+                            <label
+                                class="form-check form-check-custom form-check-solid py-2"
+                            >
+                                <input
+                                    id="Role_IsDefault"
+                                    type="checkbox"
+                                    name="IsDefault"
+                                    [(ngModel)]="role.isDefault"
+                                    class="form-check-input"
+                                />
+                                <span class="fw-semibold ps-2 fs-7">
+                                    Default
+                                </span>
+                            </label>
+                        </tab>
+                        <tab class="p-3 pt-6" heading="Permissions">
+                            <permission-tree
+                                #permissionTree
+                                [grantedPermissions]="
+                                    role?.grantedPermissions ?? []
+                                "
+                            ></permission-tree>
+                        </tab>
+                    </tabset>
+                    <div
+                        *ngIf="isEdit"
+                        class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6"
+                    >
+                        <i
+                            class="ki-duotone ki-design-1 fs-2tx text-primary me-4"
+                        ></i>
+                        <div class="d-flex flex-stack flex-grow-1">
+                            <div class="fw-semibold">
+                                <div class="fs-6 text-gray-700">
+                                    If you are changing your own permissions,
+                                    you may need to refresh page (F5) to take
+                                    effect of permission changes on your own
+                                    screen.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary fw-bold"
+                        [buttonBusy]="saving"
+                        [busyText]="'Saving ...'"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

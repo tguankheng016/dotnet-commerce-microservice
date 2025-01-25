@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Azure\CommerceMicro.Modules.Azure.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Caching\CommerceMicro.Modules.Caching.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Contracts\CommerceMicro.Modules.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Core\CommerceMicro.Modules.Core.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Logging\CommerceMicro.Modules.Logging.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.MassTransit\CommerceMicro.Modules.MassTransit.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.OpenTelemetry\CommerceMicro.Modules.OpenTelemetry.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Permissions\CommerceMicro.Modules.Permissions.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Postgres\CommerceMicro.Modules.Postgres.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Security\CommerceMicro.Modules.Security.csproj" />
+    <ProjectReference Include="..\..\..\shared\CommerceMicro.Modules.Web\CommerceMicro.Modules.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Riok.Mapperly" Version="4.1.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.67.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Products\GrpcServer\Protos\products.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+</Project>

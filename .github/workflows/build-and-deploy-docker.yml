@@ -1,0 +1,222 @@
+name: "Build, Test And Deploy Using Docker Compose"
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        type: choice
+        description: Release Type
+        default: "norelease"
+        options:
+          - norelease
+          - patch
+          - minor
+          - major
+      skip_test:
+        type: choice
+        description: Skip Tests?
+        default: "no"
+        options:
+          - "yes"
+          - "no"
+      skip_gateway:
+        type: choice
+        description: Skip Gateway?
+        default: "yes"
+        options:
+          - "yes"
+          - "no"
+      skip_portal:
+        type: choice
+        description: Skip Portal?
+        default: "no"
+        options:
+          - "yes"
+          - "no"
+      skip_shop:
+        type: choice
+        description: Skip Shop?
+        default: "no"
+        options:
+          - "yes"
+          - "no"
+      skip_backend:
+        type: choice
+        description: Skip Backend?
+        default: "no"
+        options:
+          - "yes"
+          - "no"
+
+jobs:
+  build-and-test-backend:
+    permissions: write-all
+    name: Build And Test Backend
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ inputs.skip_test == 'no' }}
+        uses: actions/checkout@v4
+      - if: ${{ inputs.skip_test == 'no' }}
+        name: Run Unit Tests
+        uses: tguankheng016/shared-actions/.github/actions/run-dotnet-test@main
+        with:
+          project-path: "./services/identity/tests/CommerceMicro.IdentityService.UnitTests"
+          dotnet-version: "8.0.x"
+      - if: ${{ inputs.skip_test == 'no' }}
+        name: Run Integration Tests
+        uses: tguankheng016/shared-actions/.github/actions/run-dotnet-test@main
+        with:
+          project-path: "./services/identity/tests/CommerceMicro.IdentityService.IntegrationTests"
+          dotnet-version: "8.0.x"
+      - name: Cancelling parallel jobs
+        if: failure()
+        uses: andymckay/cancel-action@0.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "Pass Backend Tests"
+
+  build-portal:
+    name: Build Portal
+    runs-on: ubuntu-latest
+    if: ${{ inputs.skip_portal == 'no' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          cache-dependency-path: |
+            **/*.json
+            !**/node_modules/**/*
+      - name: Install Yarn
+        run: |
+          cd ./apps/angular
+          yarn install
+      - name: Build Angular Dist Folder
+        run: |
+          cd ./apps/angular
+          npm run publish
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portal-dist
+          path: apps/angular/dist
+
+  build-shop:
+    name: Build Shop
+    runs-on: ubuntu-latest
+    if: ${{ inputs.skip_shop == 'no' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          cache-dependency-path: |
+            **/*.json
+            !**/node_modules/**/*
+      - name: Install Yarn
+        run: |
+          cd ./apps/react
+          yarn install
+      - name: Build React Dist Folder
+        run: |
+          cd ./apps/react
+          npm run publish
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shop-dist
+          path: apps/react/dist
+
+  build-image-and-deploy:
+    permissions: write-all
+    name: Build Docker Image
+    needs: [build-and-test-backend, build-portal, build-shop]
+    if: ${{ always() && !failure() && !cancelled() }}
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release Tag
+        uses: rymndhng/release-on-push-action@master
+        with:
+          bump_version_scheme: ${{ inputs.release_type }}
+          use_github_release_notes: true
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+        with:
+          semver_only: true
+      - if: ${{ inputs.skip_portal == 'no' || inputs.release_type != 'norelease' }}
+        name: Build Portal Image
+        uses: tguankheng016/shared-actions/.github/actions/build-docker-image@main
+        with:
+          image-name: ghcr.io/${{ github.repository_owner }}/dotnet-commerce-portal
+          dockerfile: ./apps/angular/Dockerfile
+          latest-tag: ${{ steps.get-latest-tag.outputs.tag }}
+          context: ./apps/angular
+          frontend-artifact: portal-dist
+          frontend-artifact-path: apps/angular/dist
+      - if: ${{ inputs.skip_shop == 'no' || inputs.release_type != 'norelease' }}
+        name: Build Shop Image
+        uses: tguankheng016/shared-actions/.github/actions/build-docker-image@main
+        with:
+          image-name: ghcr.io/${{ github.repository_owner }}/dotnet-commerce-shop
+          dockerfile: ./apps/react/Dockerfile
+          latest-tag: ${{ steps.get-latest-tag.outputs.tag }}
+          context: ./apps/react
+          frontend-artifact: shop-dist
+          frontend-artifact-path: apps/react/dist
+      - if: ${{ inputs.skip_gateway == 'no' || inputs.release_type != 'norelease' }}
+        name: Build Gateway Image
+        uses: tguankheng016/shared-actions/.github/actions/build-docker-image@main
+        with:
+          image-name: ghcr.io/${{ github.repository_owner }}/dotnet-commerce-gateway
+          dockerfile: ./gateways/web/CommerceMicro.Gateways.Web/Dockerfile
+          latest-tag: ${{ steps.get-latest-tag.outputs.tag }}
+      - if: ${{ inputs.skip_backend == 'no' || inputs.release_type != 'norelease' }}
+        name: Build Identity Image
+        uses: tguankheng016/shared-actions/.github/actions/build-docker-image@main
+        with:
+          image-name: ghcr.io/${{ github.repository_owner }}/dotnet-commerce-identity
+          dockerfile: ./services/identity/src/CommerceMicro.IdentityService.Api/Dockerfile
+          latest-tag: ${{ steps.get-latest-tag.outputs.tag }}
+      - if: ${{ inputs.skip_backend == 'no' || inputs.release_type != 'norelease' }}
+        name: Build Product Image
+        uses: tguankheng016/shared-actions/.github/actions/build-docker-image@main
+        with:
+          image-name: ghcr.io/${{ github.repository_owner }}/dotnet-commerce-product
+          dockerfile: ./services/product/src/CommerceMicro.ProductService.Api/Dockerfile
+          latest-tag: ${{ steps.get-latest-tag.outputs.tag }}
+      - if: ${{ inputs.skip_backend == 'no' || inputs.release_type != 'norelease' }}
+        name: Build Cart Image
+        uses: tguankheng016/shared-actions/.github/actions/build-docker-image@main
+        with:
+          image-name: ghcr.io/${{ github.repository_owner }}/dotnet-commerce-cart
+          dockerfile: ./services/cart/src/CommerceMicro.CartService.Api/Dockerfile
+          latest-tag: ${{ steps.get-latest-tag.outputs.tag }}
+      - name: Deployment
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST  }}
+          username: ${{ secrets.SSH_USERNAME  }}
+          key: ${{ secrets.SSH_PRIVATE_KEY  }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE  }}
+          script: |
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+            cd deployments/dotnet-commerce/docker
+            export IMAGE_TAG=${{ steps.get-latest-tag.outputs.tag }}
+            export $(grep -Eo '^[^#]+' secrets.txt | xargs)
+            docker compose -f ./prod.yml pull
+            docker compose -f ./prod.yml down
+            docker compose -f ./prod.yml up -d
+            docker image prune -f
+            docker container prune -f
+            docker network prune -f

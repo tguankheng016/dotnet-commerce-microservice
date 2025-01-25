@@ -1,0 +1,86 @@
+services:
+  dotnet-gateway:
+    image: ghcr.io/tguankheng016/dotnet-commerce-gateway:latest
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "8073:8080"
+    networks:
+      - dotnet-commerce-network
+      - infrastructure-network
+
+  dotnet-identity-cip:
+    image: ghcr.io/tguankheng016/dotnet-commerce-identity:${IMAGE_TAG}
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - AzureOptions__KeyVaultName=${DotnetIdentityKeyVault}
+      - AzureOptions__TenantId=${TenantId}
+      - AzureOptions__ClientId=${ClientId}
+      - AzureOptions__ClientSecret=${ClientSecret}
+    depends_on:
+      - dotnet-gateway
+    networks:
+      - dotnet-commerce-network
+      - infrastructure-network
+
+  dotnet-product-cip:
+    image: ghcr.io/tguankheng016/dotnet-commerce-product:${IMAGE_TAG}
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - AzureOptions__KeyVaultName=${DotnetProductKeyVault}
+      - AzureOptions__TenantId=${TenantId}
+      - AzureOptions__ClientId=${ClientId}
+      - AzureOptions__ClientSecret=${ClientSecret}
+    depends_on:
+      - dotnet-identity-cip
+    networks:
+      - dotnet-commerce-network
+      - infrastructure-network
+
+  dotnet-cart-cip:
+    image: ghcr.io/tguankheng016/dotnet-commerce-cart:${IMAGE_TAG}
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - AzureOptions__KeyVaultName=${DotnetCartKeyVault}
+      - AzureOptions__TenantId=${TenantId}
+      - AzureOptions__ClientId=${ClientId}
+      - AzureOptions__ClientSecret=${ClientSecret}
+    depends_on:
+      - dotnet-product-cip
+    networks:
+      - dotnet-commerce-network
+      - infrastructure-network
+
+  dotnet-commerce-portal:
+    image: ghcr.io/tguankheng016/dotnet-commerce-portal:${IMAGE_TAG}
+    restart: always
+    ports:
+      - "8071:80"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 50M
+
+  dotnet-commerce-shop:
+    image: ghcr.io/tguankheng016/dotnet-commerce-shop:${IMAGE_TAG}
+    restart: always
+    ports:
+      - "8072:80"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 50M
+
+networks:
+  dotnet-commerce-network:
+    name: dotnet-commerce-network
+    driver: bridge
+  infrastructure-network:
+    name: infrastructure-network
+    external: true

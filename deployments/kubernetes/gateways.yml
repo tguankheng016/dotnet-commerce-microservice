@@ -1,0 +1,34 @@
+# Gateway
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-commerce-gateway-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnet-commerce-gateway
+  template:
+    metadata:
+      labels:
+        app: dotnet-commerce-gateway
+    spec:
+      containers:
+        - name: dotnet-commerce-gateway
+          image: ghcr.io/tguankheng016/dotnet-commerce-gateway:latest
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet-commerce-gateway-cip
+spec:
+  selector:
+    app: dotnet-commerce-gateway
+  ports:
+    - name: dotnet-commerce-gateway-http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

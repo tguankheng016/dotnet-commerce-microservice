@@ -2,7 +2,7 @@
   "remoteServiceBaseUrl": "https://api.gktan.com",
   "appBaseUrl": "https://eportal.gktan.com",
   "openIddict": {
-    "baseUrl": "http://localhost:5062",
+    "baseUrl": "https://auth.gktan.com",
     "clientId": "dotnet-commerce"
   },
   "uiAvatarsBaseUrl": "https://ui-avatars.com/api/?name={0}&size=256&background=3f51b5&color=fff"

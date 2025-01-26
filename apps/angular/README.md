@@ -1,27 +1,45 @@
-# Angular
+# Admin Portal
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
+This is an `Dotnet Commerce` admin portal project built using `Angular`, `PrimeNG`, and the `Saul theme`. It provides a modern, user-friendly interface for administrators to manage various aspects of an application or service.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+-   **User Management**: Add, edit and delete users
+-   **Role Permission Management**: Add, edit and delete roles and permissions
+-   **Category Management**: Add, edit and delete categories
+-   **Product Management**: Add, edit and delete products
 
-## Code scaffolding
+## Prerequisites
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Before you begin, make sure you have the following installed:
 
-## Build
+-   **Node.js** (v18 or higher)
+-   **Yarn** (v1.22.21 or higher)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Quick Start
 
-## Running unit tests
+Once you have Node.js version 18 or above and Yarn installed, you can set up the project by following these steps:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Clone the repository:
 
-## Running end-to-end tests
+```bash
+git clone https://github.com/tguankheng016/dotnet-commerce-microservice.git
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Install the project dependencies using Yarn:
 
-## Further help
+```bash
+cd apps/angular
+yarn install
+yarn run gulp-build
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Run the development server:
+
+```bash
+yarn run start
+```
+
+Once everything is set up, you should be able to access:
+
+-   Admin Portal: [http://localhost:4200](http://localhost:4200)

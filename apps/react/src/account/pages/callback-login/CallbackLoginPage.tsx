@@ -24,16 +24,19 @@ const CallbackLoginPage = () => {
         if (StringHelper.notNullOrEmpty(error_description)) {
             SwalNotifyService.error(error_description as string);
             navigate('/account/login');
+            return;
         }
 
         if (!StringHelper.notNullOrEmpty(state) || savedState !== state) {
             SwalNotifyService.error('Invalid state');
             navigate('/account/login');
+            return;
         }
 
         if (!StringHelper.notNullOrEmpty(code)) {
             SwalNotifyService.error('Invalid code');
             navigate('/account/login');
+            return;
         }
 
         authService.openIddictAuthenticate(

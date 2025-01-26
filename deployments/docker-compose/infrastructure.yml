@@ -68,6 +68,21 @@ services:
     networks:
       - infrastructure-network
 
+  nats-cip:
+    container_name: nats-cip
+    image: nats:2
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    restart: always
+    command: ["-js"]
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - infrastructure-network
+
 networks:
   infrastructure-network:
     name: infrastructure-network

@@ -1,4 +1,4 @@
-name: "Build, Test And Deploy Using Docker Compose"
+name: "Reset Database Daily"
 
 on:
   schedule:

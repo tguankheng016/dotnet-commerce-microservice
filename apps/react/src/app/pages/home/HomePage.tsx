@@ -10,14 +10,105 @@ const HomePage = () => {
             <div className="card">
                 <div className="card-body p-lg-17">
                     <p>
-                        This is a simple startup template based on ASP.NET Boilerplate
-                        framework and Module Zero. If you need an enterprise startup
-                        project, check
-                        <a href="http://aspnetzero.com?ref=abptmpl" target="_blank">
-                            ASP.NET ZERO
-                        </a>.
+                        This is a practical and imaginary eCommerce system built with
+                        <strong>.NET 8</strong> as the backend and
+                        <strong>React</strong> and <strong>Angular</strong> for the
+                        frontend. The system is designed using
+                        <strong>Microservices Architecture</strong>,
+                        <strong>Vertical Slice Architecture</strong>, and
+                        <strong>Clean Architecture</strong> principles. The goal is to
+                        demonstrate a scalable, maintainable, and testable approach for
+                        building modern eCommerce applications.
                     </p>
-                    <h3>What is ASP.NET Boilerplate?</h3>
+                    <h3>Features</h3>
+                    <ul>
+                        <li>
+                            <span>
+                                Using <b>RabbitMQ</b> on top of <b>MassTransit</b> for
+                                Asynchronous Messaging
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                Using <b>gRPC</b> for <b>internal communications</b> between
+                                services
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                Using <b>MediatR</b> for <b>CQRS</b> implementation
+                            </span>
+                        </li>
+                        <li>
+                            <span> Using <b>Serilog</b> for structured logging </span>
+                        </li>
+                        <li>
+                            <span> Using <b>Minimal APIs</b> to handle requests </span>
+                        </li>
+                        <li>
+                            <span>
+                                Using <b>Fluent Validation</b> to validate input requests
+                            </span>
+                        </li>
+                        <li>
+                            <span> Using <b>ProblemDetails</b> to handle API errors </span>
+                        </li>
+                        <li>
+                            <span> Using <b>EF Core</b> as <b>ORM</b> </span>
+                        </li>
+                        <li>
+                            <span>
+                                Using <b>PostgreSQL</b> and <b>MongoDB</b> as databases
+                            </span>
+                        </li>
+                        <li>
+                            <span> Using <b>Swagger</b> for OpenAPI documentation </span>
+                        </li>
+                        <li>
+                            <span>
+                                Using <b>Nswag</b> for generating Typescript client code
+                            </span>
+                        </li>
+                        <li>
+                            <span> Using <b>Redis</b> for distributed caching </span>
+                        </li>
+                        <li>
+                            <span>
+                                Using <b>OpenTelemetry</b> and <b>Jaeger</b> for distributed
+                                tracing.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                Using <b>xUnit</b>, <b>TestContainers</b> for unit and
+                                integration testing
+                            </span>
+                        </li>
+                    </ul>
+                    <h3>Other Relevant Sites</h3>
+                    <ul>
+                        <li>
+                            <span>EPortal:</span>&nbsp;
+                            <a href="https://eportal.gktan.com" target="_blank"
+                            >https://eportal.gktan.com</a
+                            >
+                        </li>
+                        <li>
+                            <span>OAuth:</span>&nbsp;
+                            <a href="https://auth.gktan.com" target="_blank"
+                            >https://auth.gktan.com</a
+                            >
+                        </li>
+                    </ul>
+                    <h3>Source code</h3>
+                    <p>
+                        This project is developed open source on Github.
+                        <a
+                            href="https://github.com/tguankheng016/dotnet-commerce-microservice"
+                            target="_blank"
+                        >https://github.com/tguankheng016/dotnet-commerce-microservice</a
+                        >
+                    </p>
                 </div>
             </div>
         </DefaultPage>

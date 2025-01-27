@@ -106,6 +106,11 @@ internal class UpdateUserHandler(
 			throw new BadRequestException("You cannot change admin's username");
 		}
 
+		if (user.UserName == UserConsts.DefaultUsername.Admin && !string.IsNullOrEmpty(command.Password))
+		{
+			throw new BadRequestException("You cannot change admin's password");
+		}
+
 		var mapper = new UserMapper();
 		mapper.EditUserDtoToUser(command, user);
 

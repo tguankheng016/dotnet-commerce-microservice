@@ -8,6 +8,7 @@ import { AppAuthService } from "@shared/auth/app-auth-service";
 import { CookieService } from "@shared/cookies/cookie-service";
 import { AppConsts } from "@shared/app-consts";
 import { StringHelper } from "@shared/utils";
+import { SwalMessageService } from "@shared/sweetalert2";
 
 const schema = z.object({
     username: z.string()
@@ -19,19 +20,28 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const LoginPage = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) });
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            username: "admin",
+            password: "123qwe",
+        },
+    });
     const [saving, setSaving] = useState(false);
 
     const submitHandler = (data: FormData) => {
-        setSaving(true);
+        SwalMessageService.showConfirmation("Site Availability Hours", `This site is available Monday to Friday, from 8 AM to 8 PM.`, () => {
+            setSaving(true);
 
-        const authService = new AppAuthService();
-        authService.authenticateRequest.usernameOrEmailAddress = data.username;
-        authService.authenticateRequest.password = data.password;
+            const authService = new AppAuthService();
+            authService.authenticateRequest.usernameOrEmailAddress = data.username;
+            authService.authenticateRequest.password = data.password;
 
-        authService.authenticate(() => {
-            setSaving(false)
-        });
+            authService.authenticate(() => {
+                setSaving(false);
+
+            });
+        }, () => { }, "OK", "Cancel");
     };
 
     const redirectOAuthHandler = () => {

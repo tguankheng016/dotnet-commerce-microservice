@@ -1,63 +1,103 @@
 <default-page [title]="'About'" [breadcrumbs]="breadcrumbs">
     <div role="app-content">
         <p>
-            This is a simple startup template based on ASP.NET Boilerplate
-            framework and Module Zero. If you need an enterprise startup
-            project, check
-            <a href="http://aspnetzero.com?ref=abptmpl" target="_blank">
-                ASP.NET ZERO </a
-            >.
+            This is a practical and imaginary eCommerce system built with
+            <strong>.NET 8</strong> as the backend and
+            <strong>React</strong> and <strong>Angular</strong> for the
+            frontend. The system is designed using
+            <strong>Microservices Architecture</strong>,
+            <strong>Vertical Slice Architecture</strong>, and
+            <strong>Clean Architecture</strong> principles. The goal is to
+            demonstrate a scalable, maintainable, and testable approach for
+            building modern eCommerce applications.
         </p>
-        <h3>What is ASP.NET Boilerplate?</h3>
-        <p>
-            ASP.NET Boilerplate is an application framework built on latest
-            <strong>ASP.NET Core</strong> framework. It makes easy to use
-            authorization, dependency injection, validation, exception handling,
-            localization, logging, caching, background jobs and so on. It's
-            built on already familiar tools like Entity Framework, AutoMapper,
-            Castle Windsor...
-        </p>
-        <p>
-            ASP.NET Boilerplate implements
-            <strong>NLayer architecture</strong> (Domain, Application,
-            Infrastructure and Presentation Layers) and
-            <strong>Domain Driven Design</strong> (Entities, Repositories,
-            Domain/Application Services, DTO's...). Also implements and provides
-            a good infrastructure to implement common software development
-            <strong>best practices</strong>.
-        </p>
-        <h3>What is Module Zero?</h3>
-        <p>
-            ASP.NET Boilerplate framework is designed to be independent of any
-            database schema and to be as generic as possible. Therefore, It
-            leaves some concepts
-            <strong>abstract</strong> and <strong>optional</strong> (like audit
-            logging, permission and setting stores) which requires some
-            <strong>data store</strong>.
-        </p>
-        <h4>Based on Microsoft ASP.NET Core Identity</h4>
-        <h3>Documentation</h3>
+        <h3>Features</h3>
         <ul>
             <li>
-                <a
-                    href="https://www.aspnetboilerplate.com/Pages/Documents/Zero/Startup-Template-Core"
-                    >Documentation for this template</a
+                <span>
+                    Using <b>RabbitMQ</b> on top of <b>MassTransit</b> for
+                    Asynchronous Messaging
+                </span>
+            </li>
+            <li>
+                <span>
+                    Using <b>gRPC</b> for <b>internal communications</b> between
+                    services
+                </span>
+            </li>
+            <li>
+                <span>
+                    Using <b>MediatR</b> for <b>CQRS</b> implementation
+                </span>
+            </li>
+            <li>
+                <span> Using <b>Serilog</b> for structured logging </span>
+            </li>
+            <li>
+                <span> Using <b>Minimal APIs</b> to handle requests </span>
+            </li>
+            <li>
+                <span>
+                    Using <b>Fluent Validation</b> to validate input requests
+                </span>
+            </li>
+            <li>
+                <span> Using <b>ProblemDetails</b> to handle API errors </span>
+            </li>
+            <li>
+                <span> Using <b>EF Core</b> as <b>ORM</b> </span>
+            </li>
+            <li>
+                <span>
+                    Using <b>PostgreSQL</b> and <b>MongoDB</b> as databases
+                </span>
+            </li>
+            <li>
+                <span> Using <b>Swagger</b> for OpenAPI documentation </span>
+            </li>
+            <li>
+                <span>
+                    Using <b>Nswag</b> for generating Typescript client code
+                </span>
+            </li>
+            <li>
+                <span> Using <b>Redis</b> for distributed caching </span>
+            </li>
+            <li>
+                <span>
+                    Using <b>OpenTelemetry</b> and <b>Jaeger</b> for distributed
+                    tracing.
+                </span>
+            </li>
+            <li>
+                <span>
+                    Using <b>xUnit</b>, <b>TestContainers</b> for unit and
+                    integration testing
+                </span>
+            </li>
+        </ul>
+        <h3>Other Relevant Sites</h3>
+        <ul>
+            <li>
+                <span>EShop:</span>&nbsp;
+                <a href="https://eshop.gktan.com" target="_blank"
+                    >https://eshop.gktan.com</a
                 >
             </li>
             <li>
-                <a href="http://www.aspnetboilerplate.com/Pages/Documents"
-                    >ASP.NET Boilerplate documentation</a
+                <span>OAuth:</span>&nbsp;
+                <a href="https://auth.gktan.com" target="_blank"
+                    >https://auth.gktan.com</a
                 >
             </li>
         </ul>
         <h3>Source code</h3>
         <p>
-            This template is developed open source on Github. You can contribute
-            to the template.
+            This project is developed open source on Github.
             <a
-                href="https://github.com/aspnetboilerplate/module-zero-core-template"
+                href="https://github.com/tguankheng016/dotnet-commerce-microservice"
                 target="_blank"
-                >https://github.com/aspnetboilerplate/module-zero-core-template</a
+                >https://github.com/tguankheng016/dotnet-commerce-microservice</a
             >
         </p>
     </div>

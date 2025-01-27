@@ -25,12 +25,12 @@ export class AppAuthService {
                     if (tokenResult && tokenResult.accessToken) {
                         CookieService.setCookie(AppConsts.cookieName.accessToken, tokenResult.accessToken, tokenResult.expireInSeconds);
                         return resolve(true)
-
                     } else {
                         return resolve(false);
                     }
                 })
                 .catch(err => {
+                    CookieService.removeCookie(AppConsts.cookieName.refreshToken);
                     return resolve(false);
                 })
         });

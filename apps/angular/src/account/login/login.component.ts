@@ -26,23 +26,29 @@ export class LoginComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit(): void {
+        this.authService.authenticateRequest.usernameOrEmailAddress = 'admin';
+        this.authService.authenticateRequest.password = '123qwe';
     }
 
     login(): void {
-        this.submitting = true;
+        appHelper.message.confirm('This site is available Monday to Friday, from 8 AM to 8 PM.', 'Site Availability Hours', (isConfirmed) => {
+            if (isConfirmed) {
+                this.submitting = true;
 
-        if (this.validateFormGroup(this.loginForm.form)) {
-            this.authService.authenticate(
-                () => {
+                if (this.validateFormGroup(this.loginForm.form)) {
+                    this.authService.authenticate(
+                        () => {
+                            this.submitting = false;
+                            this._cdRef.markForCheck();
+                        },
+                        null,
+                    );
+                }
+                else {
                     this.submitting = false;
-                    this._cdRef.markForCheck();
-                },
-                null,
-            );
-        }
-        else {
-            this.submitting = false;
-        }
+                }
+            }
+        }, false, { confirmButtonText: "Ok" });
     }
 
     ssoLogin(): void {

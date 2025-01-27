@@ -45,15 +45,17 @@ class SwalMessageService {
         title: string,
         text: string,
         onConfirm: () => void,
-        onCancel?: () => void
+        onCancel?: () => void,
+        confirmButtonText?: string,
+        cancelButtonText?: string,
     ) {
         return Swal.fire({
             title,
             text,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
+            confirmButtonText: confirmButtonText ?? "Yes",
+            cancelButtonText: cancelButtonText ?? "No",
         }).then((result) => {
             if (result.isConfirmed) {
                 onConfirm();

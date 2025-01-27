@@ -48,6 +48,7 @@ appHelper.message = appHelper.message || {};
     };
     
     appHelper.message.confirm = function (message, titleOrCallback, callback, isHtml, options) {
+        console.log(options);
         var title = undefined;
     
         if (typeof titleOrCallback === "function") {

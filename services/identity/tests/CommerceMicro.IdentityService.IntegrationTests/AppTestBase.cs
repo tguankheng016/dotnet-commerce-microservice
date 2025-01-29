@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 
 namespace CommerceMicro.IdentityService.IntegrationTests;
 
-public class AppTestBase : IClassFixture<TestContainers>
+public abstract class AppTestBase
 {
 	protected readonly TestWebApplicationFactory ApiFactory;
 	protected readonly AppDbContext DbContext;
@@ -27,10 +27,11 @@ public class AppTestBase : IClassFixture<TestContainers>
 
 	public AppTestBase(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
+		TestWebApplicationFactory webAppFactory
 	)
 	{
-		ApiFactory = new TestWebApplicationFactory(testOutputHelper, testContainers);
+		ApiFactory = webAppFactory;
+		webAppFactory.Output = testOutputHelper;
 		Client = ApiFactory.CreateClient();
 		var _scope = ApiFactory.Services.CreateScope();
 		DbContext = _scope.ServiceProvider.GetRequiredService<AppDbContext>();

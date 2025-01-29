@@ -10,19 +10,29 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using Testcontainers.PostgreSql;
 using Xunit.Abstractions;
 
 namespace CommerceMicro.IdentityService.IntegrationTests;
 
-public class TestWebApplicationFactory : WebApplicationFactory<IApplicationRoot>
+public class TestWebApplicationFactory : WebApplicationFactory<IApplicationRoot>, IAsyncLifetime
 {
-	private readonly ITestOutputHelper _testOutputHelper;
-	private readonly TestContainers _testContainers;
+	public ITestOutputHelper? Output { get; set; }
 
-	public TestWebApplicationFactory(ITestOutputHelper testOutputHelper, TestContainers testContainers)
+	public readonly PostgreSqlContainer DatabaseContainer = new PostgreSqlBuilder()
+		.WithUsername("workshop")
+		.WithPassword("password")
+		.WithDatabase("mydb")
+		.Build();
+
+	public async Task InitializeAsync()
 	{
-		_testOutputHelper = testOutputHelper;
-		_testContainers = testContainers;
+		await DatabaseContainer.StartAsync();
+	}
+
+	public async new Task DisposeAsync()
+	{
+		await DatabaseContainer.StopAsync();
 	}
 
 	protected override IHost CreateHost(IHostBuilder builder)
@@ -30,10 +40,10 @@ public class TestWebApplicationFactory : WebApplicationFactory<IApplicationRoot>
 		builder.UseSerilog(
 			(ctx, loggerConfiguration) =>
 			{
-				if (_testOutputHelper is not null)
+				if (Output is not null)
 				{
 					loggerConfiguration.WriteTo.TestOutput(
-						_testOutputHelper,
+						Output,
 						LogEventLevel.Error,
 						"{Timestamp:yyyy-MM-dd HH:mm:ss.fff} {Level} - {Message:lj}{NewLine}{Exception}"
 					);
@@ -57,7 +67,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<IApplicationRoot>
 
 				var newPostgresOptions = new PostgresOptions()
 				{
-					ConnectionString = _testContainers.DatabaseContainer.GetConnectionString()
+					ConnectionString = DatabaseContainer.GetConnectionString()
 				};
 
 				services.AddSingleton(newPostgresOptions);

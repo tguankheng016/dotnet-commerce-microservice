@@ -6,14 +6,15 @@ using Xunit.Abstractions;
 
 namespace CommerceMicro.IdentityService.IntegrationTests.Users;
 
+[Collection(UserTestCollection1.Name)]
 public class GetUserByIdTestBase : AppTestBase
 {
 	protected override string EndpointName { get; } = "user";
 
 	protected GetUserByIdTestBase(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 }
@@ -22,8 +23,8 @@ public class GetUserById_Tests : GetUserByIdTestBase
 {
 	public GetUserById_Tests(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 

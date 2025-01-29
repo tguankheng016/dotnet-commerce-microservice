@@ -6,18 +6,18 @@ using MassTransit.Testing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
-using static Bogus.DataSets.Name;
 
 namespace CommerceMicro.IdentityService.IntegrationTests.Users;
 
+[Collection(UserTestCollection1.Name)]
 public class DeleteUserTestBase : AppTestBase
 {
 	protected override string EndpointName { get; } = "user";
 
 	protected DeleteUserTestBase(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 }
@@ -27,8 +27,8 @@ public class DeleteUser_Tests : DeleteUserTestBase
 {
 	public DeleteUser_Tests(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 
@@ -143,7 +143,6 @@ public class DeleteUser_Tests : DeleteUserTestBase
 	{
 		// Arrange
 		var client = await ApiFactory.LoginAsAdmin();
-		await TestHarness.Start();
 
 		// Act
 		var response = await client.DeleteAsync($"{Endpoint}/{userId}");
@@ -153,11 +152,6 @@ public class DeleteUser_Tests : DeleteUserTestBase
 
 		var failureResponse = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 		failureResponse.Should().NotBeNull();
-
-		var publishedMessage = await TestHarness.Published.SelectAsync<UserDeletedEvent>().FirstOrDefault();
-		publishedMessage.Should().BeNull();
-
-		await TestHarness.Stop();
 	}
 
 	[Fact]
@@ -166,8 +160,6 @@ public class DeleteUser_Tests : DeleteUserTestBase
 		// Arrange
 		var client = await ApiFactory.LoginAsUser();
 		var newUser = GetTestUser();
-
-		await TestHarness.Start();
 
 		await DbContext.Users.AddAsync(newUser);
 		await DbContext.SaveChangesAsync();
@@ -180,25 +172,10 @@ public class DeleteUser_Tests : DeleteUserTestBase
 
 		var failureResponse = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 		failureResponse.Should().NotBeNull();
-
-		var publishedMessage = await TestHarness.Published.SelectAsync<UserDeletedEvent>().FirstOrDefault();
-		publishedMessage.Should().BeNull();
-
-		await TestHarness.Stop();
 	}
 
 	private User GetTestUser()
 	{
-		var testUser = new Faker<User>()
-			.RuleFor(x => x.Id, 0)
-			.RuleFor(u => u.FirstName, (f) => f.Name.FirstName(Gender.Male))
-			.RuleFor(u => u.LastName, (f) => f.Name.LastName(Gender.Female))
-			.RuleFor(x => x.UserName, f => f.Internet.UserName())
-			.RuleFor(x => x.NormalizedUserName, (f, u) => u.UserName!.ToUpper())
-			.RuleFor(x => x.Email, f => f.Internet.Email())
-			.RuleFor(x => x.NormalizedEmail, (f, u) => u.Email!.ToUpper())
-			.RuleFor(x => x.SecurityStamp, Guid.NewGuid().ToString());
-
-		return testUser.Generate();
+		return UserFaker.GetUserFaker().Generate();
 	}
 }

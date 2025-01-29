@@ -6,14 +6,15 @@ using Xunit.Abstractions;
 
 namespace CommerceMicro.IdentityService.IntegrationTests.Roles;
 
+[Collection(RoleTestCollection1.Name)]
 public class DeleteRoleTestBase : AppTestBase
 {
 	protected override string EndpointName { get; } = "role";
 
 	protected DeleteRoleTestBase(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 }
@@ -22,8 +23,8 @@ public class DeleteRole_Tests : DeleteRoleTestBase
 {
 	public DeleteRole_Tests(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 

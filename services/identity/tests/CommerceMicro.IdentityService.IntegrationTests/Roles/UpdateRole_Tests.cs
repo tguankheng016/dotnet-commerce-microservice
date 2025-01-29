@@ -10,14 +10,15 @@ using Xunit.Abstractions;
 
 namespace CommerceMicro.IdentityService.IntegrationTests.Roles;
 
+[Collection(RoleTestCollection1.Name)]
 public class UpdateRoleTestBase : AppTestBase
 {
 	protected override string EndpointName { get; } = "role";
 
 	protected UpdateRoleTestBase(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 }
@@ -26,8 +27,8 @@ public class UpdateRole_Tests : UpdateRoleTestBase
 {
 	public UpdateRole_Tests(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 
@@ -138,8 +139,8 @@ public class UpdateRolePermissions_Tests : UpdateRoleTestBase
 {
 	public UpdateRolePermissions_Tests(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 

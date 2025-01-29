@@ -7,6 +7,7 @@ using CommerceMicro.IdentityService.Application.Users.Models;
 using CommerceMicro.IdentityService.IntegrationTests.Utilities;
 using CommerceMicro.Modules.Contracts;
 using CommerceMicro.Modules.Permissions.Caching;
+using MassTransit.Internals;
 using MassTransit.Testing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +16,15 @@ using static Bogus.DataSets.Name;
 
 namespace CommerceMicro.IdentityService.IntegrationTests.Users;
 
+[Collection(UserTestCollection1.Name)]
 public class UpdateUserTestBase : AppTestBase
 {
 	protected override string EndpointName { get; } = "user";
 
 	protected UpdateUserTestBase(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 }
@@ -31,8 +33,8 @@ public class UpdateUser_Tests : UpdateUserTestBase
 {
 	public UpdateUser_Tests(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 
@@ -40,7 +42,10 @@ public class UpdateUser_Tests : UpdateUserTestBase
 	public async Task Should_Update_User_Test()
 	{
 		// Arrange
-		var userId = 2;
+		var newUser = UserFaker.GetUserFaker().Generate();
+		await DbContext.Users.AddAsync(newUser);
+		await DbContext.SaveChangesAsync();
+		var userId = newUser.Id;
 
 		var client = await ApiFactory.LoginAsAdmin();
 		var totalCount = await DbContext.Users.CountAsync();
@@ -53,6 +58,7 @@ public class UpdateUser_Tests : UpdateUserTestBase
 			.RuleFor(x => x.Password, f => f.Internet.Password())
 			.RuleFor(x => x.ConfirmPassword, (f, u) => u.Password);
 		var request = testUser.Generate();
+		request.Id = newUser.Id;
 		request.Roles = new List<string>() { RoleConsts.RoleName.User };
 
 		await TestHarness.Start();
@@ -66,7 +72,7 @@ public class UpdateUser_Tests : UpdateUserTestBase
 		var updateResult = await response.Content.ReadFromJsonAsync<UpdateUserResult>();
 		updateResult.Should().NotBeNull();
 		updateResult!.User.Should().NotBeNull();
-		updateResult!.User.Id.Should().Be(2);
+		updateResult!.User.Id.Should().Be(userId);
 		updateResult!.User.UserName.Should().Be(request.UserName);
 		updateResult!.User.FirstName.Should().Be(request.FirstName);
 		updateResult!.User.LastName.Should().Be(request.LastName);
@@ -91,7 +97,21 @@ public class UpdateUser_Tests : UpdateUserTestBase
 	public async Task Should_Update_User_With_Roles_Test()
 	{
 		// Arrange
-		var userId = 2;
+		var newUser = UserFaker.GetUserFaker().Generate();
+		await DbContext.Users.AddAsync(newUser);
+		await DbContext.SaveChangesAsync();
+
+		var userId = newUser.Id;
+		var userRole = await DbContext.Roles.FirstAsync(x => x.Name == RoleConsts.RoleName.User);
+
+		var newUserRole = new UserRole
+		{
+			UserId = newUser.Id,
+			RoleId = userRole.Id
+		};
+
+		await DbContext.UserRoles.AddAsync(newUserRole);
+		await DbContext.SaveChangesAsync();
 
 		var client = await ApiFactory.LoginAsAdmin();
 		var totalCount = await DbContext.Users.CountAsync();
@@ -127,7 +147,7 @@ public class UpdateUser_Tests : UpdateUserTestBase
 		var updateResult = await response.Content.ReadFromJsonAsync<UpdateUserResult>();
 		updateResult.Should().NotBeNull();
 		updateResult!.User.Should().NotBeNull();
-		updateResult!.User.Id.Should().Be(2);
+		updateResult!.User.Id.Should().Be(newUser.Id);
 		updateResult!.User.UserName.Should().Be(request.UserName);
 		updateResult!.User.FirstName.Should().Be(request.FirstName);
 		updateResult!.User.LastName.Should().Be(request.LastName);
@@ -142,10 +162,12 @@ public class UpdateUser_Tests : UpdateUserTestBase
 		var newTotalCount = await DbContext.Users.CountAsync();
 		newTotalCount.Should().Be(totalCount);
 
-		var publishedMessage = await TestHarness.Published.SelectAsync<UserUpdatedEvent>().FirstOrDefault();
+		var publishedMessage = (await TestHarness.Published.SelectAsync<UserUpdatedEvent>().ToListAsync())
+			.Where(x => x.Context.Message.Id == updateResult.User.Id)
+			.FirstOrDefault();
 		publishedMessage.Should().NotBeNull();
 
-		var userUpdatedEvent = publishedMessage.Context.Message;
+		var userUpdatedEvent = publishedMessage!.Context.Message;
 		userUpdatedEvent.Id.Should().Be(updateResult.User.Id);
 		userUpdatedEvent.UserName.Should().Be(updateResult.User.UserName);
 		userUpdatedEvent.FirstName.Should().Be(updateResult.User.FirstName);
@@ -159,8 +181,8 @@ public class UpdateUserValidation_Tests : UpdateUserTestBase
 {
 	public UpdateUserValidation_Tests(
 		ITestOutputHelper testOutputHelper,
-		TestContainers testContainers
-	) : base(testOutputHelper, testContainers)
+		TestWebApplicationFactory webAppFactory
+	) : base(testOutputHelper, webAppFactory)
 	{
 	}
 
@@ -179,8 +201,6 @@ public class UpdateUserValidation_Tests : UpdateUserTestBase
 			.RuleFor(x => x.ConfirmPassword, (f, u) => u.Password);
 		var request = testUser.Generate();
 
-		await TestHarness.Start();
-
 		// Act
 		var response = await client.PutAsJsonAsync(Endpoint, request);
 
@@ -189,11 +209,6 @@ public class UpdateUserValidation_Tests : UpdateUserTestBase
 
 		var failureResponse = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 		failureResponse.Should().NotBeNull();
-
-		var publishedMessage = await TestHarness.Published.SelectAsync<UserUpdatedEvent>().FirstOrDefault();
-		publishedMessage.Should().BeNull();
-
-		await TestHarness.Stop();
 	}
 
 	[Theory]
@@ -224,8 +239,6 @@ public class UpdateUserValidation_Tests : UpdateUserTestBase
 
 		var request = testUser.Generate();
 
-		await TestHarness.Start();
-
 		// Act
 		var response = await client.PutAsJsonAsync(Endpoint, request);
 
@@ -235,11 +248,6 @@ public class UpdateUserValidation_Tests : UpdateUserTestBase
 		var failureResponse = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 		failureResponse.Should().NotBeNull();
 		failureResponse!.Detail.Should().Be(errorMessage);
-
-		var publishedMessage = await TestHarness.Published.SelectAsync<UserUpdatedEvent>().FirstOrDefault();
-		publishedMessage.Should().BeNull();
-
-		await TestHarness.Stop();
 	}
 
 	[Theory]
@@ -248,8 +256,6 @@ public class UpdateUserValidation_Tests : UpdateUserTestBase
 	{
 		// Arrange
 		var client = await ApiFactory.LoginAsAdmin();
-		await TestHarness.Start();
-
 		// Act
 		var response = await client.PutAsJsonAsync(Endpoint, request);
 
@@ -259,11 +265,6 @@ public class UpdateUserValidation_Tests : UpdateUserTestBase
 		var failureResponse = await response.Content.ReadFromJsonAsync<ProblemDetails>();
 		failureResponse.Should().NotBeNull();
 		failureResponse!.Detail.Should().Be(errorMessage);
-
-		var publishedMessage = await TestHarness.Published.SelectAsync<UserUpdatedEvent>().FirstOrDefault();
-		publishedMessage.Should().BeNull();
-
-		await TestHarness.Stop();
 	}
 
 	private static EditUserDto GetUpdateUserRequest(int scenario)

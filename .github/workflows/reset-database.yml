@@ -3,7 +3,7 @@ name: "Reset Database Daily"
 on:
   schedule:
     # This cron expression will run the workflow at midnight every day (UTC)
-    - cron: "50 11 * * *"
+    - cron: "50 11 * * 1-5"
   workflow_dispatch:
 
 jobs:

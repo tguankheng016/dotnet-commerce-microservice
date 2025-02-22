@@ -1,33 +1,33 @@
-name: "Reset Database Daily"
+# name: "Reset Database Daily"
 
-on:
-  schedule:
-    # This cron expression will run the workflow at midnight every day (UTC)
-    - cron: "50 11 * * 1-5"
-  workflow_dispatch:
+# on:
+#   schedule:
+#     # This cron expression will run the workflow at midnight every day (UTC)
+#     - cron: "50 11 * * 1-5"
+#   workflow_dispatch:
 
-jobs:
-  reset-database:
-    permissions: write-all
-    name: Reset Database
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Reset Database
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST  }}
-          username: ${{ secrets.SSH_USERNAME  }}
-          key: ${{ secrets.SSH_PRIVATE_KEY  }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE  }}
-          script: |
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-            cd infrastructure/docker
-            export $(grep -Eo '^[^#]+' secrets.txt | xargs)
-            docker compose -f ./infrastructure.yml pull
-            docker compose -f ./infrastructure.yml down
-            docker compose -f ./infrastructure.yml up -d
-            docker image prune -f
-            docker container prune -f
-            docker network prune -f
+# jobs:
+#   reset-database:
+#     permissions: write-all
+#     name: Reset Database
+#     runs-on: ubuntu-latest
+#     env:
+#       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#     steps:
+#       - name: Reset Database
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: ${{ secrets.SSH_HOST  }}
+#           username: ${{ secrets.SSH_USERNAME  }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY  }}
+#           passphrase: ${{ secrets.SSH_PASSPHRASE  }}
+#           script: |
+#             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+#             cd infrastructure/docker
+#             export $(grep -Eo '^[^#]+' secrets.txt | xargs)
+#             docker compose -f ./infrastructure.yml pull
+#             docker compose -f ./infrastructure.yml down
+#             docker compose -f ./infrastructure.yml up -d
+#             docker image prune -f
+#             docker container prune -f
+#             docker network prune -f
